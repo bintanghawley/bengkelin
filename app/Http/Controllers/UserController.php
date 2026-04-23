@@ -8,8 +8,22 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    private function checkAdmin()
+    {
+        if (session('user_role') !== 'admin') {
+            return redirect()->route('home')->with('error', 'Akses ditolak');
+        }
+
+        return null;
+    }
+
     public function index()
     {
+        $checkAdmin = $this->checkAdmin();
+        if ($checkAdmin) {
+            return $checkAdmin;
+        }
+
         $users = User::orderBy('id', 'desc')->get();
 
         return view('users.index', compact('users'));
@@ -17,11 +31,21 @@ class UserController extends Controller
 
     public function create()
     {
+        $checkAdmin = $this->checkAdmin();
+        if ($checkAdmin) {
+            return $checkAdmin;
+        }
+
         return view('users.create');
     }
 
     public function store(Request $request)
     {
+        $checkAdmin = $this->checkAdmin();
+        if ($checkAdmin) {
+            return $checkAdmin;
+        }
+
         $validated = $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
@@ -38,11 +62,16 @@ class UserController extends Controller
             'role' => $validated['role'],
         ]);
 
-        return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan');
+        return redirect()->route('admin.dashboard')->with('success', 'User berhasil ditambahkan');
     }
 
     public function edit(string $id)
     {
+        $checkAdmin = $this->checkAdmin();
+        if ($checkAdmin) {
+            return $checkAdmin;
+        }
+
         $user = User::findOrFail($id);
 
         return view('users.edit', compact('user'));
@@ -50,6 +79,11 @@ class UserController extends Controller
 
     public function update(Request $request, string $id)
     {
+        $checkAdmin = $this->checkAdmin();
+        if ($checkAdmin) {
+            return $checkAdmin;
+        }
+
         $user = User::findOrFail($id);
 
         $validated = $request->validate([
@@ -73,14 +107,19 @@ class UserController extends Controller
 
         $user->update($data);
 
-        return redirect()->route('users.index')->with('success', 'User berhasil diupdate');
+        return redirect()->route('admin.dashboard')->with('success', 'User berhasil diupdate');
     }
 
     public function destroy(string $id)
     {
+        $checkAdmin = $this->checkAdmin();
+        if ($checkAdmin) {
+            return $checkAdmin;
+        }
+
         $user = User::findOrFail($id);
         $user->delete();
 
-        return redirect()->route('users.index')->with('success', 'User berhasil dihapus');
+        return redirect()->route('admin.dashboard')->with('success', 'User berhasil dihapus');
     }
 }

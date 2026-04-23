@@ -10,10 +10,6 @@ class AuthController extends Controller
 {
     public function showLogin()
     {
-        if (session('user_role') === 'admin') {
-            return redirect()->route('admin.dashboard');
-        }
-
         if (session('user_id')) {
             return redirect()->route('home');
         }
@@ -37,10 +33,6 @@ class AuthController extends Controller
         $request->session()->put('user_id', $user->id);
         $request->session()->put('user_name', $user->name);
         $request->session()->put('user_role', $user->role);
-
-        if ($user->role === 'admin') {
-            return redirect()->route('admin.dashboard');
-        }
 
         return redirect()->route('home')->with('success', 'Login berhasil');
     }
