@@ -1,56 +1,38 @@
-<!doctype html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-<div class="container mt-5" style="max-width: 600px;">
-    <h1 class="mb-4">Daftar</h1>
+@extends('layouts.guest')
 
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    <form action="{{ route('register.process') }}" method="POST">
-        @csrf
-
-        <div class="mb-3">
-            <label class="form-label">Nama</label>
-            <input type="text" name="name" class="form-control" value="{{ old('name') }}">
+@section('content')
+<div class="min-h-screen flex items-center justify-center p-6">
+    <div class="max-w-4xl w-full grid grid-cols-1 md:grid-cols-2 bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl border border-zinc-800">
+        
+        <div class="p-10 flex flex-col justify-center bg-red-600 shadow-inner">
+            <h1 class="text-6xl font-bengkel tracking-wider leading-none mb-4">Join The <br>Crew</h1>
+            <p class="text-red-100 font-medium">Daftar sekarang buat dapet pelayanan servis tercepat di SIDOARJO.</p>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">Email</label>
-            <input type="email" name="email" class="form-control" value="{{ old('email') }}">
+        <div class="p-10">
+            <form action="{{ route('register') }}" method="POST" class="space-y-4">
+                @csrf
+                <div>
+                    <label class="block text-xs font-semibold text-zinc-500 uppercase tracking-widest mb-1">Full Name</label>
+                    <input type="text" name="name" required class="w-full bg-zinc-800 border-0 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-red-600 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-zinc-500 uppercase tracking-widest mb-1">Email</label>
+                    <input type="email" name="email" required class="w-full bg-zinc-800 border-0 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-red-600 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-zinc-500 uppercase tracking-widest mb-1">Password</label>
+                    <input type="password" name="password" required class="w-full bg-zinc-800 border-0 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-red-600 outline-none transition">
+                </div>
+                
+                <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl mt-4 transition active:scale-95">
+                    Register Now
+                </button>
+            </form>
+            <p class="mt-6 text-center text-xs text-zinc-500">
+                Already member? <a href="{{ route('login') }}" class="text-white font-bold hover:underline">Sign In</a>
+            </p>
         </div>
-
-        <div class="mb-3">
-            <label class="form-label">Password</label>
-            <input type="password" name="password" class="form-control">
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Jenis Kelamin</label>
-            <select name="jenis_kelamin" class="form-select">
-                <option value="">Pilih Jenis Kelamin</option>
-                <option value="L" {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}>Laki-laki</option>
-                <option value="P" {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}>Perempuan</option>
-            </select>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Daftar</button>
-        <a href="{{ route('login') }}" class="btn btn-success">Login</a>
-        <a href="{{ route('home') }}" class="btn btn-secondary">Kembali</a>
-    </form>
+    </div>
 </div>
-</body>
-</html>
+@endsection
