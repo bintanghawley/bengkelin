@@ -61,11 +61,11 @@
         <div class="order-1 lg:order-2 relative">
             <div class="absolute -inset-1 bg-red-600 rounded-3xl blur opacity-10"></div>
             <div class="relative bg-zinc-900 rounded-3xl border border-zinc-800 overflow-hidden aspect-video lg:aspect-square flex items-center justify-center group">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-64 h-64 text-zinc-800 group-hover:text-red-600/20 transition duration-700">
-                    <path d="M14.5 11V5a2 2 0 0 0-2-2h-1a2 2 0 0 0-2 2v6M7 11h10M7 15h10M8 11v8a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-8" stroke-width="0.5"/>
-                </svg>
+                <svg viewBox="0 0 24 24 " fill="none" stroke="currentColor" class="w-64 h-64 text-zinc-800 group-hover:text-red-600/20 transition duration-700">
+                   <img src="{{ asset ('img/Gemini_Generated_Image_rlwfwprlwfwprlwf.png') }}" alt="Gambar">
+            </svg>
                 <div class="absolute bottom-8 right-8 text-right">
-                    <p class="text-zinc-600 text-6xl font-bengkel opacity-50 uppercase leading-none">Piston<br>Inside</p>
+                    <p class="text-zinc-600 text-6xl font-bengkel opacity-100 uppercase leading-none">Bengkelin<br>Sidoarjo</p>
                 </div>
             </div>
         </div>

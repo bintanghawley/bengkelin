@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\User;
@@ -10,8 +9,12 @@ class AuthController extends Controller
 {
     public function showLogin()
     {
+        // Kalo udah login, cek role-nya biar arah baliknya bener
         if (session('user_id')) {
-            return redirect()->route('home');
+            if (session('user_role') === 'admin') {
+                return redirect()->route('admin.dashboard');
+            }
+            return redirect()->route('dashboard');
         }
 
         return view('auth.login');
@@ -30,17 +33,28 @@ class AuthController extends Controller
             return back()->withInput($request->only('email'))->with('error', 'Email atau password salah');
         }
 
+        // Set Session
         $request->session()->put('user_id', $user->id);
         $request->session()->put('user_name', $user->name);
         $request->session()->put('user_role', $user->role);
 
-        return redirect()->route('home')->with('success', 'Login berhasil');
+        // --- LOGIC PEMISAHAN ADMIN & USER ---
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.dashboard')->with('success', 'Selamat datang Komandan Admin!');
+        }
+
+        // Kalo bukan admin (pengguna/mekanik), ke dashboard biasa
+        return redirect()->route('dashboard')->with('success', 'Login berhasil');
     }
 
     public function showRegister()
     {
+        // Sama kayak login, proteksi kalo udah ada session
         if (session('user_id')) {
-            return redirect()->route('home');
+            if (session('user_role') === 'admin') {
+                return redirect()->route('admin.dashboard');
+            }
+            return redirect()->route('dashboard'); // Gw ubah dari 'home' biar konsisten larinya ke dashboard
         }
 
         return view('auth.register');
@@ -70,6 +84,7 @@ class AuthController extends Controller
     {
         $request->session()->flush();
 
-        return redirect()->route('home')->with('success', 'Logout berhasil');
+        // Gw saranin baliknya ke 'login' aja, biar user tau dia beneran udah keluar
+        return redirect()->route('login')->with('success', 'Logout berhasil');
     }
 }
