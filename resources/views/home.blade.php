@@ -16,8 +16,32 @@
             <a href="#" class="hover:text-white transition">Spareparts</a>
             <a href="#" class="hover:text-white transition">About</a>
         </div>
-        <div>
-            <a href="{{ route('login') }}" class="text-sm font-bold border border-zinc-700 px-6 py-2 rounded-full hover:bg-zinc-800 transition">LOGIN</a>
+        <div class="flex items-center gap-3">
+            @guest
+                <a href="{{ route('login') }}" class="text-sm font-bold border border-zinc-700 px-6 py-2 rounded-full hover:bg-zinc-800 transition">Login</a>
+                <a href="{{ route('register') }}" class="text-sm font-bold bg-red-600 px-6 py-2 rounded-full hover:bg-red-700 transition">Register</a>
+            @endguest
+
+            @auth
+                <details class="relative">
+                    <summary class="list-none cursor-pointer text-sm font-bold border border-zinc-700 px-6 py-2 rounded-full hover:bg-zinc-800 transition">
+                        {{ Auth::user()->name }}
+                    </summary>
+                    <div class="absolute right-0 mt-2 w-48 bg-zinc-900 border border-zinc-800 rounded-lg shadow-lg p-2">
+                        @if (Auth::user()->role === 'admin')
+                            <a href="{{ route('admin.dashboard') }}" class="block px-3 py-2 text-sm hover:bg-zinc-800 rounded">Dashboard</a>
+                        @elseif (Auth::user()->role === 'mekanik')
+                            <a href="{{ route('mekanik.dashboard') }}" class="block px-3 py-2 text-sm hover:bg-zinc-800 rounded">Dashboard</a>
+                        @else
+                            <a href="{{ route('pengguna.dashboard') }}" class="block px-3 py-2 text-sm hover:bg-zinc-800 rounded">Dashboard</a>
+                        @endif
+                        <form action="{{ route('logout') }}" method="POST" class="mt-1">
+                            @csrf
+                            <button type="submit" class="w-full text-left px-3 py-2 text-sm hover:bg-zinc-800 rounded">Logout</button>
+                        </form>
+                    </div>
+                </details>
+            @endauth
         </div>
     </nav>
 

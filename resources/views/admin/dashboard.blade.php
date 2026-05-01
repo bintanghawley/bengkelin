@@ -25,8 +25,9 @@
             </button>
         </nav>
 
-        <div class="p-4">
+        <div class="p-4 space-y-2">
             <a href="{{ route('dashboard') }}" class="block text-center text-[10px] text-zinc-500 hover:text-white uppercase tracking-widest border border-zinc-800 py-2 rounded-lg">Kembali ke User UI</a>
+            <a href="{{ route('home') }}" class="block text-center text-[10px] text-zinc-500 hover:text-white uppercase tracking-widest border border-zinc-800 py-2 rounded-lg">Kembali ke Beranda</a>
         </div>
     </aside>
 
@@ -120,13 +121,11 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // Tab Logic
     function showAdminSection(id) {
         document.querySelectorAll('.admin-section').forEach(s => s.classList.add('hidden'));
         document.getElementById('admin-' + id).classList.remove('hidden');
     }
 
-    // Grafik Penjualan
     const ctx = document.getElementById('salesChart').getContext('2d');
     new Chart(ctx, {
         type: 'line',

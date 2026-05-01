@@ -40,7 +40,8 @@
             </button>
         </nav>
 
-        <div class="p-4 border-t border-zinc-800">
+        <div class="p-4 border-t border-zinc-800 space-y-2">
+            <a href="{{ route('home') }}" class="block w-full text-center text-[10px] text-zinc-500 hover:text-white uppercase tracking-widest border border-zinc-800 py-2 rounded-lg">Kembali ke Beranda</a>
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-500/10 rounded-xl transition font-bold uppercase tracking-widest text-[10px]">

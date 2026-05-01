@@ -5,7 +5,7 @@
     <div class="max-w-6xl mx-auto p-6">
         <div class="flex items-center justify-between mb-6">
             <h1 class="text-2xl font-bengkel tracking-wider">Dashboard Mekanik</h1>
-            <a href="{{ route('home') }}" class="px-4 py-2 bg-zinc-800 rounded-md text-sm">Kembali</a>
+            <a href="{{ route('home') }}" class="px-4 py-2 bg-zinc-800 rounded-md text-sm">Kembali ke Beranda</a>
         </div>
 
         @if (session('success'))
