@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
     private function checkAdmin()
     {
-        if (session('user_role') !== 'admin') {
+        if (Auth::user()->role !== 'admin') {
             return redirect()->route('home')->with('error', 'Akses ditolak');
         }
 

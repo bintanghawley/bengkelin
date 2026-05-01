@@ -34,6 +34,8 @@
             <th>Name</th>
             <th>Email</th>
             <th>Role</th>
+            <th>Created At</th>
+            <th>Updated At</th>
             <th>Aksi</th>
         </tr>
         </thead>
@@ -44,6 +46,8 @@
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
                 <td>{{ $user->role }}</td>
+                <td>{{ $user->created_at }}</td>
+                <td>{{ $user->updated_at }}</td>
                 <td>
                     <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning btn-sm">Edit</a>
                     <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="d-inline">
@@ -55,7 +59,7 @@
             </tr>
         @empty
             <tr>
-                <td colspan="5" class="text-center">Data user belum ada</td>
+                <td colspan="7" class="text-center">Data user belum ada</td>
             </tr>
         @endforelse
         </tbody>

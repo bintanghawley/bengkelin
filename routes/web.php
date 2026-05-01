@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MekanikController;
+use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use App\Models\User;
 
 Route::view('/', 'home')->name('home');
 
@@ -11,32 +14,22 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.process');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-route::get('/admin/dashboard', function () {
-    if (session('user_role') !== 'admin') {
-        return redirect()->route('dashboard')->with('error', 'Akses ditolak!');
-    }
 
-    $allUsers = User::whereIn('role', ['mekanik', 'pengguna'])->get();
-    $countMekanik = User::where('role', 'mekanik')->count();
-    $countPengguna = User::where('role', 'pengguna')->count();
-    
-    return view('admin.dashboard', compact('allUsers', 'countMekanik', 'countPengguna'));
-})->name('admin.dashboard');
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Route hapus user
-Route::delete('/admin/user/{id}', function ($id) {
-    User::destroy($id);
-    return back()->with('success', 'User berhasil dihapus!');
-})->name('admin.user.delete');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::resource('users', UserController::class)->except(['show']);
+    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::delete('/admin/user/{id}', [AdminController::class, 'destroyUser'])->name('admin.user.delete');
 
-Route::get('/dashboard', function () {
-    if (!session('user_id')) {
-        return redirect()->route('login')->with('error', 'Login dulu cok!');
-    }
-   $user = User::find(session('user_id'));
+    Route::get('/mekanik/dashboard', [MekanikController::class, 'dashboard'])->name('mekanik.dashboard');
+    Route::post('/mekanik/booking/{booking}/status', [MekanikController::class, 'updateStatus'])->name('mekanik.booking.update');
 
-    return view('dashboard', compact('user'));
-})->name('dashboard');
+    Route::get('/pengguna/dashboard', [PenggunaController::class, 'dashboard'])->name('pengguna.dashboard');
+    Route::get('/pengguna/booking', [PenggunaController::class, 'bookingForm'])->name('pengguna.booking.create');
+    Route::post('/pengguna/booking', [PenggunaController::class, 'bookingStore'])->name('pengguna.booking.store');
+    Route::get('/pengguna/riwayat', [PenggunaController::class, 'riwayat'])->name('pengguna.riwayat');
+
+    Route::resource('users', UserController::class)->except(['show']);
+});

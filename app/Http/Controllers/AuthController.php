@@ -1,20 +1,18 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
     public function showLogin()
     {
-        // Kalo udah login, cek role-nya biar arah baliknya bener
-        if (session('user_id')) {
-            if (session('user_role') === 'admin') {
-                return redirect()->route('admin.dashboard');
-            }
-            return redirect()->route('dashboard');
+        if (Auth::check()) {
+            return $this->redirectByRole(Auth::user()->role);
         }
 
         return view('auth.login');
@@ -22,39 +20,24 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $validated = $request->validate([
+        $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        $user = User::where('email', $validated['email'])->first();
-
-        if (!$user || !Hash::check($validated['password'], $user->password)) {
+        if (!Auth::attempt($credentials)) {
             return back()->withInput($request->only('email'))->with('error', 'Email atau password salah');
         }
 
-        // Set Session
-        $request->session()->put('user_id', $user->id);
-        $request->session()->put('user_name', $user->name);
-        $request->session()->put('user_role', $user->role);
+        $request->session()->regenerate();
 
-        // --- LOGIC PEMISAHAN ADMIN & USER ---
-        if ($user->role === 'admin') {
-            return redirect()->route('admin.dashboard')->with('success', 'Selamat datang Komandan Admin!');
-        }
-
-        // Kalo bukan admin (pengguna/mekanik), ke dashboard biasa
-        return redirect()->route('dashboard')->with('success', 'Login berhasil');
+        return $this->redirectByRole(Auth::user()->role)->with('success', 'Login berhasil');
     }
 
     public function showRegister()
     {
-        // Sama kayak login, proteksi kalo udah ada session
-        if (session('user_id')) {
-            if (session('user_role') === 'admin') {
-                return redirect()->route('admin.dashboard');
-            }
-            return redirect()->route('dashboard'); // Gw ubah dari 'home' biar konsisten larinya ke dashboard
+        if (Auth::check()) {
+            return $this->redirectByRole(Auth::user()->role);
         }
 
         return view('auth.register');
@@ -82,9 +65,23 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $request->session()->flush();
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-        // Gw saranin baliknya ke 'login' aja, biar user tau dia beneran udah keluar
-        return redirect()->route('login')->with('success', 'Logout berhasil');
+        return redirect()->route('home')->with('success', 'Logout berhasil');
+    }
+
+    private function redirectByRole(string $role)
+    {
+        if ($role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+
+        if ($role === 'mekanik') {
+            return redirect()->route('mekanik.dashboard');
+        }
+
+        return redirect()->route('pengguna.dashboard');
     }
 }

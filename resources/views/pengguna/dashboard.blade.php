@@ -71,6 +71,11 @@
             </div>
         </header>
 
+        <div class="mb-6 flex gap-3">
+            <a href="{{ route('pengguna.booking.create') }}" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2 px-4 rounded-lg uppercase tracking-widest">Buat Booking</a>
+            <a href="{{ route('pengguna.riwayat') }}" class="bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-bold py-2 px-4 rounded-lg uppercase tracking-widest">Riwayat Booking</a>
+        </div>
+
         <div id="content-area">
             
             <section id="section-profil" class="dashboard-section space-y-8">
@@ -211,21 +216,17 @@
 
 <script>
     function showSection(sectionId) {
-        // Sembunyikan semua section dengan transisi halus (opsional)
         document.querySelectorAll('.dashboard-section').forEach(section => {
             section.classList.add('hidden');
         });
-        
-        // Tampilkan section target
+
         document.getElementById('section-' + sectionId).classList.remove('hidden');
 
-        // Reset semua tombol navigasi ke state default
         document.querySelectorAll('.nav-link').forEach(btn => {
             btn.classList.remove('bg-red-600', 'text-white');
             btn.classList.add('text-zinc-400', 'hover:bg-zinc-800', 'hover:text-white');
         });
 
-        // Set tombol yang diklik menjadi aktif
         const activeBtn = document.getElementById('btn-' + sectionId);
         activeBtn.classList.add('bg-red-600', 'text-white');
         activeBtn.classList.remove('text-zinc-400', 'hover:bg-zinc-800');
