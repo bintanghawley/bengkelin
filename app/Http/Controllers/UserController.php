@@ -27,7 +27,7 @@ class UserController extends Controller
 
         $users = User::orderBy('id', 'desc')->get();
 
-        return view('users.index', compact('users'));
+        return view('admin.users.index', compact('users'));
     }
 
     public function create()
@@ -37,7 +37,7 @@ class UserController extends Controller
             return $checkAdmin;
         }
 
-        return view('users.create');
+        return view('admin.users.create');
     }
 
     public function store(Request $request)
@@ -63,7 +63,7 @@ class UserController extends Controller
             'role' => $validated['role'],
         ]);
 
-        return redirect()->route('admin.dashboard')->with('success', 'User berhasil ditambahkan');
+        return redirect()->route('admin.users.index')->with('success', 'User berhasil ditambahkan');
     }
 
     public function edit(string $id)
@@ -75,7 +75,7 @@ class UserController extends Controller
 
         $user = User::findOrFail($id);
 
-        return view('users.edit', compact('user'));
+        return view('admin.users.edit', compact('user'));
     }
 
     public function update(Request $request, string $id)
@@ -108,7 +108,7 @@ class UserController extends Controller
 
         $user->update($data);
 
-        return redirect()->route('admin.dashboard')->with('success', 'User berhasil diupdate');
+        return redirect()->route('admin.users.index')->with('success', 'User berhasil diupdate');
     }
 
     public function destroy(string $id)
@@ -121,6 +121,6 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
 
-        return redirect()->route('admin.dashboard')->with('success', 'User berhasil dihapus');
+        return redirect()->route('admin.users.index')->with('success', 'User berhasil dihapus');
     }
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MekanikController;
 use App\Http\Controllers\PenggunaController;
+use App\Http\Controllers\TokoController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,8 +21,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::delete('/admin/user/{id}', [AdminController::class, 'destroyUser'])->name('admin.user.delete');
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+        Route::resource('users', UserController::class)->except(['show']);
+    });
 
     Route::get('/mekanik/dashboard', [MekanikController::class, 'dashboard'])->name('mekanik.dashboard');
     Route::post('/mekanik/booking/{booking}/status', [MekanikController::class, 'updateStatus'])->name('mekanik.booking.update');
@@ -31,5 +34,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/pengguna/booking', [PenggunaController::class, 'bookingStore'])->name('pengguna.booking.store');
     Route::get('/pengguna/riwayat', [PenggunaController::class, 'riwayat'])->name('pengguna.riwayat');
 
-    Route::resource('users', UserController::class)->except(['show']);
+    Route::get('/toko', [TokoController::class, 'index'])->name('toko.index');
+    Route::get('/toko/pembelian/{purchase}', [TokoController::class, 'result'])->name('toko.result');
+    Route::get('/toko/{id}', [TokoController::class, 'show'])->name('toko.show');
+    Route::post('/toko/{id}/beli', [TokoController::class, 'buy'])->name('toko.buy');
 });

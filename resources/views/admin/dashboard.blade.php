@@ -56,34 +56,50 @@
         </section>
 
         <section id="admin-users" class="admin-section hidden italic">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bengkel uppercase tracking-widest">Kelola Users</h3>
+                <a href="{{ route('admin.users.create') }}" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2 px-4 rounded-lg uppercase tracking-widest">Tambah User</a>
+            </div>
             <div class="bg-zinc-900 rounded-3xl border border-zinc-800 overflow-hidden">
                 <table class="w-full text-left text-sm">
                     <thead class="bg-zinc-800 text-zinc-400 uppercase text-[10px] tracking-widest">
                         <tr>
+                            <th class="px-6 py-4">No</th>
                             <th class="px-6 py-4">Nama</th>
-                            <th class="px-6 py-4">Role</th>
                             <th class="px-6 py-4">Email</th>
+                            <th class="px-6 py-4">Role</th>
+                            <th class="px-6 py-4">Dibuat pada</th>
+                            <th class="px-6 py-4">Diperbarui pada</th>
                             <th class="px-6 py-4">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-zinc-800">
-                        @foreach($allUsers as $u)
+                        @forelse($users as $user)
                         <tr class="hover:bg-zinc-800/30 transition">
-                            <td class="px-6 py-4 font-bold">{{ $u->name }}</td>
+                            <td class="px-6 py-4">{{ $loop->iteration }}</td>
+                            <td class="px-6 py-4 font-bold">{{ $user->name }}</td>
+                            <td class="px-6 py-4 text-zinc-500">{{ $user->email }}</td>
                             <td class="px-6 py-4">
-                                <span class="px-2 py-1 rounded text-[10px] font-bold {{ $u->role == 'mekanik' ? 'bg-blue-500/20 text-blue-400' : 'bg-zinc-700 text-zinc-300' }}">
-                                    {{ strtoupper($u->role) }}
+                                <span class="px-2 py-1 rounded text-[10px] font-bold {{ $user->role == 'mekanik' ? 'bg-blue-500/20 text-blue-400' : 'bg-zinc-700 text-zinc-300' }}">
+                                    {{ strtoupper($user->role) }}
                                 </span>
                             </td>
-                            <td class="px-6 py-4 text-zinc-500">{{ $u->email }}</td>
+                            <td class="px-6 py-4 text-zinc-400">{{ $user->created_at }}</td>
+                            <td class="px-6 py-4 text-zinc-400">{{ $user->updated_at }}</td>
                             <td class="px-6 py-4">
-                                <form action="{{ route('admin.user.delete', $u->id) }}" method="POST" onsubmit="return confirm('Yakin hapus user ini?')">
-                                    @csrf @method('DELETE')
-                                    <button class="text-red-500 hover:text-red-400 font-bold uppercase text-[10px] tracking-tighter">Hapus User</button>
+                                <a href="{{ route('admin.users.edit', $user->id) }}" class="text-yellow-400 hover:text-yellow-300 text-[10px] font-bold uppercase tracking-tighter mr-3">Edit</a>
+                                <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" class="inline" onsubmit="return confirm('Yakin hapus user ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="text-red-500 hover:text-red-400 font-bold uppercase text-[10px] tracking-tighter">Hapus</button>
                                 </form>
                             </td>
                         </tr>
-                        @endforeach
+                        @empty
+                        <tr>
+                            <td colspan="7" class="px-6 py-6 text-center text-zinc-400">Data user belum ada</td>
+                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

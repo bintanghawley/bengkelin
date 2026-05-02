@@ -199,6 +199,9 @@
                     <h3 class="text-3xl font-bengkel text-red-600 uppercase">Original Parts</h3>
                     <span class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest">Tersedia di Bengkel Sidoarjo</span>
                 </div>
+                <div class="mb-6">
+                    <a href="{{ route('toko.index') }}" class="inline-block bg-red-600 hover:bg-red-700 text-white text-[10px] font-bold py-2 px-4 rounded-lg uppercase tracking-widest">Lihat Semua Barang</a>
+                </div>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
                     <div class="bg-zinc-900 p-5 rounded-[2rem] border border-zinc-800 group hover:border-red-600 transition duration-500">
                         <div class="aspect-square bg-zinc-950 rounded-2xl mb-5 flex items-center justify-center relative overflow-hidden">
