@@ -17,17 +17,17 @@ class PenggunaController extends Controller
         return null;
     }
 
-    public function dashboard()
-    {
-        $check = $this->checkPengguna();
-        if ($check) {
-            return $check;
-        }
-
-        $user = Auth::user();
-
-        return view('pengguna.dashboard', compact('user'));
+   public function dashboard()
+{
+    $check = $this->checkPengguna();
+    if ($check) {
+        return $check;
     }
+
+    $user = Auth::user();
+    $bookings = \App\Models\Booking::where('user_id', $user->id)->orderBy('id', 'desc')->get();
+    return view('pengguna.dashboard', compact('user', 'bookings'));
+}
 
     public function bookingForm()
     {

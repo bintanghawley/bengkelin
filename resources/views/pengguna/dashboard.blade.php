@@ -72,10 +72,7 @@
             </div>
         </header>
 
-        <div class="mb-6 flex gap-3">
-            <a href="{{ route('pengguna.booking.create') }}" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2 px-4 rounded-lg uppercase tracking-widest">Buat Booking</a>
-            <a href="{{ route('pengguna.riwayat') }}" class="bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-bold py-2 px-4 rounded-lg uppercase tracking-widest">Riwayat Booking</a>
-        </div>
+       
 
         <div id="content-area">
             
@@ -145,54 +142,179 @@
                 </div>
             </section>
 
-            <section id="section-booking" class="dashboard-section hidden italic">
-                <div class="bg-zinc-900 p-10 rounded-3xl border border-zinc-800 shadow-xl">
-                    <h3 class="text-3xl font-bengkel text-red-600 mb-2 uppercase">Reservasi Servis</h3>
-                    <p class="text-zinc-500 text-sm mb-10 uppercase tracking-widest">Tentukan waktu terbaik untuk kendaraan lu.</p>
-                    <div class="max-w-xl space-y-6">
-                        <div class="space-y-2">
-                            <label class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest ml-1">Pilih Tanggal</label>
-                            <input type="date" class="w-full bg-zinc-950 border border-zinc-800 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-red-600 transition text-white">
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest ml-1">Paket Layanan</label>
-                            <select class="w-full bg-zinc-950 border border-zinc-800 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-red-600 transition text-white appearance-none">
-                                <option>Ganti Oli (Fast Track)</option>
-                                <option>Service Rutin 10rb KM</option>
-                                <option>Tune Up Racing</option>
-                                <option>Cek Kelistrikan</option>
-                            </select>
-                        </div>
-                        <button class="w-full bg-red-600 py-5 rounded-2xl font-bold font-bengkel tracking-[0.2em] text-2xl shadow-xl shadow-red-900/40 hover:bg-red-700 transition">KIRIM PERMINTAAN BOOKING</button>
-                    </div>
-                </div>
-            </section>
+          <section id="section-booking" class="dashboard-section hidden italic">
+    <div class="bg-zinc-900 p-10 rounded-3xl border border-zinc-800 shadow-xl text-white">
+        <!-- Header Section -->
+        <h3 class="text-3xl font-bengkel text-red-600 mb-2 uppercase">Reservasi Servis</h3>
+        <p class="text-zinc-500 text-sm mb-10 uppercase tracking-widest">Tentukan waktu terbaik untuk kendaraan lu.</p>
 
-            <section id="section-status" class="dashboard-section hidden italic">
-                <div class="bg-zinc-900 p-10 rounded-3xl border border-zinc-800">
-                    <h3 class="text-3xl font-bengkel text-red-600 mb-8 uppercase">Service Progress</h3>
-                    <div class="space-y-8">
-                        <div class="flex items-start gap-6 relative">
-                            <div class="h-8 w-8 bg-emerald-500 rounded-full flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(16,185,129,0.4)]">
-                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-width="3"/></svg>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-white uppercase text-sm tracking-widest">Booking Terkonfirmasi</h4>
-                                <p class="text-[10px] text-zinc-500 mt-1 uppercase">12 April 2026 - 09:00 WIB</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-6 relative">
-                            <div class="h-8 w-8 bg-red-600 rounded-full flex items-center justify-center shrink-0 animate-pulse">
-                                <div class="h-3 w-3 bg-white rounded-full"></div>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-red-500 uppercase text-sm tracking-widest">Dalam Pengerjaan</h4>
-                                <p class="text-[10px] text-zinc-500 mt-1 uppercase italic">Estimasi Selesai: 45 Menit Lagi</p>
-                            </div>
-                        </div>
+        <!-- Display Error Validation -->
+        @if ($errors->any())
+            <div class="bg-red-900/20 border border-red-800 text-red-400 px-4 py-3 rounded-2xl mb-6 text-xs italic tracking-wide">
+                <ul class="list-disc pl-5">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form action="{{ route('pengguna.booking.store') }}" method="POST" class="max-w-xl space-y-6">
+            @csrf
+
+            <!-- Jenis Motor -->
+            <div class="space-y-2">
+                <label class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest ml-1">Jenis Motor</label>
+                <input type="text" name="jenis_motor" value="{{ old('jenis_motor') }}" placeholder="Contoh: Suzuki RC100 / Vario 150"
+                    class="w-full bg-zinc-950 border border-zinc-800 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-red-600 transition text-white">
+            </div>
+
+            <!-- Pilih Layanan (Dropdown) -->
+            <div class="space-y-2">
+                <label class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest ml-1">Paket Layanan</label>
+                <div class="relative group">
+                    <select name="layanan" id="layanan" 
+                        class="w-full bg-zinc-950 border border-zinc-800 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-red-600 transition text-white appearance-none cursor-pointer">
+                        <option value="" disabled selected>-- Pilih Jenis Layanan --</option>
+                        <option value="Ganti Oli" {{ old('layanan') == 'Ganti Oli' ? 'selected' : '' }}>Ganti Oli (Fast Track)</option>
+                        <option value="Service Rutin" {{ old('layanan') == 'Service Rutin' ? 'selected' : '' }}>Service Rutin 10rb KM</option>
+                        <option value="Tune Up Racing" {{ old('layanan') == 'Tune Up Racing' ? 'selected' : '' }}>Tune Up Racing 🔥</option>
+                        <option value="Cek Kelistrikan" {{ old('layanan') == 'Cek Kelistrikan' ? 'selected' : '' }}>Cek Kelistrikan</option>
+                    </select>
+                    <!-- Custom Arrow -->
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-zinc-500 group-focus-within:text-red-600 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
                     </div>
                 </div>
-            </section>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Metode -->
+                <div class="space-y-2">
+                    <label class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest ml-1">Metode</label>
+                    <input type="text" name="metode" value="{{ old('metode') }}" placeholder="Contoh: Home Service"
+                        class="w-full bg-zinc-950 border border-zinc-800 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-red-600 transition text-white">
+                </div>
+
+                <!-- Tanggal -->
+                <div class="space-y-2">
+                    <label class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest ml-1">Pilih Tanggal</label>
+                    <input type="date" name="tanggal" value="{{ old('tanggal') }}" 
+                        class="w-full bg-zinc-950 border border-zinc-800 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-red-600 transition text-white [color-scheme:dark]">
+                </div>
+            </div>
+
+            <!-- Alamat -->
+            <div class="space-y-2">
+                <label class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest ml-1">Alamat Lengkap</label>
+                <input type="text" name="alamat" value="{{ old('alamat') }}" placeholder="Masukkan lokasi penjemputan/bengkel"
+                    class="w-full bg-zinc-950 border border-zinc-800 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-red-600 transition text-white">
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="w-full bg-red-600 py-5 rounded-2xl font-bold font-bengkel tracking-[0.2em] text-2xl shadow-xl shadow-red-900/40 hover:bg-red-700 transition active:scale-[0.98]">
+                KIRIM PERMINTAAN BOOKING
+            </button>
+        </form>
+    </div>
+</section>
+
+          <section id="section-status" class="dashboard-section hidden italic">
+    <div class="space-y-6">
+        <!-- Progress Tracker (Visual Indikator) -->
+        <div class="bg-zinc-900 p-10 rounded-3xl border border-zinc-800 shadow-xl">
+            <h3 class="text-3xl font-bengkel text-red-600 mb-8 uppercase     text-white">Service Progress</h3>
+            
+            <div class="space-y-8 text-white">
+                <div class="flex items-start gap-6 relative">
+                    <div class="h-8 w-8 bg-emerald-500 rounded-full flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(16,185,129,0.4)]">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M5 13l4 4L19 7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white uppercase text-sm tracking-widest">Booking Terkonfirmasi</h4>
+                        <p class="text-[10px] text-zinc-500 mt-1 uppercase italic">Pesanan lu sudah masuk ke sistem kami.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-6 relative">
+                    <div class="h-8 w-8 bg-red-600 rounded-full flex items-center justify-center shrink-0 animate-pulse">
+                        <div class="h-3 w-3 bg-white rounded-full"></div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-red-500 uppercase text-sm tracking-widest">Monitor Status</h4>
+                        <p class="text-[10px] text-zinc-500 mt-1 uppercase italic">Cek tabel di bawah untuk update berkala.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabel Riwayat Booking -->
+        <div class="bg-zinc-900 rounded-3xl border border-zinc-800 overflow-hidden shadow-xl">
+            <div class="p-6 border-b border-zinc-800 flex justify-between items-center bg-zinc-900">
+                <h3 class="font-bengkel text-xl text-white uppercase tracking-wider">Riwayat Booking</h3>
+                @if (session('success'))
+                    <span class="text-[10px] bg-emerald-900/30 text-emerald-400 px-3 py-1 rounded-full border border-emerald-800 animate-pulse">
+                        {{ session('success') }}
+                    </span>
+                @endif
+            </div>
+
+            <div class="overflow-x-auto bg-zinc-900">
+                <table class="w-full text-left text-xs uppercase tracking-tighter">
+                    <thead class="bg-zinc-950 text-zinc-500 border-b border-zinc-800">
+                        <tr>
+                            <th class="px-6 py-4 font-bold text-white">Unit</th>
+                            <th class="px-6 py-4 font-bold text-white">Layanan</th>
+                            <th class="px-6 py-4 font-bold text-white">Metode</th>
+                            <th class="px-6 py-4 font-bold text-center text-white">Tanggal</th>
+                            <th class="px-6 py-4 font-bold text-right text-white">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-zinc-800/50 text-zinc-300">
+                        @if(isset($bookings) && $bookings->count() > 0)
+                            @foreach ($bookings as $booking)
+                                <tr class="hover:bg-zinc-800/30 transition-colors group">
+                                    <td class="px-6 py-4">
+                                        <span class="block font-bold text-white">{{ $booking->jenis_motor }}</span>
+                                        <span class="text-[9px] text-zinc-500 italic lowercase">ID: {{ $booking->id }}</span>
+                                    </td>
+                                    <td class="px-6 py-4 font-medium">{{ $booking->layanan }}</td>
+                                    <td class="px-6 py-4 text-zinc-500">{{ $booking->metode }}</td>
+                                    <td class="px-6 py-4 text-center">
+                                        {{ is_string($booking->tanggal) ? \Carbon\Carbon::parse($booking->tanggal)->format('d M Y') : $booking->tanggal->format('d M Y') }}
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        @php
+                                            $statusColor = match($booking->status) {
+                                                'pending' => 'bg-zinc-800 text-zinc-400 border border-zinc-700',
+                                                'proses' => 'bg-red-900/20 text-red-500 border border-red-800',
+                                                'selesai' => 'bg-emerald-900/20 text-emerald-500 border border-emerald-800',
+                                                default => 'bg-zinc-800 text-zinc-400 border border-zinc-700'
+                                            };
+                                        @endphp
+                                        <span class="px-3 py-1 rounded-full text-[10px] font-bold {{ $statusColor }}">
+                                            {{ $booking->status }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="5" class="px-6 py-12 text-center text-zinc-600 italic tracking-widest bg-zinc-900">
+                                    Belum ada catatan aktivitas mesin.
+                                </td>
+                            </tr>
+                        @endif
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
 
             <section id="section-ecommerce" class="dashboard-section hidden italic">
                 <div class="flex justify-between items-end mb-8">
