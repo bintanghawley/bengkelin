@@ -1,0 +1,63 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Product;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
+class ProductController extends Controller
+{
+    public function store(Request $request)
+    {
+        $request->validate([
+            'nama' => 'required',
+            'harga' => 'required|numeric',
+            'stok' => 'required|numeric',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ]);
+
+        $data = $request->all();
+
+        if ($request->hasFile('gambar')) {
+            // Simpan di folder storage/app/public/products
+            $data['gambar'] = $request->file('gambar')->store('products', 'public');
+        }
+
+        Product::create($data);
+        return back()->with('success', 'Barang berhasil ditambah!');
+    }
+
+    public function update(Request $request, Product $product)
+    {
+        $request->validate([
+            'nama' => 'required',
+            'harga' => 'required|numeric',
+            'stok' => 'required|numeric',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ]);
+
+        $data = $request->all();
+
+        if ($request->hasFile('gambar')) {
+            // Hapus gambar lama jika ada
+            if ($product->gambar) {
+                Storage::disk('public')->delete($product->gambar);
+            }
+            $data['gambar'] = $request->file('gambar')->store('products', 'public');
+        }
+
+        $product->update($data);
+        return back()->with('success', 'Produk diperbarui!');
+    }
+
+    public function destroy(Product $product)
+    {
+        if ($product->gambar) {
+            Storage::disk('public')->delete($product->gambar);
+        }
+        
+        $product->delete();
+        return back()->with('success', 'Barang dihapus!');
+    }
+}

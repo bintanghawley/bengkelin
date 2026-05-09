@@ -107,28 +107,97 @@
                 </table>
             </div>
         </section>
-    
-
-        <section id="admin-orders" class="admin-section hidden italic">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div class="bg-zinc-900 p-6 rounded-3xl border border-zinc-800">
-                    <h3 class="font-bengkel text-red-600 mb-4 uppercase">Stok E-Commerce</h3>
-                    <div class="space-y-3">
-                        <div class="flex justify-between p-3 bg-zinc-950 rounded-xl border border-zinc-800">
-                            <span>Oli Shell Advance</span>
-                            <span class="text-emerald-500 font-bold">42 Pcs</span>
-                        </div>
-                        <div class="flex justify-between p-3 bg-zinc-950 rounded-xl border border-zinc-800">
-                            <span>Busi NGK Iridium</span>
-                            <span class="text-emerald-500 font-bold">12 Pcs</span>
-                        </div>
-                    </div>
-                </div>
-              
-               
+    <section id="admin-orders" class="admin-section hidden italic">
+    <div class="grid grid-cols-1 gap-6">
+        
+        <!-- Header & Toggle Button -->
+        <div class="flex justify-between items-center bg-zinc-900 p-6 rounded-3xl border border-zinc-800 shadow-xl">
+            <div>
+                <h3 class="font-bengkel text-xl text-white uppercase tracking-wider">Manajemen Stok</h3>
+                <p class="text-[9px] text-zinc-500 uppercase mt-1">Total: {{ $products->count() }} Produk terdaftar</p>
             </div>
-        </section>
-        <br>    
+            <button onclick="toggleFormProduk()" id="btn-toggle" class="bg-red-600 hover:bg-red-700 text-white text-[10px] font-bold px-6 py-3 rounded-xl uppercase tracking-widest transition flex items-center gap-2">
+                <svg id="icon-plus" class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-width="3" stroke-linecap="round"/></svg>
+                <span id="text-btn">Tambah Produk</span>
+            </button>
+        </div>
+
+        <!-- Form Tambah Produk (Hidden by Default) -->
+        <div id="form-tambah-produk" class="hidden transition-all duration-500 overflow-hidden">
+            <div class="bg-zinc-900 p-8 rounded-3xl border border-red-900/30 shadow-2xl">
+                <h3 class="font-bengkel text-lg text-red-600 uppercase tracking-wider mb-6">Input Data Barang Baru</h3>
+                <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                    @csrf
+                    <div class="space-y-2">
+                        <label class="text-[10px] uppercase text-zinc-500 font-bold">Nama Barang</label>
+                        <input type="text" name="nama" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-600 outline-none transition">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] uppercase text-zinc-500 font-bold">Harga</label>
+                        <input type="number" name="harga" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-600 outline-none transition">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] uppercase text-zinc-500 font-bold">Stok</label>
+                        <input type="number" name="stok" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-600 outline-none transition">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] uppercase text-zinc-500 font-bold">Foto</label>
+                        <input type="file" name="gambar" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2 text-xs text-zinc-400 focus:border-red-600 outline-none transition file:bg-red-600 file:border-0 file:text-white file:rounded-lg file:text-[8px] file:uppercase">
+                    </div>
+                    <div class="md:col-span-4 mt-2">
+                        <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl uppercase tracking-widest transition shadow-lg shadow-red-900/20">Simpan Barang</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tabel Inventori (Selalu Muncul) -->
+        <div class="bg-zinc-900 p-8 rounded-3xl border border-zinc-800 shadow-2xl">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-[11px] uppercase tracking-tighter">
+                    <thead class="bg-zinc-950 text-zinc-500 border-b border-zinc-800">
+                        <tr>
+                            <th class="px-6 py-4 text-center">Gambar</th>
+                            <th class="px-6 py-4">Nama Produk</th>
+                            <th class="px-6 py-4">Harga</th>
+                            <th class="px-6 py-4 text-center">Stok</th>
+                            <th class="px-6 py-4 text-right">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-zinc-800/50 text-zinc-300">
+                        @forelse ($products as $product)
+                        <tr class="hover:bg-zinc-800/30 transition-colors">
+                            <td class="px-6 py-4">
+                                <div class="flex justify-center">
+                                    @if($product->gambar)
+                                        <img src="{{ asset('storage/' . $product->gambar) }}" class="w-10 h-10 object-cover rounded-lg border border-zinc-700">
+                                    @else
+                                        <div class="w-10 h-10 bg-zinc-800 rounded-lg border border-zinc-700"></div>
+                                    @endif
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 font-bold text-white">{{ $product->nama }}</td>
+                            <td class="px-6 py-4 text-emerald-500">Rp {{ number_format($product->harga, 0, ',', '.') }}</td>
+                            <td class="px-6 py-4 text-center">{{ $product->stok }}</td>
+                            <td class="px-6 py-4 text-right">
+                                <form action="{{ route('products.destroy', $product->id) }}" method="POST" onsubmit="return confirm('Hapus?')">
+                                    @csrf @method('DELETE')
+                                    <button class="text-red-500 hover:text-white transition">Hapus</button>
+                                </form>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="5" class="px-6 py-10 text-center text-zinc-600">Gudang Kosong.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+        <br>   
 
          <section id="admin-booking" class=" admin-section hidden bg-zinc-900 p-8 rounded-3xl border border-zinc-800 shadow-2xl">
     <div class="flex justify-between items-center mb-8">
@@ -136,9 +205,7 @@
             <h3 class="font-bengkel text-2xl text-red-600 uppercase tracking-wider">Management Booking</h3>
             <p class="text-[10px] text-zinc-500 italic uppercase mt-1">Total Pesanan: {{ $allBookings->count() }} Entry terdeteksi</p>
         </div>
-        <button class="bg-red-600 hover:bg-red-700 text-white text-[10px] font-bold py-2 px-4 rounded-full transition-all uppercase tracking-widest">
-            Export Data
-        </button>
+        
     </div>
 
     <div class="overflow-x-auto">
@@ -211,11 +278,41 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    // Fungsi Navigasi Sidebar Admin
     function showAdminSection(id) {
         document.querySelectorAll('.admin-section').forEach(s => s.classList.add('hidden'));
         document.getElementById('admin-' + id).classList.remove('hidden');
+        
+        // Reset form produk kalau admin pindah section (opsional, biar rapi)
+        const form = document.getElementById('form-tambah-produk');
+        if(form && !form.classList.contains('hidden')) {
+            toggleFormProduk();
+        }
     }
 
+    // Fungsi Toggle Form Produk (In-Page)
+    function toggleFormProduk() {
+        const form = document.getElementById('form-tambah-produk');
+        const btnText = document.getElementById('text-btn');
+        const btnIcon = document.getElementById('icon-plus');
+
+        if (form.classList.contains('hidden')) {
+            // Tampilkan Form
+            form.classList.remove('hidden');
+            form.classList.add('animate-fade-in-down'); // Animasi masuk kalau ada CSS-nya
+            btnText.innerText = 'Batal';
+            btnIcon.style.transform = 'rotate(45deg)';
+            btnIcon.classList.add('text-zinc-400');
+        } else {
+            // Sembunyikan Form
+            form.classList.add('hidden');
+            btnText.innerText = 'Tambah Produk';
+            btnIcon.style.transform = 'rotate(0deg)';
+            btnIcon.classList.remove('text-zinc-400');
+        }
+    }
+
+    // Inisialisasi Sales Chart
     const ctx = document.getElementById('salesChart').getContext('2d');
     new Chart(ctx, {
         type: 'line',
@@ -227,14 +324,30 @@
                 borderColor: '#dc2626',
                 backgroundColor: 'rgba(220, 38, 38, 0.1)',
                 fill: true,
-                tension: 0.4
+                tension: 0.4,
+                pointBackgroundColor: '#dc2626',
+                pointRadius: 4
             }]
         },
         options: {
-            plugins: { legend: { display: false } },
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { 
+                legend: { display: false } 
+            },
             scales: {
-                y: { grid: { color: '#27272a' }, ticks: { color: '#71717a' } },
-                x: { grid: { display: false }, ticks: { color: '#71717a' } }
+                y: { 
+                    grid: { color: '#27272a' }, 
+                    ticks: { color: '#71717a', font: { family: 'Inter', size: 10 } } 
+                },
+                x: { 
+                    grid: { display: false }, 
+                    ticks: { color: '#71717a', font: { family: 'Inter', size: 10 } } 
+                }
+            },
+            interaction: {
+                intersect: false,
+                mode: 'index',
             }
         }
     });

@@ -7,6 +7,7 @@ use App\Http\Controllers\MekanikController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\TokoController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home')->name('home');
@@ -38,4 +39,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/toko/pembelian/{purchase}', [TokoController::class, 'result'])->name('toko.result');
     Route::get('/toko/{id}', [TokoController::class, 'show'])->name('toko.show');
     Route::post('/toko/{id}/beli', [TokoController::class, 'buy'])->name('toko.buy');
+    Route::resource('products', ProductController::class);
 });

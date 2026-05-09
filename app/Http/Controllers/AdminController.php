@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Booking; // WAJIB IMPORT MODEL BOOKING
+use App\Models\Booking; 
+use App\Models\Product; // 1. IMPORT MODEL PRODUCT
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
@@ -20,17 +21,21 @@ class AdminController extends Controller
         $countMekanik = User::where('role', 'mekanik')->count();
         $countPengguna = User::where('role', 'pengguna')->count();
 
-        // AMBIL DATA BOOKING (Gunakan Eager Loading 'user' agar tidak berat)
+        // 2. AMBIL DATA PRODUCT
+        $products = Product::orderBy('created_at', 'desc')->get();
+
+        // AMBIL DATA BOOKING
         $allBookings = Booking::with('user')
                         ->orderBy('created_at', 'desc')
                         ->get();
 
-        // Tambahkan 'allBookings' ke dalam compact
+        // 3. TAMBAHKAN 'products' ke dalam compact
         return view('admin.dashboard', compact(
             'users', 
             'countMekanik', 
             'countPengguna', 
-            'allBookings'
+            'allBookings',
+            'products' // <-- Masukkan ke sini
         ));
     }
 }

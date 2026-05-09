@@ -4,10 +4,8 @@
 <div class="min-h-screen bg-zinc-950">
     <nav class="flex items-center justify-between px-8 py-6 max-w-7xl mx-auto">
         <div class="flex items-center gap-2">
-            <div class="h-10 w-10 bg-red-600 rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(220,38,38,0.4)] -rotate-12">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-6 h-6 text-white">
-                    <path d="M14.5 11V5a2 2 0 0 0-2-2h-1a2 2 0 0 0-2 2v6M7 11h10M7 15h10M8 11v8a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+            <div >
+                <img src="{{ asset('img/image-removebg-preview (3).png') }}" alt="" class="w-20 h-20 object-contain ">
             </div>
             <span class="text-2xl font-bengkel tracking-wider">Bengkel<span class="text-red-600">in</span></span>
         </div>
@@ -94,5 +92,101 @@
             </div>
         </div>
     </main>
+    <!-- FOOTER SECTION -->
+<footer class="bg-zinc-950 pt-20 pb-10 px-6">
+    <div class="max-w-7xl mx-auto">
+        <!-- Main Footer Card -->
+        <div class="bg-zinc-900 border border-zinc-800 rounded-[2.5rem] p-8 md:p-12 shadow-2xl">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+                
+                <!-- Brand & Description -->
+                <div class="md:col-span-4 space-y-6">
+                    <div class="flex items-center gap-3">
+                        <div >
+                            <img src="{{ asset('img/image-removebg-preview (3).png') }}" alt=""class="w-20 h-20 object-contain">
+                        </div>
+                        <span class="text-2xl font-bengkel tracking-wider text-white">BENGKEL<span class="text-red-600">IN</span></span>
+                    </div>
+                    <p class="text-zinc-400 text-sm leading-relaxed max-w-xs">
+                        Solusi perawatan motor modern berbasis digital. Booking mekanik ahli dan beli sparepart original dalam satu platform.
+                    </p>
+                    <!-- Social Icons -->
+                    <div class="flex gap-3">
+                        @foreach(['instagram', 'twitter', 'github', 'youtube'] as $social)
+                        <a href="#" class="h-10 w-10 bg-zinc-800 hover:bg-red-600 rounded-xl flex items-center justify-center text-zinc-400 hover:text-white transition-all duration-300">
+                            <i class="fab fa-{{ $social }}"></i>
+                        </a>
+                        @endforeach
+                    </div>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="md:col-span-8 grid grid-cols-2 md:grid-cols-4 gap-8">
+                    <div>
+                        <h4 class="text-white font-bold text-sm mb-6 uppercase tracking-widest">Layanan</h4>
+                        <ul class="space-y-4 text-zinc-500 text-sm">
+                            <li><a href="#" class="hover:text-red-500 transition">Service Ringan</a></li>
+                            <li><a href="#" class="hover:text-red-500 transition">Tune Up</a></li>
+                            <li><a href="#" class="hover:text-red-500 transition">Ganti Oli</a></li>
+                            <li><a href="#" class="hover:text-red-500 transition">Overhaul</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-bold text-sm mb-6 uppercase tracking-widest">Perusahaan</h4>
+                        <ul class="space-y-4 text-zinc-500 text-sm">
+                            <li><a href="#" class="hover:text-red-500 transition">Tentang Kami</a></li>
+                            <li><a href="#" class="hover:text-red-500 transition">Mekanik Kami</a></li>
+                            <li><a href="#" class="hover:text-red-500 transition">Karir</a></li>
+                            <li><a href="#" class="hover:text-red-500 transition">Kontak</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-bold text-sm mb-6 uppercase tracking-widest">Bantuan</h4>
+                        <ul class="space-y-4 text-zinc-500 text-sm">
+                            <li><a href="#" class="hover:text-red-500 transition">FAQ</a></li>
+                            <li><a href="#" class="hover:text-red-500 transition">Pusat Bantuan</a></li>
+                            <li><a href="#" class="hover:text-red-500 transition">Panduan</a></li>
+                            <li><a href="#" class="hover:text-red-500 transition">Komunitas</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-bold text-sm mb-6 uppercase tracking-widest">Legal</h4>
+                        <ul class="space-y-4 text-zinc-500 text-sm">
+                            <li><a href="#" class="hover:text-red-500 transition">Privasi</a></li>
+                            <li><a href="#" class="hover:text-red-500 transition">Ketentuan</a></li>
+                            <li><a href="#" class="hover:text-red-500 transition">Keamanan</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Row: Badges & Newsletter -->
+            <div class="mt-16 pt-8 border-t border-zinc-800/50 flex flex-col md:flex-row items-center justify-between gap-8">
+                <div class="flex flex-wrap items-center gap-4">
+                    <div class="flex items-center gap-2 px-4 py-2 bg-zinc-950 rounded-lg border border-zinc-800 text-[10px] font-bold text-zinc-400 uppercase tracking-widest">
+                        <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                        Service Certified
+                    </div>
+                    <div class="flex items-center gap-2 px-4 py-2 bg-zinc-950 rounded-lg border border-zinc-800 text-[10px] font-bold text-zinc-400 uppercase tracking-widest">
+                        <span class="text-yellow-500">★★★★★</span>
+                        4.9/5 Rating
+                    </div>
+                </div>
+
+               
+            </div>
+        </div>
+
+        <!-- Copyright & Status -->
+        <div class="mt-10 flex flex-col md:flex-row justify-between items-center text-[10px] text-zinc-600 uppercase tracking-[0.2em] font-medium px-4">
+            <p>© 2026 Bengkelin. </p>
+            <div class="flex gap-8 mt-4 md:mt-0">
+                <a href="#" class="hover:text-white transition">Status</a>
+                <a href="#" class="hover:text-white transition">Sitemap</a>
+                <a href="#" class="hover:text-white transition">Aksesibilitas</a>
+            </div>
+        </div>
+    </div>
+</footer>
 </div>
 @endsection
