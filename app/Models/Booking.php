@@ -15,6 +15,7 @@ class Booking extends Model
         'alamat',
         'tanggal',
         'status',
+        'plat_nomor',   
     ];
 
     public function user(): BelongsTo

@@ -168,6 +168,11 @@
                 <input type="text" name="jenis_motor" value="{{ old('jenis_motor') }}" placeholder="Contoh: Suzuki RC100 / Vario 150"
                     class="w-full bg-zinc-950 border border-zinc-800 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-red-600 transition text-white">
             </div>
+             <div class="space-y-2">
+                <label class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest ml-1">Plat Nomor</label>
+                <input type="text" name="plat_nomor" value="{{ old('plat_nomor') }}" placeholder="Contoh: S 1234 AB"
+                    class="w-full bg-zinc-950 border border-zinc-800 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-red-600 transition text-white">
+            </div>
 
             <!-- Pilih Layanan (Dropdown) -->
             <div class="space-y-2">
@@ -175,7 +180,7 @@
                 <div class="relative group">
                     <select name="layanan" id="layanan" 
                         class="w-full bg-zinc-950 border border-zinc-800 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-red-600 transition text-white appearance-none cursor-pointer">
-                        <option value="" disabled selected>-- Pilih Jenis Layanan --</option>
+                        <option value="" disabled selected> Pilih Jenis Layanan </option>
                         <option value="Ganti Oli" {{ old('layanan') == 'Ganti Oli' ? 'selected' : '' }}>Ganti Oli (Fast Track)</option>
                         <option value="Service Rutin" {{ old('layanan') == 'Service Rutin' ? 'selected' : '' }}>Service Rutin 10rb KM</option>
                         <option value="Tune Up Racing" {{ old('layanan') == 'Tune Up Racing' ? 'selected' : '' }}>Tune Up Racing 🔥</option>
@@ -193,9 +198,15 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Metode -->
                 <div class="space-y-2">
-                    <label class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest ml-1">Metode</label>
-                    <input type="text" name="metode" value="{{ old('metode') }}" placeholder="Contoh: Home Service"
-                        class="w-full bg-zinc-950 border border-zinc-800 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-red-600 transition text-white">
+                     <label class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest ml-1">metode</label>
+                      <select name="metode" id="metode" 
+                        class="w-full bg-zinc-950 border border-zinc-800 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-red-600 transition text-white appearance-none cursor-pointer">
+                        <option value="" disabled selected> Pilih Metode Servis </option>
+                        <option value="Home Service " {{ old('metode') == 'Home Service' ? 'selected' : '' }}>Home Service</option>
+                        <option value="Away Service" {{ old('metode') == 'Away Service' ? 'selected' : '' }}>Away Service</option>
+                        <option value="Service In Garage " {{ old('metode') == 'Service In Garage' ? 'selected' : '' }}>Service In Garage</option>
+                        
+                    </select>
                 </div>
 
                 <!-- Tanggal -->

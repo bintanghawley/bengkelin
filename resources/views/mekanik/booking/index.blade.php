@@ -11,6 +11,7 @@
                     <th class="px-4 py-3">Jenis Motor</th>
                     <th class="px-4 py-3">Layanan</th>
                     <th class="px-4 py-3">Metode</th>
+                    <th class="px-4 py-3">Plat Nomor</th>
                     <th class="px-4 py-3">Alamat</th>
                     <th class="px-4 py-3">Tanggal</th>
                     <th class="px-4 py-3">Status</th>
@@ -25,6 +26,7 @@
                         <td class="px-4 py-3">{{ $booking->jenis_motor }}</td>
                         <td class="px-4 py-3">{{ $booking->layanan }}</td>
                         <td class="px-4 py-3">{{ $booking->metode }}</td>
+                        <td class="px-4 py-3">{{ $booking->plat_nomor }}</td>
                         <td class="px-4 py-3">{{ $booking->alamat }}</td>
                         <td class="px-4 py-3">{{ $booking->tanggal }}</td>
                         <td class="px-4 py-3">{{ $booking->status }}</td>
