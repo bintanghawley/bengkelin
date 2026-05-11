@@ -11,8 +11,9 @@
         </div>
         <div class="hidden md:flex gap-8 text-xs font-semibold uppercase tracking-widest text-zinc-400">
             <a href="#" class="hover:text-white transition">Services</a>
-            <a href="#" class="hover:text-white transition">Spareparts</a>
-            <a href="#" class="hover:text-white transition">About</a>
+            <a href="{{ route('register') }}" class="hover:text-white transition">Spareparts</a>
+            <a href="#about" class="hover:text-white transition">About</a>
+            <a href="#location" class="hover:text-white transition">Location</a> 
         </div>
         <div class="flex items-center gap-3">
             @guest
@@ -43,8 +44,8 @@
         </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto px-8 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        <div class="order-2 lg:order-1 text-center lg:text-left">
+    <main></main>
+        <section id="home" class="max-w-7xl mx-auto px-8 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"><div class="order-2 lg:order-1 text-center lg:text-left">
             <div class="inline-block px-4 py-1 rounded-full bg-red-600/10 border border-red-600/20 text-red-500 text-xs font-bold tracking-[0.2em] mb-6">
                 PREMIUM GARAGE SERVICE
             </div>
@@ -91,7 +92,84 @@
                 </div>
             </div>
         </div>
+    </section>
+        <section id="about" class="max-w-7xl mx-auto px-8 py-24 border-t border-zinc-900">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div class="space-y-6">
+                <h2 class="text-5xl font-bengkel text-white leading-tight uppercase justify-center">
+                    Bukan Sekedar <br> <span class="text-red-600">Bengkel Biasa</span>
+                </h2>
+                <p class="text-zinc-400 leading-relaxed justify-between">
+                    Berawal dari keresahan antrean panjang di bengkel konvensional, <span class="text-white font-bold">Bengkelin</span> hadir sebagai solusi digital untuk para pengendara yang menghargai waktu. Kami menggabungkan presisi mekanik profesional dengan kemudahan teknologi.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
+                    <div class="p-6 bg-zinc-900/50 border border-zinc-800 rounded-2xl">
+                        <p class="text-red-600 font-bold text-xs uppercase tracking-widest mb-2">Visi Kami</p>
+                        <p class="text-zinc-500 text-xs leading-relaxed">Menjadi ekosistem perawatan kendaraan nomor satu di Sidoarjo yang transparan dan terpercaya.</p>
+                    </div>
+                    <div class="p-6 bg-zinc-900/50 border border-zinc-800 rounded-2xl">
+                        <p class="text-red-600 font-bold text-xs uppercase tracking-widest mb-2">Misi Kami</p>
+                        <p class="text-zinc-500 text-xs leading-relaxed">Memberikan pelayanan berkualitas tinggi dengan standarisasi alat modern dan sparepart original.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="relative group">
+                <div class="absolute -inset-1 bg-gradient-to-r from-red-600 to-zinc-800 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+                <div class="relative bg-zinc-900 rounded-3xl border border-zinc-800 p-2 overflow-hidden">
+                    <img src="{{ asset("img/Gemini_Generated_Image_m0vuzjm0vuzjm0vu.png") }}" alt="Workshop" class="rounded-2xl grayscale hover:grayscale-0 transition duration-700 w-full object-cover aspect-video lg:aspect-auto">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="location" class="max-w-7xl mx-auto px-8 py-24 border-t border-zinc-900">
+        <div class="text-center mb-16">
+            <p class="text-red-600 font-bold text-xs tracking-[0.3em] mb-4 uppercase">Kunjungi Workshop Kami</p>
+            <h2 class="text-4xl font-bengkel text-white uppercase">Bengkelin Sidoarjo</h2>
+        </div>
+
+        <div class="bg-zinc-900 rounded-[2.5rem] border border-zinc-800 overflow-hidden shadow-2xl">
+            <div class="grid grid-cols-1 lg:grid-cols-3">
+                <div class="p-12 lg:border-r border-zinc-800 flex flex-col justify-center">
+                    <div class="space-y-8">
+                        <div>
+                            <h4 class="text-zinc-500 text-[10px] uppercase tracking-widest font-bold mb-3">Alamat Utama</h4>
+                            <p class="text-white text-lg font-medium leading-relaxed italic">
+                                Nggrekmas, Pagerwojo, Kec. Buduran, Kabupaten Sidoarjo, Jawa Timur 61252
+                            </p>
+                        </div>
+                        <div>
+                            <h4 class="text-zinc-500 text-[10px] uppercase tracking-widest font-bold mb-3">Jam Operasional</h4>
+                            <p class="text-zinc-300 text-sm">Senin - Sabtu: 08.00 - 17.00 WIB</p>
+                            <p class="text-red-500 text-sm mt-1">Minggu: Tutup (Booking Only)</p>
+                        </div>
+                        <div class="pt-4">
+                            <a href="https://maps.app.goo.gl/YourActualGoogleMapsLink" target="_blank" class="inline-flex items-center gap-3 text-red-600 hover:text-red-500 font-bold text-xs uppercase tracking-widest transition">
+                                Buka di Google Maps
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-2 h-[450px]      invert contrast-125 opacity-80 hover:opacity-100 transition-all duration-700">
+                    <iframe 
+                        width="100%" 
+                        height="100%" 
+                        frameborder="0" 
+                        scrolling="no" 
+                        marginheight="0" 
+                        marginwidth="0" 
+                        src="https://maps.google.com/maps?q=Nggrekmas%20Pagerwojo%20Buduran%20Sidoarjo&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                        style="filter: grayscale(20%) invert(90%) contrast(100%);">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
     </main>
+    
     <!-- FOOTER SECTION -->
 <footer class="bg-zinc-950 pt-20 pb-10 px-6">
     <div class="max-w-7xl mx-auto">
