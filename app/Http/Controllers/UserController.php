@@ -50,17 +50,15 @@ class UserController extends Controller
 
         $validated = $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users,email',
+            'nomor_telepon' => ['required', 'regex:/^08[0-9]{8,11}$/', 'unique:users,nomor_telepon'],
             'password' => 'required|min:6',
-            'jenis_kelamin' => 'required|in:L,P',
             'role' => 'required|in:admin,mekanik,pengguna',
         ]);
 
         User::create([
             'name' => $validated['name'],
-            'email' => $validated['email'],
+            'nomor_telepon' => $validated['nomor_telepon'],
             'password' => Hash::make($validated['password']),
-            'jenis_kelamin' => $validated['jenis_kelamin'],
             'role' => $validated['role'],
         ]);
 
@@ -90,16 +88,14 @@ class UserController extends Controller
 
         $validated = $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users,email,' . $user->id,
+            'nomor_telepon' => ['required', 'regex:/^08[0-9]{8,11}$/', 'unique:users,nomor_telepon,' . $user->id],
             'password' => 'nullable|min:6',
-            'jenis_kelamin' => 'required|in:L,P',
             'role' => 'required|in:admin,mekanik,pengguna',
         ]);
 
         $data = [
             'name' => $validated['name'],
-            'email' => $validated['email'],
-            'jenis_kelamin' => $validated['jenis_kelamin'],
+            'nomor_telepon' => $validated['nomor_telepon'],
             'role' => $validated['role'],
         ];
 

@@ -67,7 +67,7 @@
                 </div>
                 <div class="flex flex-col">
                     <span class="text-white text-sm font-bold leading-none">{{ $user->name }}</span>
-                    <span class="text-zinc-500 text-[10px] uppercase mt-1 tracking-widest">{{ $user->role }}</span>
+                    <span class="text-zinc-500 text-[10px] uppercase mt-1 tracking-widest">Member Bengkelin</span>
                 </div>
             </div>
         </header>
@@ -86,7 +86,7 @@
                             <div class="absolute -bottom-2 -right-2 h-8 w-8 bg-emerald-500 border-4 border-zinc-900 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
                         </div>
                         <h3 class="text-2xl font-bengkel tracking-wide uppercase">{{ $user->name }}</h3>
-                        <p class="text-zinc-500 text-[10px] uppercase tracking-[0.3em] mt-1">{{ $user->role }} Member</p>
+                        <p class="text-zinc-500 text-[10px] uppercase tracking-[0.3em] mt-1">Member Bengkelin</p>
                         
                         <div class="w-full mt-8 pt-8 border-t border-zinc-800 space-y-3">
                             <div class="flex justify-between text-[10px]">
@@ -113,20 +113,8 @@
                                 <p class="text-white font-medium border-b border-zinc-800 pb-2">{{ $user->name }}</p>
                             </div>
                             <div class="space-y-1">
-                                <label class="text-[10px] text-zinc-500 uppercase font-bold tracking-widest block">Email Contact</label>
-                                <p class="text-white font-medium border-b border-zinc-800 pb-2">{{ $user->email }}</p>
-                            </div>
-                            <div class="space-y-1">
-                                <label class="text-[10px] text-zinc-500 uppercase font-bold tracking-widest block">Gender Type</label>
-                                <p class="text-white font-medium border-b border-zinc-800 pb-2">
-                                    {{ $user->jenis_kelamin == 'L' ? 'Laki-laki (Male)' : 'Perempuan (Female)' }}
-                                </p>
-                            </div>
-                            <div class="space-y-1">
-                                <label class="text-[10px] text-zinc-500 uppercase font-bold tracking-widest block">Account Role</label>
-                                <p class="text-red-500 font-bold border-b border-zinc-800 pb-2 uppercase italic tracking-widest">
-                                    {{ $user->role }}
-                                </p>
+                                <label class="text-[10px] text-zinc-500 uppercase font-bold tracking-widest block">Nomor Telepon</label>
+                                <p class="text-white font-medium border-b border-zinc-800 pb-2">{{ $user->nomor_telepon ? implode('-', str_split($user->nomor_telepon, 4)) : '-' }}</p>
                             </div>
                         </div>
 

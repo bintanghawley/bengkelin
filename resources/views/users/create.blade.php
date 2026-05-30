@@ -29,22 +29,14 @@
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Email</label>
-            <input type="email" name="email" class="form-control" value="{{ old('email') }}">
+            <label class="form-label">Nomor Telepon</label>
+            <input type="tel" name="nomor_telepon" class="form-control" value="{{ old('nomor_telepon') }}" inputmode="numeric" pattern="08[0-9]{8,11}" minlength="10" maxlength="13">
+            <div class="form-text">Gunakan format 08xxxxxxxxxx (tanpa +62).</div>
         </div>
 
         <div class="mb-3">
             <label class="form-label">Password</label>
             <input type="password" name="password" class="form-control">
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Jenis Kelamin</label>
-            <select name="jenis_kelamin" class="form-select">
-                <option value="">Pilih Jenis Kelamin</option>
-                <option value="L" {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}>Laki-laki</option>
-                <option value="P" {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}>Perempuan</option>
-            </select>
         </div>
 
         <div class="mb-3">

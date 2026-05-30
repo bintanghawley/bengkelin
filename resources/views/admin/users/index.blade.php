@@ -50,7 +50,7 @@
                     <tr>
                         <th class="px-6 py-4">No</th>
                         <th class="px-6 py-4">Nama</th>
-                        <th class="px-6 py-4">Email</th>
+                        <th class="px-6 py-4">No. Telepon</th>
                         <th class="px-6 py-4">Role</th>
                         <th class="px-6 py-4">Dibuat pada</th>
                         <th class="px-6 py-4">Diperbarui pada</th>
@@ -62,7 +62,7 @@
                         <tr class="hover:bg-zinc-800/30 transition">
                             <td class="px-6 py-4">{{ $loop->iteration }}</td>
                             <td class="px-6 py-4 font-bold">{{ $user->name }}</td>
-                            <td class="px-6 py-4 text-zinc-500">{{ $user->email }}</td>
+                            <td class="px-6 py-4 text-zinc-500">{{ $user->nomor_telepon ? implode('-', str_split($user->nomor_telepon, 4)) : '-' }}</td>
                             <td class="px-6 py-4">
                                 <span class="px-2 py-1 rounded text-[10px] font-bold {{ $user->role == 'mekanik' ? 'bg-blue-500/20 text-blue-400' : 'bg-zinc-700 text-zinc-300' }}">
                                     {{ strtoupper($user->role) }}

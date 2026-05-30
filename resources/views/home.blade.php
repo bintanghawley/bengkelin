@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="min-h-screen bg-zinc-950">
-    <nav class="flex items-center justify-between px-8 py-6 max-w-7xl mx-auto">
+    <nav class="relative z-30 flex items-center justify-between px-8 py-6 max-w-7xl mx-auto">
         <div class="flex items-center gap-2">
             <div >
                 <img src="{{ asset('img/image-removebg-preview (3).png') }}" alt="" class="w-20 h-20 object-contain ">
@@ -16,33 +16,185 @@
             <a href="#location" class="hover:text-white transition">Location</a> 
         </div>
         <div class="flex items-center gap-3">
+            <button type="button" class="inline-flex items-center justify-center h-11 w-11 rounded-full border border-zinc-700 hover:bg-zinc-800 transition" aria-label="Cari">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
+                    <path d="M21 21l-4.35-4.35M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </button>
             @guest
-                <a href="{{ route('login') }}" class="text-sm font-bold border border-zinc-700 px-6 py-2 rounded-full hover:bg-zinc-800 transition">Login</a>
-                <a href="{{ route('register') }}" class="text-sm font-bold bg-red-600 px-6 py-2 rounded-full hover:bg-red-700 transition">Register</a>
+                <a href="{{ route('login') }}" class="inline-flex items-center justify-center h-11 w-11 rounded-full border border-zinc-700 hover:bg-zinc-800 transition" aria-label="Keranjang">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
+                        <path d="M6 6h15l-1.5 9h-12z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M6 6l-2-3H2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <circle cx="9" cy="20" r="1" />
+                        <circle cx="18" cy="20" r="1" />
+                    </svg>
+                </a>
             @endguest
-
             @auth
-                <details class="relative">
-                    <summary class="list-none cursor-pointer text-sm font-bold border border-zinc-700 px-6 py-2 rounded-full hover:bg-zinc-800 transition">
-                        {{ Auth::user()->name }}
-                    </summary>
-                    <div class="absolute right-0 mt-2 w-48 bg-zinc-900 border border-zinc-800 rounded-lg shadow-lg p-2">
-                        @if (Auth::user()->role === 'admin')
-                            <a href="{{ route('admin.dashboard') }}" class="block px-3 py-2 text-sm hover:bg-zinc-800 rounded">Dashboard</a>
-                        @elseif (Auth::user()->role === 'mekanik')
-                            <a href="{{ route('mekanik.dashboard') }}" class="block px-3 py-2 text-sm hover:bg-zinc-800 rounded">Dashboard</a>
-                        @else
-                            <a href="{{ route('pengguna.dashboard') }}" class="block px-3 py-2 text-sm hover:bg-zinc-800 rounded">Dashboard</a>
-                        @endif
-                        <form action="{{ route('logout') }}" method="POST" class="mt-1">
-                            @csrf
-                            <button type="submit" class="w-full text-left px-3 py-2 text-sm hover:bg-zinc-800 rounded">Logout</button>
-                        </form>
+                <div class="relative group">
+                    <a href="{{ route('toko.index') }}" class="inline-flex items-center justify-center h-11 w-11 rounded-full border border-zinc-700 hover:bg-zinc-800 transition" aria-label="Keranjang">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
+                            <path d="M6 6h15l-1.5 9h-12z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M6 6l-2-3H2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <circle cx="9" cy="20" r="1" />
+                            <circle cx="18" cy="20" r="1" />
+                        </svg>
+                    </a>
+                    <div class="absolute right-0 mt-3 w-80 bg-white text-zinc-900 border border-zinc-200 rounded-2xl shadow-2xl z-50 opacity-0 translate-y-2 pointer-events-none transition group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto">
+                        <div class="p-5">
+                            <p class="text-lg font-semibold">Keranjang</p>
+                            <div class="mt-5 flex flex-col items-center text-center">
+                                <div class="relative h-24 w-24 rounded-full bg-red-50 flex items-center justify-center">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-10 h-10 text-red-400">
+                                        <path d="M6 6h15l-1.5 9h-12z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M6 6l-2-3H2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                        <circle cx="9" cy="20" r="1" />
+                                        <circle cx="18" cy="20" r="1" />
+                                    </svg>
+                                    <span class="absolute top-1 right-1 h-6 min-w-6 px-2 rounded-full bg-red-600 text-white text-xs font-semibold flex items-center justify-center">0</span>
+                                </div>
+                                <p class="mt-4 font-semibold">Belum Ada Barang di Keranjangmu</p>
+                                <p class="text-sm text-zinc-500 mt-1">Yuk isi dulu dengan barang otomotif impianmu.</p>
+                            </div>
+                        </div>
                     </div>
-                </details>
+                </div>
             @endauth
+            <button type="button" id="sidebar-open" class="inline-flex items-center justify-center h-11 w-11 rounded-full border border-zinc-700 hover:bg-zinc-800 transition" aria-label="Menu" aria-controls="sidebar" aria-expanded="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
+                    <path d="M4 6h16M4 12h16M4 18h10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </button>
         </div>
     </nav>
+
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 opacity-0 pointer-events-none transition-opacity duration-300 z-40"></div>
+    <aside id="sidebar" class="fixed top-0 right-0 h-screen w-[85vw] max-w-sm bg-white text-zinc-900 translate-x-full transition-transform duration-300 z-50 shadow-2xl">
+        <div class="h-full flex flex-col">
+            <div class="flex items-center justify-between p-5 border-b border-zinc-200">
+                <a href="{{ route('home') }}" class="flex items-center gap-2">
+                    <img src="{{ asset('img/image-removebg-preview (3).png') }}" alt="" class="w-12 h-12 object-contain">
+                    <span class="text-xl font-bengkel tracking-wider text-zinc-900">Bengkel<span class="text-red-600">in</span></span>
+                </a>
+                <button type="button" id="sidebar-close" class="inline-flex items-center justify-center h-9 w-9 rounded-full border border-zinc-300 hover:bg-zinc-100 transition" aria-label="Tutup menu">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
+                        <path d="M6 6l12 12M18 6l-12 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+            </div>
+            <div class="flex-1 overflow-y-auto px-5 py-6 space-y-6">
+                @guest
+                    <div class="grid grid-cols-2 gap-3">
+                        <a href="{{ route('login') }}" class="text-center font-semibold bg-red-600 text-white px-4 py-3 rounded-full hover:bg-red-700 transition">Login</a>
+                        <a href="{{ route('register') }}" class="text-center font-semibold border border-red-600 text-red-600 px-4 py-3 rounded-full hover:bg-red-50 transition">Daftar Akun</a>
+                    </div>
+                @endguest
+
+                @auth
+                    <div class="border border-zinc-200 rounded-2xl p-4 space-y-3">
+                        <div class="flex items-start justify-between gap-3">
+                            <div>
+                                @if (Auth::user()->role === 'admin')
+                                    <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-zinc-900 hover:text-red-600 transition">
+                                        {{ Auth::user()->name }}
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
+                                            <path d="M9 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </a>
+                                @elseif (Auth::user()->role === 'mekanik')
+                                    <a href="{{ route('mekanik.dashboard') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-zinc-900 hover:text-red-600 transition">
+                                        {{ Auth::user()->name }}
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
+                                            <path d="M9 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </a>
+                                @else
+                                    <a href="{{ route('pengguna.dashboard') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-zinc-900 hover:text-red-600 transition">
+                                        {{ Auth::user()->name }}
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
+                                            <path d="M9 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </a>
+                                @endif
+                                <p class="text-xs text-zinc-500 mt-1">{{ Auth::user()->nomor_telepon }}</p>
+                            </div>
+                            <form action="{{ route('logout') }}" method="POST" onsubmit="return confirm('Yakin ingin logout?')">
+                                @csrf
+                                <button type="submit" class="inline-flex items-center gap-1 text-sm font-semibold text-red-600 hover:text-red-700 transition">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
+                                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M10 17l5-5-5-5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M15 12H3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                    Logout
+                                </button>
+                            </form>
+                        </div>
+                        <div class="flex items-center justify-between text-sm text-zinc-700">
+                            <div class="inline-flex items-center gap-2">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500">
+                                    <path d="M7 7h10M7 12h10M7 17h6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M5 4h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <span>Daftar Pesanan</span>
+                            </div>
+                            <span class="inline-flex items-center justify-center h-6 min-w-6 px-2 rounded-full bg-red-600 text-white text-xs font-semibold">0</span>
+                        </div>
+                    </div>
+                @endauth
+
+                <div class="space-y-3">
+                    <button type="button" class="w-full text-left py-2 font-semibold text-zinc-900 hover:text-red-600 transition">Servis</button>
+                    <details class="group">
+                        <summary class="flex items-center justify-between py-2 cursor-pointer font-semibold text-zinc-900">
+                            <span class="group-open:text-red-600">Ban Motor</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-600 transition-transform group-open:rotate-180 group-open:text-red-600">
+                                <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </summary>
+                        <div class="pl-4 pb-2 space-y-2 text-sm">
+                            <a href="#" class="block text-zinc-700 hover:text-red-600">Ban Motor Matic</a>
+                            <a href="#" class="block text-zinc-700 hover:text-red-600">Ban Motor Bebek</a>
+                            <a href="#" class="block text-zinc-700 hover:text-red-600">Ban Motor Sport</a>
+                            <a href="#" class="block text-zinc-700 hover:text-red-600">Ban Motor Big Matic</a>
+                        </div>
+                    </details>
+                    <details class="group">
+                        <summary class="flex items-center justify-between py-2 cursor-pointer font-semibold text-zinc-900">
+                            <span class="group-open:text-red-600">Oli Motor</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-600 transition-transform group-open:rotate-180 group-open:text-red-600">
+                                <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </summary>
+                        <div class="pl-4 pb-2 space-y-2 text-sm">
+                            <a href="#" class="block text-zinc-700 hover:text-red-600">Oli Motor Matic</a>
+                            <a href="#" class="block text-zinc-700 hover:text-red-600">Oli Motor Bebek</a>
+                            <a href="#" class="block text-zinc-700 hover:text-red-600">Oli Motor Sport</a>
+                        </div>
+                    </details>
+                    <details class="group">
+                        <summary class="flex items-center justify-between py-2 cursor-pointer font-semibold text-zinc-900">
+                            <span class="group-open:text-red-600">Sparepart</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-600 transition-transform group-open:rotate-180 group-open:text-red-600">
+                                <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </summary>
+                        <div class="pl-4 pb-2 space-y-2 text-sm">
+                            <a href="#" class="block text-zinc-700 hover:text-red-600">Aki Motor</a>
+                            <a href="#" class="block text-zinc-700 hover:text-red-600">Filter Udara Motor</a>
+                            <a href="#" class="block text-zinc-700 hover:text-red-600">Kampas Rem</a>
+                            <a href="#" class="block text-zinc-700 hover:text-red-600">Cairan Anti Bocor</a>
+                        </div>
+                    </details>
+                    <a href="#location" class="block py-2 font-semibold text-zinc-900 hover:text-red-600 transition">Lokasi Toko</a>
+                    <a href="#" class="block py-2 font-semibold text-zinc-900 hover:text-red-600 transition">Promo</a>
+                    <a href="#" class="block py-2 font-semibold text-zinc-900 hover:text-red-600 transition">Buku Servis</a>
+                    <a href="#" class="block py-2 font-semibold text-zinc-900 hover:text-red-600 transition">Blog</a>
+                </div>
+            </div>
+        </div>
+    </aside>
 
     <main></main>
         <section id="home" class="max-w-7xl mx-auto px-8 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"><div class="order-2 lg:order-1 text-center lg:text-left">
@@ -266,5 +418,53 @@
         </div>
     </div>
 </footer>
+    <script>
+        const sidebarOpen = document.getElementById('sidebar-open');
+        const sidebarClose = document.getElementById('sidebar-close');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+        const lockBody = (locked) => {
+            if (locked) {
+                const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+                document.body.classList.add('overflow-hidden');
+                document.body.style.paddingRight = scrollbarWidth > 0 ? `${scrollbarWidth}px` : '';
+                return;
+            }
+            document.body.classList.remove('overflow-hidden');
+            document.body.style.paddingRight = '';
+        };
+
+        const openSidebar = () => {
+            sidebar.classList.remove('translate-x-full');
+            sidebarOverlay.classList.remove('opacity-0', 'pointer-events-none');
+            sidebarOverlay.classList.add('opacity-100');
+            lockBody(true);
+            sidebarOpen.setAttribute('aria-expanded', 'true');
+        };
+
+        const closeSidebar = () => {
+            sidebar.classList.add('translate-x-full');
+            sidebarOverlay.classList.add('opacity-0', 'pointer-events-none');
+            sidebarOverlay.classList.remove('opacity-100');
+            lockBody(false);
+            sidebarOpen.setAttribute('aria-expanded', 'false');
+        };
+
+        if (sidebarOpen) {
+            sidebarOpen.addEventListener('click', openSidebar);
+        }
+        if (sidebarClose) {
+            sidebarClose.addEventListener('click', closeSidebar);
+        }
+        if (sidebarOverlay) {
+            sidebarOverlay.addEventListener('click', closeSidebar);
+        }
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                closeSidebar();
+            }
+        });
+    </script>
 </div>
 @endsection

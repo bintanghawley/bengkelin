@@ -32,7 +32,7 @@
         <tr>
             <th>ID</th>
             <th>Name</th>
-            <th>Email</th>
+            <th>No. Telepon</th>
             <th>Role</th>
             <th>Created At</th>
             <th>Updated At</th>
@@ -44,7 +44,7 @@
             <tr>
                 <td>{{ $user->id }}</td>
                 <td>{{ $user->name }}</td>
-                <td>{{ $user->email }}</td>
+                <td>{{ $user->nomor_telepon ? implode('-', str_split($user->nomor_telepon, 4)) : '-' }}</td>
                 <td>{{ $user->role }}</td>
                 <td>{{ $user->created_at }}</td>
                 <td>{{ $user->updated_at }}</td>

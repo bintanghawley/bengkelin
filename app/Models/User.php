@@ -13,9 +13,8 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name',
-        'email',
+        'nomor_telepon',
         'password',
-        'jenis_kelamin',
         'role',
     ];
 
@@ -26,8 +25,12 @@ class User extends Authenticatable
 
     protected function casts(): array
     {
-        return [
-            'email_verified_at' => 'datetime',
-        ];
+        return [];
+    }
+
+    public function setNameAttribute(string $value): void
+    {
+        $normalized = trim(preg_replace('/\s+/', ' ', $value));
+        $this->attributes['name'] = ucwords(strtolower($normalized));
     }
 }

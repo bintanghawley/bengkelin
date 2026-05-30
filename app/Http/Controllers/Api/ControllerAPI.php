@@ -44,18 +44,16 @@ class ControllerAPI extends Controller
     {
         $validated = $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users,email',
+            'nomor_telepon' => ['required', 'regex:/^08[0-9]{8,11}$/', 'unique:users,nomor_telepon'],
             'password' => 'required|min:6',
             'role' => 'required|in:admin,mekanik,pengguna',
-            'jenis_kelamin' => 'required|in:L,P',
         ]);
 
         $user = User::create([
             'name' => $validated['name'],
-            'email' => $validated['email'],
+            'nomor_telepon' => $validated['nomor_telepon'],
             'password' => Hash::make($validated['password']),
             'role' => $validated['role'],
-            'jenis_kelamin' => $validated['jenis_kelamin'],
         ]);
 
         return response()->json([
@@ -79,15 +77,14 @@ class ControllerAPI extends Controller
 
         $validated = $request->validate([
             'name' => 'required',
-            'email' => ['required', 'email', Rule::unique('users', 'email')->ignore($user->id)],
+            'nomor_telepon' => ['required', 'regex:/^08[0-9]{8,11}$/', Rule::unique('users', 'nomor_telepon')->ignore($user->id)],
             'password' => 'nullable|min:6',
             'role' => 'nullable|in:admin,mekanik,pengguna',
-            'jenis_kelamin' => 'nullable|in:L,P',
         ]);
 
         $data = [
             'name' => $validated['name'],
-            'email' => $validated['email'],
+            'nomor_telepon' => $validated['nomor_telepon'],
         ];
 
         if (!empty($validated['password'])) {
@@ -96,10 +93,6 @@ class ControllerAPI extends Controller
 
         if (!empty($validated['role'])) {
             $data['role'] = $validated['role'];
-        }
-
-        if (!empty($validated['jenis_kelamin'])) {
-            $data['jenis_kelamin'] = $validated['jenis_kelamin'];
         }
 
         $user->update($data);

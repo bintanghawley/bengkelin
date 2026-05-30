@@ -21,12 +21,12 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email' => 'required|email',
+            'nomor_telepon' => ['required', 'regex:/^08[0-9]{8,11}$/'],
             'password' => 'required',
         ]);
 
         if (!Auth::attempt($credentials)) {
-            return back()->withInput($request->only('email'))->with('error', 'Email atau password salah');
+            return back()->withInput($request->only('nomor_telepon'))->with('error', 'Nomor telepon atau password salah');
         }
 
         $request->session()->regenerate();
@@ -47,16 +47,14 @@ class AuthController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users,email',
+            'nomor_telepon' => ['required', 'regex:/^08[0-9]{8,11}$/', 'unique:users,nomor_telepon'],
             'password' => 'required|min:6',
-            'jenis_kelamin' => 'required|in:L,P',
         ]);
 
         User::create([
             'name' => $validated['name'],
-            'email' => $validated['email'],
+            'nomor_telepon' => $validated['nomor_telepon'],
             'password' => Hash::make($validated['password']),
-            'jenis_kelamin' => $validated['jenis_kelamin'],
             'role' => 'pengguna',
         ]);
 

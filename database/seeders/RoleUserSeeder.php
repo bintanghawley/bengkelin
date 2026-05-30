@@ -11,31 +11,28 @@ class RoleUserSeeder extends Seeder
     public function run(): void
     {
         User::updateOrCreate(
-            ['email' => 'admin@gmail.com'],
+            ['nomor_telepon' => '081234567890'],
             [
                 'name' => 'Admin',
                 'password' => Hash::make('123456'),
-                'jenis_kelamin' => 'L',
                 'role' => 'admin',
             ]
         );
 
         User::updateOrCreate(
-            ['email' => 'mekanik@gmail.com'],
+            ['nomor_telepon' => '081234567891'],
             [
                 'name' => 'Mekanik',
                 'password' => Hash::make('123456'),
-                'jenis_kelamin' => 'L',
                 'role' => 'mekanik',
             ]
         );
 
         User::updateOrCreate(
-            ['email' => 'pengguna@gmail.com'],
+            ['nomor_telepon' => '081234567892'],
             [
                 'name' => 'Pengguna',
                 'password' => Hash::make('123456'),
-                'jenis_kelamin' => 'P',
                 'role' => 'pengguna',
             ]
         );

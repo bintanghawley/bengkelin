@@ -50,20 +50,13 @@
                 <input type="text" name="name" value="{{ old('name', $user->name) }}" class="w-full bg-zinc-900 border border-zinc-700 rounded px-3 py-2">
             </div>
             <div>
-                <label class="block text-sm mb-1">Email</label>
-                <input type="email" name="email" value="{{ old('email', $user->email) }}" class="w-full bg-zinc-900 border border-zinc-700 rounded px-3 py-2">
+                <label class="block text-sm mb-1">Nomor Telepon</label>
+                <input type="tel" name="nomor_telepon" value="{{ old('nomor_telepon', $user->nomor_telepon) }}" inputmode="numeric" autocomplete="tel" maxlength="16" data-phone-input class="w-full bg-zinc-900 border border-zinc-700 rounded px-3 py-2">
+                <p class="text-[10px] text-zinc-500 mt-2">Gunakan format 08xxxxxxxxxx (tanpa +62).</p>
             </div>
             <div>
                 <label class="block text-sm mb-1">Password Baru</label>
                 <input type="password" name="password" class="w-full bg-zinc-900 border border-zinc-700 rounded px-3 py-2">
-            </div>
-            <div>
-                <label class="block text-sm mb-1">Jenis Kelamin</label>
-                <select name="jenis_kelamin" class="w-full bg-zinc-900 border border-zinc-700 rounded px-3 py-2">
-                    <option value="">Pilih Jenis Kelamin</option>
-                    <option value="L" {{ old('jenis_kelamin', $user->jenis_kelamin) == 'L' ? 'selected' : '' }}>Laki-laki</option>
-                    <option value="P" {{ old('jenis_kelamin', $user->jenis_kelamin) == 'P' ? 'selected' : '' }}>Perempuan</option>
-                </select>
             </div>
             <div>
                 <label class="block text-sm mb-1">Role</label>
