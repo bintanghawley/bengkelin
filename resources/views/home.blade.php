@@ -70,12 +70,12 @@
     </nav>
 
     <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 opacity-0 pointer-events-none transition-opacity duration-300 z-40"></div>
-    <aside id="sidebar" class="fixed top-0 right-0 h-screen w-[85vw] max-w-sm bg-white text-zinc-900 translate-x-full transition-transform duration-300 z-50 shadow-2xl">
+    <aside id="sidebar" class="fixed top-0 right-0 h-screen w-[85vw] max-w-sm bg-zinc-900 text-white-900 translate-x-full transition-transform duration-300 z-50 shadow-2xl rounded-4xl border-zinc-700">
         <div class="h-full flex flex-col">
             <div class="flex items-center justify-between p-5 border-b border-zinc-200">
                 <a href="{{ route('home') }}" class="flex items-center gap-2">
                     <img src="{{ asset('img/image-removebg-preview (3).png') }}" alt="" class="w-12 h-12 object-contain">
-                    <span class="text-xl font-bengkel tracking-wider text-zinc-900">Bengkel<span class="text-red-600">in</span></span>
+                    <span class="text-xl font-bengkel tracking-wider text-white">Bengkel<span class="text-red-600">in</span></span>
                 </a>
                 <button type="button" id="sidebar-close" class="inline-flex items-center justify-center h-9 w-9 rounded-full border border-zinc-300 hover:bg-zinc-100 transition" aria-label="Tutup menu">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
@@ -96,21 +96,21 @@
                         <div class="flex items-start justify-between gap-3">
                             <div>
                                 @if (Auth::user()->role === 'admin')
-                                    <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-zinc-900 hover:text-red-600 transition">
+                                    <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-zinc-100 hover:text-red-600 transition">
                                         {{ Auth::user()->name }}
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
                                             <path d="M9 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                         </svg>
                                     </a>
                                 @elseif (Auth::user()->role === 'mekanik')
-                                    <a href="{{ route('mekanik.dashboard') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-zinc-900 hover:text-red-600 transition">
+                                    <a href="{{ route('mekanik.dashboard') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-zinc-100 hover:text-red-600 transition">
                                         {{ Auth::user()->name }}
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
                                             <path d="M9 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                         </svg>
                                     </a>
                                 @else
-                                    <a href="{{ route('pengguna.dashboard') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-zinc-900 hover:text-red-600 transition">
+                                    <a href="{{ route('pengguna.dashboard') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-zinc-100 hover:text-red-600 transition">
                                         {{ Auth::user()->name }}
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
                                             <path d="M9 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -133,64 +133,53 @@
                         </div>
                         <div class="flex items-center justify-between text-sm text-zinc-700">
                             <div class="inline-flex items-center gap-2">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-100">
                                     <path d="M7 7h10M7 12h10M7 17h6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                     <path d="M5 4h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                                 <span>Daftar Pesanan</span>
                             </div>
-                            <span class="inline-flex items-center justify-center h-6 min-w-6 px-2 rounded-full bg-red-600 text-white text-xs font-semibold">0</span>
+                            <span class="inline-flex items-center justify-center h-6 min-w-6 px-2 rounded-full bg-red-600 text-white text-xs font-semibold">
+                                  0
+                            </span>
                         </div>
                     </div>
                 @endauth
 
                 <div class="space-y-3">
-                    <button type="button" class="w-full text-left py-2 font-semibold text-zinc-900 hover:text-red-600 transition">Servis</button>
+                    <button type="button" class="w-full text-left py-2 font-semibold text-zinc-100 hover:text-red-600 transition">Servis</button>
+                    
                     <details class="group">
-                        <summary class="flex items-center justify-between py-2 cursor-pointer font-semibold text-zinc-900">
-                            <span class="group-open:text-red-600">Ban Motor</span>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-600 transition-transform group-open:rotate-180 group-open:text-red-600">
-                                <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </summary>
-                        <div class="pl-4 pb-2 space-y-2 text-sm">
-                            <a href="#" class="block text-zinc-700 hover:text-red-600">Ban Motor Matic</a>
-                            <a href="#" class="block text-zinc-700 hover:text-red-600">Ban Motor Bebek</a>
-                            <a href="#" class="block text-zinc-700 hover:text-red-600">Ban Motor Sport</a>
-                            <a href="#" class="block text-zinc-700 hover:text-red-600">Ban Motor Big Matic</a>
-                        </div>
-                    </details>
-                    <details class="group">
-                        <summary class="flex items-center justify-between py-2 cursor-pointer font-semibold text-zinc-900">
+                        <summary class="flex items-center justify-between py-2 cursor-pointer font-semibold text-zinc-100">
                             <span class="group-open:text-red-600">Oli Motor</span>
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-600 transition-transform group-open:rotate-180 group-open:text-red-600">
                                 <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </summary>
                         <div class="pl-4 pb-2 space-y-2 text-sm">
-                            <a href="#" class="block text-zinc-700 hover:text-red-600">Oli Motor Matic</a>
-                            <a href="#" class="block text-zinc-700 hover:text-red-600">Oli Motor Bebek</a>
-                            <a href="#" class="block text-zinc-700 hover:text-red-600">Oli Motor Sport</a>
+                            <a href="#" class="block text-zinc-200 hover:text-red-600">Oli Motor Matic</a>
+                            <a href="#" class="block text-zinc-200 hover:text-red-600">Oli Motor Bebek</a>
+                            <a href="#" class="block text-zinc-200 hover:text-red-600">Oli Motor Sport</a>
                         </div>
                     </details>
                     <details class="group">
-                        <summary class="flex items-center justify-between py-2 cursor-pointer font-semibold text-zinc-900">
+                        <summary class="flex items-center justify-between py-2 cursor-pointer font-semibold text-zinc-100">
                             <span class="group-open:text-red-600">Sparepart</span>
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-600 transition-transform group-open:rotate-180 group-open:text-red-600">
                                 <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </summary>
                         <div class="pl-4 pb-2 space-y-2 text-sm">
-                            <a href="#" class="block text-zinc-700 hover:text-red-600">Aki Motor</a>
-                            <a href="#" class="block text-zinc-700 hover:text-red-600">Filter Udara Motor</a>
-                            <a href="#" class="block text-zinc-700 hover:text-red-600">Kampas Rem</a>
-                            <a href="#" class="block text-zinc-700 hover:text-red-600">Cairan Anti Bocor</a>
+                            <a href="#" class="block text-zinc-200 hover:text-red-600">Aki Motor</a>
+                            <a href="#" class="block text-zinc-200 hover:text-red-600">Filter Udara Motor</a>
+                            <a href="#" class="block text-zinc-200 hover:text-red-600">Kampas Rem</a>
+                            <a href="#" class="block text-zinc-200 hover:text-red-600">Cairan Anti Bocor</a>
                         </div>
                     </details>
-                    <a href="#location" class="block py-2 font-semibold text-zinc-900 hover:text-red-600 transition">Lokasi Toko</a>
-                    <a href="#" class="block py-2 font-semibold text-zinc-900 hover:text-red-600 transition">Promo</a>
-                    <a href="#" class="block py-2 font-semibold text-zinc-900 hover:text-red-600 transition">Buku Servis</a>
-                    <a href="#" class="block py-2 font-semibold text-zinc-900 hover:text-red-600 transition">Blog</a>
+                    <a href="#location" class="block py-2 font-semibold text-zinc-200 hover:text-red-600 transition">Lokasi Toko</a>
+                    <a href="#" class="block py-2 font-semibold text-zinc-200 hover:text-red-600 transition">Promo</a>
+                    <a href="#" class="block py-2 font-semibold text-zinc-200 hover:text-red-600 transition">Buku Servis</a>
+                    <a href="#" class="block py-2 font-semibold text-zinc-200 hover:text-red-600 transition">Blog</a>
                 </div>
             </div>
         </div>
