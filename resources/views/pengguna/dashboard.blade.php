@@ -5,34 +5,30 @@
     
     <aside class="w-64 bg-zinc-900 border-r border-zinc-800 flex flex-col fixed h-full z-50">
         <div class="p-6 flex items-center gap-3 border-b border-zinc-800/50">
-            <div class="h-10 w-10 bg-red-600 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(220,38,38,0.3)] -rotate-12">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-6 h-6 text-white">
-                    <path d="M14.5 11V5a2 2 0 0 0-2-2h-1a2 2 0 0 0-2 2v6M7 11h10M7 15h10M8 11v8a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </div>
-            <span class="text-2xl font-bengkel tracking-wider">BENGKEL<span class="text-red-600">IN</span></span>
+          
+            <span class="text-3xl font-bengkel tracking-wider">BENGKEL<span class="text-red-600">IN</span></span>
         </div>
 
         <nav class="flex-1 px-4 space-y-2 mt-6" id="sidebar-nav">
-            <button onclick="showSection('profil')" id="btn-profil" class="nav-link w-full flex items-center gap-3 px-4 py-3 bg-red-600 text-white rounded-xl font-bold transition">
+            <button onclick="showSection('profil')" id="btn-profil" class="nav-link w-full flex items-center gap-3 px-4 py-3 text-zinc-400 rounded-xl font-bold transition">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                 </svg>
                 PROFIL
             </button>
-            <button onclick="showSection('booking')" id="btn-booking" class="nav-link w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:bg-zinc-800 hover:text-white rounded-xl font-bold transition text-left">
+            <button onclick="showSection('booking')" id="btn-booking" class="nav-link w-full flex items-center gap-3 px-4 py-3 text-zinc-400 rounded-xl font-bold transition text-left">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
                 </svg>
                 BOOKING
             </button>
-            <button onclick="showSection('status')" id="btn-status" class="nav-link w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:bg-zinc-800 hover:text-white rounded-xl font-bold transition text-left">
+            <button onclick="showSection('status')" id="btn-status" class="nav-link w-full flex items-center gap-3 px-4 py-3 text-zinc-400 rounded-xl font-bold transition text-left">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>
                 STATUS PESANAN
             </button>
-            <button onclick="showSection('ecommerce')" id="btn-ecommerce" class="nav-link w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:bg-zinc-800 hover:text-white rounded-xl font-bold transition text-left">
+            <button onclick="showSection('ecommerce')" id="btn-ecommerce" class="nav-link w-full flex items-center gap-3 px-4 py-3 text-zinc-400 rounded-xl font-bold transition text-left">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
                 </svg>
@@ -291,6 +287,7 @@
                                             $statusColor = match($booking->status) {
                                                 'pending' => 'bg-zinc-800 text-zinc-400 border border-zinc-700',
                                                 'proses' => 'bg-red-900/20 text-red-500 border border-red-800',
+                                                'diterima' => 'bg-emerald-900/20 text-emerald-500 border border-emerald-800',
                                                 'selesai' => 'bg-emerald-900/20 text-emerald-500 border border-emerald-800',
                                                 default => 'bg-zinc-800 text-zinc-400 border border-zinc-700'
                                             };
@@ -315,25 +312,50 @@
     </div>
 </section>
 
-            <section id="section-ecommerce" class="dashboard-section hidden italic">
-                <div class="flex justify-between items-end mb-8">
-                    <h3 class="text-3xl font-bengkel text-red-600 uppercase">Original Parts</h3>
-                    <span class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest">Tersedia di Bengkel Sidoarjo</span>
-                </div>
-                <div class="mb-6">
-                    <a href="{{ route('toko.index') }}" class="inline-block bg-red-600 hover:bg-red-700 text-white text-[10px] font-bold py-2 px-4 rounded-lg uppercase tracking-widest">Lihat Semua Barang</a>
-                </div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-                    <div class="bg-zinc-900 p-5 rounded-[2rem] border border-zinc-800 group hover:border-red-600 transition duration-500">
-                        <div class="aspect-square bg-zinc-950 rounded-2xl mb-5 flex items-center justify-center relative overflow-hidden">
-                            <svg class="w-16 h-16 text-zinc-900 group-hover:text-red-600/20 transition duration-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71L12 2z"/></svg>
-                            <span class="absolute top-3 left-3 bg-red-600 text-[8px] font-bold px-2 py-1 rounded">HOT ITEM</span>
-                        </div>
-                        <h4 class="font-bengkel text-xl text-white tracking-widest">Piston Pro X</h4>
-                        <p class="text-red-600 font-bold mt-1 text-sm tracking-tighter">Rp 850.000</p>
+          <section id="section-ecommerce" class="dashboard-section hidden italic">
+    <div class="flex justify-between items-end mb-8">
+        <h3 class="text-3xl font-bengkel text-red-600 uppercase">Original Parts</h3>
+        <span class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest">Tersedia di Bengkel Sidoarjo</span>
+    </div>
+    
+    <div class="mb-6">
+        <a href="{{ route('toko.index') }}" class="inline-block bg-red-600 hover:bg-red-700 text-white text-[10px] font-bold py-2 px-4 rounded-lg uppercase tracking-widest transition duration-300">
+            Lihat Semua Barang
+        </a>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+        @foreach($products as $product)
+            <div class="bg-zinc-900 p-5 rounded-[2rem] border border-zinc-800 group hover:border-red-600 transition duration-500 flex flex-col justify-between">
+                <div>
+                    <div class="aspect-square bg-zinc-950 rounded-2xl mb-5 flex items-center justify-center relative overflow-hidden">
+                        @if($product->gambar)
+                            <img src="{{ asset('storage/' . $product->gambar) }}" alt="{{ $product->nama }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        @else
+                            <svg class="w-16 h-16 text-zinc-800 group-hover:text-red-600/20 transition duration-500" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71L12 2z"/>
+                            </svg>
+                        @endif
+                        
+                       
                     </div>
+                    
+                    <h4 class="font-bengkel text-xl text-white tracking-widest uppercase truncate" title="{{ $product->nama }}">
+                        {{ $product->nama }}
+                    </h4>
+                    
+                    <p class="text-zinc-500 text-xs mt-1">Stok: {{ $product->stok }} pcs</p>
                 </div>
-            </section>
+                
+                <div class="mt-4">
+                    <p class="text-red-600 font-bold text-lg tracking-tighter">
+                        Rp {{ number_format($product->harga, 0, ',', '.') }}
+                    </p>
+                </div>
+            </div>
+        @endforeach
+    </div>
+ </section>
 
         </div>
     </main>
@@ -348,13 +370,13 @@
         document.getElementById('section-' + sectionId).classList.remove('hidden');
 
         document.querySelectorAll('.nav-link').forEach(btn => {
-            btn.classList.remove('bg-red-600', 'text-white');
-            btn.classList.add('text-zinc-400', 'hover:bg-zinc-800', 'hover:text-white');
+            btn.classList.remove( 'text-white');
+            btn.classList.add('text-zinc-400', 'hover:text-red-800');
         });
 
         const activeBtn = document.getElementById('btn-' + sectionId);
-        activeBtn.classList.add('bg-red-600', 'text-white');
-        activeBtn.classList.remove('text-zinc-400', 'hover:bg-zinc-800');
+        activeBtn.classList.add( 'text-red-400  ');
+        activeBtn.classList.remove('text-zinc-400', 'hover:text-red-800');
     }
 </script>
 @endsection
