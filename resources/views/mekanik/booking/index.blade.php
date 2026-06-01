@@ -31,16 +31,22 @@
                         <td class="px-4 py-3">{{ $booking->tanggal }}</td>
                         <td class="px-4 py-3">{{ $booking->status }}</td>
                         <td class="px-4 py-3">
-                            <form action="{{ route('mekanik.booking.update', $booking->id) }}" method="POST" class="flex items-center gap-2">
-                                @csrf
-                                <select name="status" class="bg-zinc-800 border border-zinc-700 rounded px-2 py-1 text-sm">
-                                    <option value="pending" {{ $booking->status == 'pending' ? 'selected' : '' }}>pending</option>
-                                    <option value="diterima" {{ $booking->status == 'diterima' ? 'selected' : '' }}>diterima</option>
-                                    <option value="diproses" {{ $booking->status == 'diproses' ? 'selected' : '' }}>diproses</option>
-                                    <option value="selesai" {{ $booking->status == 'selesai' ? 'selected' : '' }}>selesai</option>
-                                </select>
-                                <button type="submit" class="bg-red-600 px-3 py-1 rounded text-xs">Update</button>
-                            </form>
+                          <form action="{{ route('mekanik.booking.update', $booking->id) }}" method="POST" class="flex items-center gap-2">
+    @csrf
+    <select name="status" class="text-sm font-bold rounded px-3 py-1 outline-none border transition-colors
+        {{ $booking->status == 'pending' ? 'bg-orange-950/40 border-orange-500 text-orange-400' : '' }}
+        {{ $booking->status == 'diterima' ? 'bg-green-950/40 border-green-500 text-green-400' : '' }}
+        {{ $booking->status == 'diproses' ? 'bg-yellow-950/40 border-yellow-500 text-yellow-400' : '' }}
+        {{ $booking->status == 'selesai' ? 'bg-green-950/40 border-green-500 text-green-400' : '' }}">
+        
+        <option value="pending" class="text-zinc-200 bg-zinc-900" {{ $booking->status == 'pending' ? 'selected' : '' }}>Pending</option>
+        <option value="diterima" class="text-zinc-200 bg-zinc-900" {{ $booking->status == 'diterima' ? 'selected' : '' }}>Diterima</option>
+        <option value="diproses" class="text-zinc-200 bg-zinc-900" {{ $booking->status == 'diproses' ? 'selected' : '' }}>Diproses</option>
+        <option value="selesai" class="text-zinc-200 bg-zinc-900" {{ $booking->status == 'selesai' ? 'selected' : '' }}>Selesai</option>
+    </select>
+    
+    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-semibold px-3 py-1 rounded text-xs transition">Update</button>
+</form>
                         </td>
                     </tr>
                 @empty

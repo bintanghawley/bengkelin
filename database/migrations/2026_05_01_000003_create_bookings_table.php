@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('layanan');
             $table->string('metode');
             $table->string('alamat');
-            $table->string('plat_nomor');
+            $table->string('plat_nomor');   
             $table->date('tanggal');
             $table->enum('status', ['pending', 'diterima', 'diproses', 'selesai'])->default('pending');
             $table->timestamps();

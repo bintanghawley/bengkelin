@@ -4,19 +4,14 @@
 <div class="flex min-h-screen bg-zinc-950 text-white font-sans">
     <aside class="w-64 bg-zinc-900 border-r border-zinc-800 flex flex-col fixed h-full z-50">
         <div class="p-6 flex items-center gap-3 border-b border-zinc-800/50">
-            <div class="h-10 w-10 bg-red-600 rounded-xl flex items-center justify-center shadow-lg -rotate-12">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" class="w-6 h-6 text-white">
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </div>
-            <span class="text-xl font-bengkel tracking-wider">MEKANIK<span class="text-red-600">PANEL</span></span>
+            <span class="text-3xl font-bengkel tracking-wider">MEKANIK<span class="text-red-600">PANEL</span></span>
         </div>
 
         <nav class="flex-1 px-4 space-y-2 mt-6">
-            <div class="w-full flex items-center gap-3 px-4 py-3 bg-red-600 text-white rounded-xl font-bold transition">
-                DASHBOARD
+            <div class="w-full flex items-center gap-3 px-4 py-3 hover:text-red-800 focus:text-red-600 outline-none text-white rounded-xl font-bold transition">
+                DASHBOARD   
             </div>
-            <div class="w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:bg-zinc-800 rounded-xl font-bold transition">
+            <div class="w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-red-800 focus:text-red-600 outline-none rounded-xl font-bold transition">
                 DATA BOOKING
             </div>
         </nav>

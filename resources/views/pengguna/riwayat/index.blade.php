@@ -31,23 +31,34 @@
                             <th class="px-4 py-3">Status</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-zinc-800">
-                        @forelse ($bookings as $booking)
-                            <tr>
-                                <td class="px-4 py-3">{{ $booking->id }}</td>
-                                <td class="px-4 py-3">{{ $booking->jenis_motor }}</td>
-                                <td class="px-4 py-3">{{ $booking->layanan }}</td>
-                                <td class="px-4 py-3">{{ $booking->metode }}</td>
-                                <td class="px-4 py-3">{{ $booking->alamat }}</td>
-                                <td class="px-4 py-3">{{ $booking->tanggal }}</td>
-                                <td class="px-4 py-3">{{ $booking->status }}</td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="7" class="px-4 py-6 text-center text-zinc-400">Belum ada booking</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
+                  <tbody class="divide-y divide-zinc-800">
+    @forelse ($bookings as $booking)
+        <tr class="hover:bg-zinc-900/30 transition-colors">
+            <td class="px-4 py-3 text-zinc-300 font-mono">#{{ $booking->id }}</td>
+            <td class="px-4 py-3 text-zinc-200 font-semibold">{{ $booking->jenis_motor }}</td>
+            <td class="px-4 py-3 text-zinc-400">{{ $booking->layanan }}</td>
+            <td class="px-4 py-3 text-zinc-400">{{ $booking->metode }}</td>
+            <td class="px-4 py-3 text-zinc-400 max-w-xs truncate">{{ $booking->alamat }}</td>
+            <td class="px-4 py-3 text-zinc-400">{{ $booking->tanggal }}</td>
+            
+            <td class="px-4 py-3">
+                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold tracking-wide uppercase border
+                    {{ $booking->status == 'pending' ? 'bg-orange-950/40 border-orange-500/50 text-orange-400' : '' }}
+                    {{ $booking->status == 'diterima' ? 'bg-green-950/40 border-green-500/50 text-green-400' : '' }}
+                    {{ $booking->status == 'diproses' ? 'bg-yellow-950/40 border-yellow-500/50 text-yellow-400' : '' }}
+                    {{ $booking->status == 'selesai' ? 'bg-green-950/40 border-green-500/50 text-green-400' : '' }}">
+                    {{ $booking->status }}
+                </span>
+            </td>
+        </tr>
+    @empty
+        <tr>
+            <td colspan="7" class="px-4 py-8 text-center text-zinc-500 text-sm">
+                Belum ada riwayat booking.
+            </td>
+        </tr>
+    @endforelse
+</tbody>
                 </table>
             </div>
         </div>

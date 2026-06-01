@@ -8,6 +8,15 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
+    public function index()
+{
+    // Ambil semua data produk dari database
+    $products = Product::all(); 
+
+    // Return ke file blade tempat kamu menaruh grid HTML tadi
+    // Misalnya nama filenya: resources/views/home.blade.php atau resources/views/products.blade.php
+    return view('home', compact('products')); 
+}
     public function store(Request $request)
     {
         $request->validate([

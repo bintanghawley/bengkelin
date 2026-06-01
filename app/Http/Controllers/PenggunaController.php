@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,7 +27,8 @@ class PenggunaController extends Controller
 
     $user = Auth::user();
     $bookings = \App\Models\Booking::where('user_id', $user->id)->orderBy('id', 'desc')->get();
-    return view('pengguna.dashboard', compact('user', 'bookings'));
+    $products = Product::all();
+    return view('pengguna.dashboard', compact('user', 'products','bookings'));
 }
 
     public function bookingForm()
@@ -57,6 +59,7 @@ class PenggunaController extends Controller
         Booking::create([
             'user_id' => Auth::id(),
             'jenis_motor' => $validated['jenis_motor'],
+            'plat_nomor' => $request->input('plat_nomor', ''),
             'layanan' => $validated['layanan'],
             'metode' => $validated['metode'],
             'alamat' => $validated['alamat'],

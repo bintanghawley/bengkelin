@@ -2,28 +2,24 @@
 
 @section('content')
 <div class="flex min-h-screen bg-zinc-950 text-white font-sans">
-    
+
     <aside class="w-64 bg-zinc-900 border-r border-zinc-800 flex flex-col fixed h-full z-50">
-        <div class="p-6 flex items-center gap-3 border-b border-zinc-800/50">
-            <div class="h-10 w-10 bg-red-600 rounded-xl flex items-center justify-center shadow-lg -rotate-12">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" class="w-6 h-6 text-white">
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </div>
-            <span class="text-xl font-bengkel tracking-wider">ADMIN<span class="text-red-600">PANEL</span></span>
+        <div class="p-6 flex items-center gap-3 border-b border-zinc-800/100 ">
+          
+            <span class="text-3xl font-bengkel tracking-wider">ADMIN<span class="text-red-600">PANEL</span></span>
         </div>
 
         <nav class="flex-1 px-4 space-y-2 mt-6">
-            <button onclick="showAdminSection('stats')" class="admin-nav w-full flex items-center gap-3 px-4 py-3 bg-red-600 text-white rounded-xl font-bold transition">
+            <button onclick="showAdminSection('stats')" class="admin-nav w-full flex items-center gap-3 px-4 py-3 hover:text-red-800 focus:text-red-600 outline-none  text-white rounded-xl font-bold transition">
                 STATISTIK
             </button>
-            <button onclick="showAdminSection('users')" class="admin-nav w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:bg-zinc-800 rounded-xl font-bold transition">
+            <button onclick="showAdminSection('users')" class="admin-nav w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-red-800 focus:text-red-600 outline-none rounded-xl font-bold transition">
                 KELOLA USER
             </button>
-            <button onclick="showAdminSection('orders')" class="admin-nav w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:bg-zinc-800 rounded-xl font-bold transition">
+            <button onclick="showAdminSection('orders')" class="admin-nav w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-red-800 focus:text-red-600 outline-none rounded-xl font-bold transition">
                  E-COMMERCE
             </button>
-             <button onclick="showAdminSection('booking')" class="admin-nav w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:bg-zinc-800 rounded-xl font-bold transition">
+             <button onclick="showAdminSection('booking')" class="admin-nav w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-red-800 focus:text-red-600 outline-none rounded-xl font-bold transition">
                 ORDER
             </button>
         </nav>
@@ -58,7 +54,7 @@
             </div>
         </section>
 
-        <section id="admin-users" class="admin-section hidden italic">
+        <section id="admin-users" class="admin-section hidden ">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-bengkel uppercase tracking-widest">Kelola Users</h3>
                 <a href="{{ route('admin.users.create') }}" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2 px-4 rounded-lg uppercase tracking-widest">Tambah User</a>
@@ -107,7 +103,7 @@
                 </table>
             </div>
         </section>
-   <section id="admin-orders" class="admin-section hidden italic">
+  <section id="admin-orders" class="admin-section hidden ">
     <div class="grid grid-cols-1 gap-6">
         
         <div class="flex justify-between items-center bg-zinc-900 p-6 rounded-3xl border border-zinc-800 shadow-xl">
@@ -146,10 +142,14 @@
                             <td class="px-6 py-4 font-bold text-white">{{ $product->nama }}</td>
                             <td class="px-6 py-4 text-emerald-500 font-bold">Rp {{ number_format($product->harga, 0, ',', '.') }}</td>
                             <td class="px-6 py-4 text-center">{{ $product->stok }}</td>
-                            <td class="px-6 py-4 text-right">
+                            <td class="px-6 py-4 text-right flex justify-end items-center gap-3">
+                                <button onclick="openModalEditProduk('{{ $product->id }}', '{{ $product->nama }}', '{{ $product->stok }}', '{{ $product->harga }}')" class="text-amber-500 hover:text-white transition font-bold">
+                                    Edit
+                                </button>
+                                
                                 <form action="{{ route('products.destroy', $product->id) }}" method="POST" onsubmit="return confirm('Hapus?')">
                                     @csrf @method('DELETE')
-                                    <button class="text-red-500 hover:text-white transition">Hapus</button>
+                                    <button class="text-red-500 hover:text-white transition font-bold">Hapus</button>
                                 </form>
                             </td>
                         </tr>
@@ -169,7 +169,7 @@
             <div class="p-8">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="font-bengkel text-xl text-red-600 uppercase tracking-widest">Tambah Item Baru</h3>
-                    <button onclick="toggleModalProduk(false)" class="text-zinc-500 hover:text-white transition text-2xl">&times;</button>
+                    <button type="button" onclick="toggleModalProduk(false)" class="text-zinc-500 hover:text-white transition text-2xl">&times;</button>
                 </div>
 
                 <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
@@ -203,6 +203,50 @@
             </div>
         </div>
     </div>
+
+    <div id="modal-edit-produk" class="fixed inset-0 z-[99] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="toggleModalEditProduk(false)"></div>
+        
+        <div class="relative bg-zinc-900 w-full max-w-2xl rounded-3xl border border-zinc-800 shadow-2xl overflow-hidden transform transition-all">
+            <div class="p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-bengkel text-xl text-red-500 uppercase tracking-widest">Update Data Item</h3>
+                    <button type="button" onclick="toggleModalEditProduk(false)" class="text-zinc-500 hover:text-white transition text-2xl">&times;</button>
+                </div>
+
+                <form id="form-edit-produk" method="POST" enctype="multipart/form-data" class="space-y-4">
+                    @csrf
+                    @method('PUT') <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="space-y-1">
+                            <label class="text-[10px] uppercase text-zinc-500 font-bold">Nama Barang</label>
+                            <input type="text" id="edit-nama" name="nama" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-500 outline-none transition">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[10px] uppercase text-zinc-500 font-bold">Stok</label>
+                            <input type="number" id="edit-stok" name="stok" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-500 outline-none transition">
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-1">
+                        <label class="text-[10px] uppercase text-zinc-500 font-bold">Harga Jual (Rp)</label>
+                        <input type="number" id="edit-harga" name="harga" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-500 outline-none transition">
+                    </div>
+
+                    <div class="space-y-1">
+                        <label class="text-[10px] uppercase text-zinc-500 font-bold">Ganti Foto Produk (Opsional)</label>
+                        <input type="file" name="gambar" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-xs text-zinc-400 file:bg-red-500 file:border-0 file:text-white file:rounded-lg file:px-3 file:mr-3">
+                    </div>
+
+                    <div class="pt-4 flex gap-3">
+                        <button type="button" onclick="toggleModalEditProduk(false)" class="flex-1 bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-3 rounded-xl uppercase text-[10px] transition">Batal</button>
+                        <button type="submit" class="flex-[2] bg-emerald-500 hover:bg-emerald-600 text-black font-bold py-3 rounded-xl uppercase text-[10px] tracking-widest transition shadow-lg shadow-red-950/40">Simpan Perubahan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    
 </section>
         <br>   
 
@@ -210,7 +254,7 @@
     <div class="flex justify-between items-center mb-8">
         <div>
             <h3 class="font-bengkel text-2xl text-red-600 uppercase tracking-wider">Management Booking</h3>
-            <p class="text-[10px] text-zinc-500 italic uppercase mt-1">Total Pesanan: {{ $allBookings->count() }} Entry terdeteksi</p>
+            <p class="text-[10px] text-zinc-500  uppercase mt-1">Total Pesanan: {{ $allBookings->count() }} Entry terdeteksi</p>
         </div>
         
     </div>
@@ -238,7 +282,7 @@
                         </td>
                         <td class="px-6 py-4">
                             <span class="block text-red-500 font-bold">{{ $booking->jenis_motor }}</span>
-                            <span class="text-zinc-400 italic text-[10px]">{{ $booking->layanan }}</span>
+                            <span class="text-zinc-400  text-[10px]">{{ $booking->layanan }}</span>
                         </td>
                         <td class="px-6 py-4">
                             <span class="bg-zinc-800 px-2 py-1 rounded border border-zinc-700 text-[9px]">
@@ -300,6 +344,30 @@
         // AUTO-CLOSE MODAL: Jika admin pindah menu saat modal buka, kita tutup paksa modalnya
         toggleModalProduk(false);
     }
+      function toggleModalEditProduk(show) {
+            const modal = document.getElementById('modal-edit-produk');
+            if (!modal) return;
+            if (show) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            } else {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        // Fungsi utama menyuntikkan data baris tabel ke input modal edit
+        function openModalEditProduk(id, nama, stok, harga) {
+            document.getElementById('edit-nama').value = nama;
+            document.getElementById('edit-stok').value = stok;
+            document.getElementById('edit-harga').value = harga;
+
+            // Update action form agar mengarah ke route update (Contoh: /products/12)
+            document.getElementById('form-edit-produk').action = '/products/' + id;
+
+            // Buka Modal Edit
+            toggleModalEditProduk(true);
+        }
 
     // 2. FUNGSI TOGGLE MODAL (POP-UP)
     function toggleModalProduk(show) {
