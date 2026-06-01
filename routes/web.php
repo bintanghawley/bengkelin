@@ -11,6 +11,8 @@ use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home')->name('home');
+Route::view('/servis', 'toko.servis')->name('servis');
+Route::view('/toko/ban-motor', 'toko.ban-motor')->name('toko.banmotor');
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');

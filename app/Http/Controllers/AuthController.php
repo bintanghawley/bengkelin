@@ -51,14 +51,17 @@ class AuthController extends Controller
             'password' => 'required|min:6',
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $validated['name'],
             'nomor_telepon' => $validated['nomor_telepon'],
             'password' => Hash::make($validated['password']),
             'role' => 'pengguna',
         ]);
 
-        return redirect()->route('login')->with('success', 'Pendaftaran berhasil, silakan login');
+        Auth::login($user);
+        $request->session()->regenerate();
+
+        return redirect()->route('home');
     }
 
     public function logout(Request $request)
@@ -72,14 +75,6 @@ class AuthController extends Controller
 
     private function redirectByRole(string $role)
     {
-        if ($role === 'admin') {
-            return redirect()->route('admin.dashboard');
-        }
-
-        if ($role === 'mekanik') {
-            return redirect()->route('mekanik.dashboard');
-        }
-
-        return redirect()->route('pengguna.dashboard');
+        return redirect()->route('home');
     }
 }

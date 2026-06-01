@@ -2,8 +2,16 @@
 
 @section('content')
 <div class="min-h-screen bg-zinc-950">
+    <style>
+        .sidebar-scrollbar-hide {
+            scrollbar-width: none;
+        }
+        .sidebar-scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
     <nav class="relative z-30 flex items-center justify-between px-8 py-6 max-w-7xl mx-auto">
-        <div class="flex items-center gap-2">
+       <div class="flex items-center gap-2">
             <div >
                 <img src="{{ asset('img/image-removebg-preview (3).png') }}" alt="" class="w-20 h-20 object-contain ">
             </div>
@@ -83,7 +91,7 @@
                     </svg>
                 </button>
             </div>
-            <div class="flex-1 overflow-y-auto px-5 py-6 space-y-6">
+            <div class="flex-1 overflow-y-auto px-5 py-6 space-y-6 sidebar-scrollbar-hide">
                 @guest
                     <div class="grid grid-cols-2 gap-3">
                         <a href="{{ route('login') }}" class="text-center font-semibold bg-red-600 text-white px-4 py-3 rounded-full hover:bg-red-700 transition">Login</a>
@@ -145,7 +153,7 @@
                 @endauth
 
                 <div class="space-y-3">
-                    <button type="button" class="w-full text-left py-2 font-semibold text-zinc-900 hover:text-red-600 transition">Servis</button>
+                    <a href="{{ route('servis') }}" class="block w-full text-left py-2 font-semibold text-zinc-900 hover:text-red-600 transition">Servis</a>
                     <details class="group">
                         <summary class="flex items-center justify-between py-2 cursor-pointer font-semibold text-zinc-900">
                             <span class="group-open:text-red-600">Ban Motor</span>
