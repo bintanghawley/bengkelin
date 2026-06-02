@@ -51,9 +51,9 @@
                 </a>
                 <div class="hidden lg:flex items-center gap-10 text-xs font-semibold uppercase tracking-widest text-zinc-400">
                     <a href="{{ route('servis') }}" class="hover:text-white transition">Servis</a>
-                    <a href="{{ route('toko.banmotor') }}" class="text-white transition">Ban Motor</a>
+                    <a href="{{ route('toko.banmotor') }}" class="hover:text-white transition">Ban Motor</a>
                     <a href="{{ route('toko.oli') }}" class="hover:text-white transition">Oli Motor</a>
-                    <a href="{{ route('toko.sparepart') }}" class="hover:text-white transition">Sparepart</a>
+                    <a href="{{ route('toko.sparepart') }}" class="text-white transition">Sparepart</a>
                 </div>
                 <div class="flex items-center gap-3">
                     <button type="button" class="inline-flex items-center justify-center h-10 w-10 rounded-full border border-zinc-800 hover:bg-zinc-900 transition" aria-label="Cari">
@@ -104,7 +104,7 @@
                             <div class="absolute right-0 top-full pt-2 w-72 z-50 opacity-0 translate-y-1 pointer-events-none transition group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto">
                                 <div class="bg-white text-zinc-900 border border-zinc-200 rounded-2xl shadow-2xl p-4 space-y-3">
                                     <p class="text-sm font-semibold">Akun</p>
-                                    <a href="{{ route('login') }}" class="block w-full text-center bg-red-600 hover:bg-red-700 text-white font-semibold py-2.5 rounded-full transition">Login</a>
+                                    <a href="{{ route('login') }}" class="block w-full text-center bg-[#004aad] hover:bg-blue-800 text-white font-semibold py-2.5 rounded-full transition">Login</a>
                                     <a href="{{ route('register') }}" class="block w-full text-center border border-red-600 text-red-600 hover:bg-red-50 font-semibold py-2.5 rounded-full transition">Daftar Akun</a>
                                 </div>
                             </div>
@@ -131,11 +131,9 @@
             </div>
 
             <div class="relative z-10 text-center lg:text-left space-y-6">
-                <p class="text-2xl md:text-3xl font-light tracking-wide fade-up">Perusahaan Ritel Ban Motor</p>
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bengkel uppercase tracking-wide fade-up fade-up-delay">Berkualitas dan Tahan Lama</h1>
-                <p class="text-lg md:text-xl text-blue-100 max-w-xl leading-relaxed fade-up fade-up-delay">
-                    Ratusan ban motor tersedia di Bengkelin. Temukan pilihan terbaik untuk perjalanan harian dan touring.
-                </p>
+                <p class="text-xl font-bold italic tracking-wide fade-up flex gap-4 text-white"><span class="text-yellow-400">X-TEN</span> <span class="text-yellow-400">X-GRADE</span> <span class="text-white">X-SMART</span></p>
+                <h1 class="text-4xl md:text-5xl lg:text-5xl tracking-wide fade-up fade-up-delay font-light">Sparepart Xgrade Ahlinya <span class="font-bold">Naikin<br>Performance Mesin Motormu</span></h1>
+                <p class="text-lg text-blue-100 max-w-xl leading-relaxed fade-up fade-up-delay">Berkualitas seperti spare-part motor baru</p>
             </div>
         </div>
     </section>
@@ -150,7 +148,7 @@
                                 <path d="M21 21l-4.35-4.35M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </div>
-                        <input type="text" placeholder="Cari ban buat motormu disini" class="w-full pl-11 pr-4 py-3 rounded-full border border-zinc-200 text-sm focus:ring-2 focus:ring-red-600 focus:border-transparent outline-none">
+                        <input type="text" placeholder="Cari sparepart buat motormu disini" class="w-full pl-11 pr-4 py-3 rounded-full border border-zinc-200 text-sm focus:ring-2 focus:ring-red-600 focus:border-transparent outline-none">
                     </div>
                 </div>
                 <div class="text-sm text-zinc-500">Menampilkan 0 dari 0 Data</div>
@@ -180,157 +178,76 @@
                                 <p class="text-sm font-semibold mb-4">Kategori</p>
                                 <details open class="group">
                                     <summary class="flex items-center justify-between text-sm font-semibold cursor-pointer">
-                                        <span>Ban</span>
+                                        <span>Sparepart</span>
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500 transition-transform group-open:rotate-180">
                                             <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                         </svg>
                                     </summary>
-                                    <div class="mt-3 space-y-2 text-sm text-zinc-600">
-                                        <label class="flex items-center gap-2">
-                                            <input type="checkbox" class="h-4 w-4 rounded border-zinc-300">
-                                            Ban Motor Matic
+                                    <div class="mt-3 space-y-3 text-sm text-zinc-500 font-medium pl-2">
+                                        <label class="flex items-center gap-2 cursor-pointer hover:text-zinc-800 transition">
+                                            Aki Motor
                                         </label>
-                                        <label class="flex items-center gap-2">
-                                            <input type="checkbox" class="h-4 w-4 rounded border-zinc-300">
-                                            Ban Motor Bebek
+                                        <label class="flex items-center gap-2 cursor-pointer hover:text-zinc-800 transition">
+                                            Filter Udara Motor
                                         </label>
-                                        <label class="flex items-center gap-2">
-                                            <input type="checkbox" class="h-4 w-4 rounded border-zinc-300">
-                                            Ban Motor Sport
+                                        <label class="flex items-center gap-2 cursor-pointer hover:text-zinc-800 transition">
+                                            Kampas Rem
                                         </label>
-                                        <label class="flex items-center gap-2">
-                                            <input type="checkbox" class="h-4 w-4 rounded border-zinc-300">
-                                            Ban Motor Big Matic
+                                        <label class="flex items-center gap-2 cursor-pointer hover:text-zinc-800 transition">
+                                            Cairan Anti Bocor
                                         </label>
                                     </div>
                                 </details>
                             </div>
 
+                            <div>
+                                <p class="text-sm font-semibold mb-4">Kompatibilitas untuk motor</p>
+                                <div class="relative">
+                                    <select class="w-full appearance-none border border-zinc-200 rounded-lg px-4 py-3 text-sm text-zinc-400 bg-white focus:outline-none focus:ring-1 focus:ring-red-600 cursor-pointer">
+                                        <option value="">Cari tipe motormu di sini</option>
+                                    </select>
+                                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                        <svg class="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="space-y-4">
                                 <div class="flex items-center justify-between text-sm">
                                     <span class="font-semibold">Harga</span>
-                                    <span class="text-zinc-500">Rp <span id="harga-min-label">0</span> - Rp <span id="harga-max-label">1.000.000</span></span>
+                                    <span class="text-zinc-500">Rp <span id="harga-min-label">0</span> - Rp <span id="harga-max-label">252.000</span></span>
                                 </div>
                                 <div class="relative h-2">
                                     <div class="absolute inset-0 bg-zinc-200 rounded-full"></div>
                                     <div id="harga-track" class="absolute h-2 bg-red-600 rounded-full"></div>
-                                    <input id="harga-min" type="range" min="0" max="1000000" step="10000" value="0" class="range-input absolute inset-0 w-full h-2 bg-transparent appearance-none z-20">
-                                    <input id="harga-max" type="range" min="0" max="1000000" step="10000" value="1000000" class="range-input absolute inset-0 w-full h-2 bg-transparent appearance-none z-30">
+                                    <input id="harga-min" type="range" min="0" max="252000" step="10000" value="0" class="range-input absolute inset-0 w-full h-2 bg-transparent appearance-none z-20">
+                                    <input id="harga-max" type="range" min="0" max="252000" step="10000" value="252000" class="range-input absolute inset-0 w-full h-2 bg-transparent appearance-none z-30">
                                 </div>
                                 <div class="grid grid-cols-2 gap-3">
                                     <input id="harga-min-input" type="text" value="Rp 0" readonly class="w-full border border-zinc-200 rounded-xl px-3 py-2 text-sm text-zinc-600 bg-zinc-50">
-                                    <input id="harga-max-input" type="text" value="Rp 1.000.000" readonly class="w-full border border-zinc-200 rounded-xl px-3 py-2 text-sm text-zinc-600 bg-zinc-50">
+                                    <input id="harga-max-input" type="text" value="Rp 252.000" readonly class="w-full border border-zinc-200 rounded-xl px-3 py-2 text-sm text-zinc-600 bg-zinc-50">
                                 </div>
                             </div>
 
-                            <details class="group">
-                                <summary class="flex items-center justify-between text-sm font-semibold cursor-pointer">
-                                    <span>Merek</span>
+                            <details open class="group border-t border-zinc-200 pt-6">
+                                <summary class="flex items-center justify-between text-sm font-semibold cursor-pointer mb-4">
+                                    <span class="text-base text-zinc-900">Merek</span>
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500 transition-transform group-open:rotate-180">
                                         <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
                                 </summary>
-                                <div class="mt-3 space-y-2 text-sm text-zinc-600">
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Aspira</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Planeto</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Michelin</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">IRC</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Pirelli</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">EcoStreet</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Presa</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Swallow</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Dunlop</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Kenda</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">FDR</label>
+                                <div class="mt-3 space-y-4 text-sm text-zinc-600">
+                                    <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300 text-blue-600 focus:ring-blue-500"><span class="text-base text-zinc-600">X-Grade</span></label>
+                                    <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300 text-blue-600 focus:ring-blue-500"><span class="text-base text-zinc-600">X-Ten</span></label>
+                                    <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300 text-blue-600 focus:ring-blue-500"><span class="text-base text-zinc-600">MK</span></label>
+                                    <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300 text-blue-600 focus:ring-blue-500"><span class="text-base text-zinc-600">Denso</span></label>
+                                    <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300 text-blue-600 focus:ring-blue-500"><span class="text-base text-zinc-600">Jossz</span></label>
+                                    <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300 text-blue-600 focus:ring-blue-500"><span class="text-base text-zinc-600">X-Guard</span></label>
+                                    <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300 text-blue-600 focus:ring-blue-500"><span class="text-base text-zinc-600">X-Smart</span></label>
                                 </div>
                             </details>
 
-                            <details class="group">
-                                <summary class="flex items-center justify-between text-sm font-semibold cursor-pointer">
-                                    <span>Ukuran Ban</span>
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500 transition-transform group-open:rotate-180">
-                                        <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                </summary>
-                                <div class="mt-3 space-y-2 text-sm text-zinc-600">
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">70/90</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">80/80</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">80/90</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">90/80</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">90/90</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">100/80</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">100/90</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">110/70</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">110/80</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">110/90</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">120/70</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">120/80</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">130/70</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">130/80</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">140/70</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">150/60</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">150/70</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">160/60</label>
-                                </div>
-                            </details>
-
-                            <details class="group">
-                                <summary class="flex items-center justify-between text-sm font-semibold cursor-pointer">
-                                    <span>Posisi Ban</span>
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500 transition-transform group-open:rotate-180">
-                                        <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                </summary>
-                                <div class="mt-3 space-y-2 text-sm text-zinc-600">
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Belakang</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Depan</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Depan/Belakang</label>
-                                </div>
-                            </details>
-
-                            <details class="group">
-                                <summary class="flex items-center justify-between text-sm font-semibold cursor-pointer">
-                                    <span>Material</span>
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500 transition-transform group-open:rotate-180">
-                                        <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                </summary>
-                                <div class="mt-3 space-y-2 text-sm text-zinc-600">
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Medium Compound</label>
-                                </div>
-                            </details>
-
-                            <details class="group">
-                                <summary class="flex items-center justify-between text-sm font-semibold cursor-pointer">
-                                    <span>Diameter</span>
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500 transition-transform group-open:rotate-180">
-                                        <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                </summary>
-                                <div class="mt-3 space-y-2 text-sm text-zinc-600">
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Ring 10</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Ring 11</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Ring 12</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Ring 13</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Ring 14</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Ring 17</label>
-                                </div>
-                            </details>
-
-                            <details class="group">
-                                <summary class="flex items-center justify-between text-sm font-semibold cursor-pointer">
-                                    <span>Tipe</span>
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500 transition-transform group-open:rotate-180">
-                                        <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                </summary>
-                                <div class="mt-3 space-y-2 text-sm text-zinc-600">
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Tubeless</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Tubetype</label>
-                                </div>
-                            </details>
-
-                            <button type="button" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-full">Tampilkan</button>
+                            <button type="button" class="w-full bg-[#004aad] hover:bg-blue-800 text-white font-semibold py-3 rounded-full">Tampilkan</button>
                         </div>
                     </div>
                 </aside>
@@ -400,7 +317,7 @@
         const minInput = document.getElementById('harga-min-input');
         const maxInput = document.getElementById('harga-max-input');
         const track = document.getElementById('harga-track');
-        const maxValue = 1000000;
+        const maxValue = 252000;
         const gap = 10000;
 
         const formatRupiah = (value) => {

@@ -27,7 +27,7 @@
                 height: 18px;
                 width: 18px;
                 border-radius: 9999px;
-                background: #ef4444;
+                background: #2563eb;
                 border: 2px solid #ffffff;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
                 cursor: pointer;
@@ -36,7 +36,7 @@
                 height: 18px;
                 width: 18px;
                 border-radius: 9999px;
-                background: #ef4444;
+                background: #2563eb;
                 border: 2px solid #ffffff;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
                 cursor: pointer;
@@ -51,8 +51,8 @@
                 </a>
                 <div class="hidden lg:flex items-center gap-10 text-xs font-semibold uppercase tracking-widest text-zinc-400">
                     <a href="{{ route('servis') }}" class="hover:text-white transition">Servis</a>
-                    <a href="{{ route('toko.banmotor') }}" class="text-white transition">Ban Motor</a>
-                    <a href="{{ route('toko.oli') }}" class="hover:text-white transition">Oli Motor</a>
+                    <a href="{{ route('toko.banmotor') }}" class="hover:text-white transition">Ban Motor</a>
+                    <a href="{{ route('toko.oli') }}" class="text-white transition">Oli Motor</a>
                     <a href="{{ route('toko.sparepart') }}" class="hover:text-white transition">Sparepart</a>
                 </div>
                 <div class="flex items-center gap-3">
@@ -125,17 +125,35 @@
                     <div class="absolute -top-6 -left-6 h-24 w-24 bg-white/15 rounded-full blur-2xl"></div>
                     <div class="absolute -bottom-10 -right-12 h-32 w-32 bg-black/25 rounded-full blur-2xl"></div>
                     <div class="relative rounded-[2rem] bg-[#0a2f86] p-4 shadow-[0_30px_80px_rgba(0,0,0,0.35)]">
-                        <img src="{{ asset('img/image.png') }}" alt="Ban Motor" class="w-full h-full object-cover rounded-[1.5rem] aspect-[4/3]">
+                        <img src="{{ asset('img/image.png') }}" alt="Oli Motor" class="w-full h-full object-cover rounded-[1.5rem] aspect-[4/3]">
                     </div>
                 </div>
             </div>
 
             <div class="relative z-10 text-center lg:text-left space-y-6">
-                <p class="text-2xl md:text-3xl font-light tracking-wide fade-up">Perusahaan Ritel Ban Motor</p>
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bengkel uppercase tracking-wide fade-up fade-up-delay">Berkualitas dan Tahan Lama</h1>
-                <p class="text-lg md:text-xl text-blue-100 max-w-xl leading-relaxed fade-up fade-up-delay">
-                    Ratusan ban motor tersedia di Bengkelin. Temukan pilihan terbaik untuk perjalanan harian dan touring.
-                </p>
+                <p class="text-2xl md:text-3xl font-light tracking-wide fade-up">Menjaga Suhu Mesin Tetap Stabil,</p>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bengkel uppercase tracking-wide fade-up fade-up-delay">Dijamin Tahan Lama Hingga 5000 KM</h1>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
++                    <div class="inline-flex items-center gap-3 rounded-full bg-blue-900/40 border border-blue-200/10 px-4 py-2 text-sm text-blue-100">
++                        <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-blue-200/10 text-blue-100">
++                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
++                                <path d="M9 12l2 2 4-4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
++                                <path d="M12 3l7 4v5c0 4.418-3.134 7.418-7 9-3.866-1.582-7-4.582-7-9V7l7-4z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
++                            </svg>
++                        </span>
++                        Bersertifikasi SNI &amp; JASO (JAPAN)
++                    </div>
++                    <div class="inline-flex items-center gap-3 rounded-full bg-blue-900/40 border border-blue-200/10 px-4 py-2 text-sm text-blue-100">
++                        <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-blue-200/10 text-blue-100">
++                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
++                                <path d="M6 3h12v18H6z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
++                                <path d="M9 7h6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
++                                <path d="M9 11h6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
++                            </svg>
++                        </span>
++                        Teknologi Full Synthetic-Ester
++                    </div>
++                </div>
             </div>
         </div>
     </section>
@@ -150,7 +168,7 @@
                                 <path d="M21 21l-4.35-4.35M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </div>
-                        <input type="text" placeholder="Cari ban buat motormu disini" class="w-full pl-11 pr-4 py-3 rounded-full border border-zinc-200 text-sm focus:ring-2 focus:ring-red-600 focus:border-transparent outline-none">
+                        <input type="text" placeholder="Cari oli buat motormu disini" class="w-full pl-11 pr-4 py-3 rounded-full border border-zinc-200 text-sm focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none">
                     </div>
                 </div>
                 <div class="text-sm text-zinc-500">Menampilkan 0 dari 0 Data</div>
@@ -180,7 +198,7 @@
                                 <p class="text-sm font-semibold mb-4">Kategori</p>
                                 <details open class="group">
                                     <summary class="flex items-center justify-between text-sm font-semibold cursor-pointer">
-                                        <span>Ban</span>
+                                        <span>Oli</span>
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500 transition-transform group-open:rotate-180">
                                             <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                         </svg>
@@ -188,19 +206,15 @@
                                     <div class="mt-3 space-y-2 text-sm text-zinc-600">
                                         <label class="flex items-center gap-2">
                                             <input type="checkbox" class="h-4 w-4 rounded border-zinc-300">
-                                            Ban Motor Matic
+                                            Oli Motor Matic
                                         </label>
                                         <label class="flex items-center gap-2">
                                             <input type="checkbox" class="h-4 w-4 rounded border-zinc-300">
-                                            Ban Motor Bebek
+                                            Oli Motor Bebek
                                         </label>
                                         <label class="flex items-center gap-2">
                                             <input type="checkbox" class="h-4 w-4 rounded border-zinc-300">
-                                            Ban Motor Sport
-                                        </label>
-                                        <label class="flex items-center gap-2">
-                                            <input type="checkbox" class="h-4 w-4 rounded border-zinc-300">
-                                            Ban Motor Big Matic
+                                            Oli Motor Sport
                                         </label>
                                     </div>
                                 </details>
@@ -209,128 +223,72 @@
                             <div class="space-y-4">
                                 <div class="flex items-center justify-between text-sm">
                                     <span class="font-semibold">Harga</span>
-                                    <span class="text-zinc-500">Rp <span id="harga-min-label">0</span> - Rp <span id="harga-max-label">1.000.000</span></span>
+                                    <span class="text-zinc-500">Rp <span id="harga-min-label">0</span> - Rp <span id="harga-max-label">140.000</span></span>
                                 </div>
                                 <div class="relative h-2">
                                     <div class="absolute inset-0 bg-zinc-200 rounded-full"></div>
-                                    <div id="harga-track" class="absolute h-2 bg-red-600 rounded-full"></div>
-                                    <input id="harga-min" type="range" min="0" max="1000000" step="10000" value="0" class="range-input absolute inset-0 w-full h-2 bg-transparent appearance-none z-20">
-                                    <input id="harga-max" type="range" min="0" max="1000000" step="10000" value="1000000" class="range-input absolute inset-0 w-full h-2 bg-transparent appearance-none z-30">
+                                    <div id="harga-track" class="absolute h-2 bg-blue-600 rounded-full"></div>
+                                    <input id="harga-min" type="range" min="0" max="140000" step="1000" value="0" class="range-input absolute inset-0 w-full h-2 bg-transparent appearance-none z-20">
+                                    <input id="harga-max" type="range" min="0" max="140000" step="1000" value="140000" class="range-input absolute inset-0 w-full h-2 bg-transparent appearance-none z-30">
                                 </div>
                                 <div class="grid grid-cols-2 gap-3">
                                     <input id="harga-min-input" type="text" value="Rp 0" readonly class="w-full border border-zinc-200 rounded-xl px-3 py-2 text-sm text-zinc-600 bg-zinc-50">
-                                    <input id="harga-max-input" type="text" value="Rp 1.000.000" readonly class="w-full border border-zinc-200 rounded-xl px-3 py-2 text-sm text-zinc-600 bg-zinc-50">
+                                    <input id="harga-max-input" type="text" value="Rp 140.000" readonly class="w-full border border-zinc-200 rounded-xl px-3 py-2 text-sm text-zinc-600 bg-zinc-50">
                                 </div>
                             </div>
 
                             <details class="group">
                                 <summary class="flex items-center justify-between text-sm font-semibold cursor-pointer">
-                                    <span>Merek</span>
+                                    <span>Kekentalan</span>
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500 transition-transform group-open:rotate-180">
                                         <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
                                 </summary>
                                 <div class="mt-3 space-y-2 text-sm text-zinc-600">
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Aspira</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Planeto</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Michelin</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">IRC</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Pirelli</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">EcoStreet</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Presa</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Swallow</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Dunlop</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Kenda</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">FDR</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">10W30</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">10W40</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">20W50</label>
                                 </div>
                             </details>
 
                             <details class="group">
                                 <summary class="flex items-center justify-between text-sm font-semibold cursor-pointer">
-                                    <span>Ukuran Ban</span>
+                                    <span>Ukuran</span>
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500 transition-transform group-open:rotate-180">
                                         <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
                                 </summary>
                                 <div class="mt-3 space-y-2 text-sm text-zinc-600">
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">70/90</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">80/80</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">80/90</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">90/80</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">90/90</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">100/80</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">100/90</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">110/70</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">110/80</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">110/90</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">120/70</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">120/80</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">130/70</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">130/80</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">140/70</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">150/60</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">150/70</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">160/60</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">1L</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">30ML</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">40ML</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">120ML</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">200 ml</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">200ML</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">500ML</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">800 mL</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">800 ml</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">900 mL</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">900 ml</label>
                                 </div>
                             </details>
 
                             <details class="group">
                                 <summary class="flex items-center justify-between text-sm font-semibold cursor-pointer">
-                                    <span>Posisi Ban</span>
+                                    <span>Tipe Oli</span>
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500 transition-transform group-open:rotate-180">
                                         <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
                                 </summary>
                                 <div class="mt-3 space-y-2 text-sm text-zinc-600">
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Belakang</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Depan</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Depan/Belakang</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Oli Double Ester</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Oli Ester</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Oli Gear</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Oli Semi Sintetik</label>
                                 </div>
                             </details>
 
-                            <details class="group">
-                                <summary class="flex items-center justify-between text-sm font-semibold cursor-pointer">
-                                    <span>Material</span>
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500 transition-transform group-open:rotate-180">
-                                        <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                </summary>
-                                <div class="mt-3 space-y-2 text-sm text-zinc-600">
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Medium Compound</label>
-                                </div>
-                            </details>
-
-                            <details class="group">
-                                <summary class="flex items-center justify-between text-sm font-semibold cursor-pointer">
-                                    <span>Diameter</span>
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500 transition-transform group-open:rotate-180">
-                                        <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                </summary>
-                                <div class="mt-3 space-y-2 text-sm text-zinc-600">
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Ring 10</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Ring 11</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Ring 12</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Ring 13</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Ring 14</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Ring 17</label>
-                                </div>
-                            </details>
-
-                            <details class="group">
-                                <summary class="flex items-center justify-between text-sm font-semibold cursor-pointer">
-                                    <span>Tipe</span>
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500 transition-transform group-open:rotate-180">
-                                        <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                </summary>
-                                <div class="mt-3 space-y-2 text-sm text-zinc-600">
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Tubeless</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300">Tubetype</label>
-                                </div>
-                            </details>
-
-                            <button type="button" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-full">Tampilkan</button>
+                            <button type="button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-full">Tampilkan</button>
                         </div>
                     </div>
                 </aside>
@@ -400,8 +358,8 @@
         const minInput = document.getElementById('harga-min-input');
         const maxInput = document.getElementById('harga-max-input');
         const track = document.getElementById('harga-track');
-        const maxValue = 1000000;
-        const gap = 10000;
+        const maxValue = 140000;
+        const gap = 1000;
 
         const formatRupiah = (value) => {
             return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');

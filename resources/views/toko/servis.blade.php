@@ -57,12 +57,8 @@
                 <div class="hidden lg:flex items-center gap-10 text-xs font-semibold uppercase tracking-widest text-zinc-400">
                     <a href="{{ route('servis') }}" class="hover:text-white transition">Servis</a>
                     <a href="{{ route('toko.banmotor') }}" class="hover:text-white transition">Ban Motor</a>
-                    <a href="#" class="hover:text-white transition">Oli Motor</a>
-                    <a href="#" class="hover:text-white transition">Sparepart</a>
-                    <a href="{{ route('home') }}#location" class="hover:text-white transition">Lokasi Toko</a>
-                    <a href="#" class="hover:text-white transition">Promo</a>
-                    <a href="#" class="hover:text-white transition">Buku Servis</a>
-                    <a href="#" class="hover:text-white transition">Blog</a>
+                    <a href="{{ route('toko.oli') }}" class="hover:text-white transition">Oli Motor</a>
+                    <a href="{{ route('toko.sparepart') }}" class="hover:text-white transition">Sparepart</a>
                 </div>
                 <div class="flex items-center gap-3">
                     <button type="button" class="inline-flex items-center justify-center h-10 w-10 rounded-full border border-zinc-800 hover:bg-zinc-900 transition" aria-label="Cari">
