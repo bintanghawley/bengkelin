@@ -3,6 +3,10 @@
 @section('content')
 <div class="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-white transition-colors duration-300">
     <style>
+        /* Sembunyikan tombol toggle melayang bawaan layout di halaman utama */
+        #floating-theme-toggle-container {
+            display: none !important;
+        }
         .sidebar-scrollbar-hide {
             scrollbar-width: none;
         }
@@ -57,7 +61,7 @@
                             <circle cx="18" cy="20" r="1" />
                         </svg>
                     </a>
-                    <div class="absolute right-0 mt-3 w-80 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white border border-zinc-200 dark:border-zinc-850 rounded-2xl shadow-2xl z-50 opacity-0 translate-y-2 pointer-events-none transition group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto">
+                    <div class="absolute right-0 mt-3 w-80 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-2xl z-50 opacity-0 translate-y-2 pointer-events-none transition group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto">
                         <div class="p-5">
                             <p class="text-lg font-semibold">Keranjang</p>
                             <div class="mt-5 flex flex-col items-center text-center">
@@ -77,6 +81,17 @@
                     </div>
                 </div>
             @endauth
+            <!-- Theme Toggle Button -->
+            <button type="button" class="theme-toggle-btn inline-flex items-center justify-center h-11 w-11 rounded-full border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition" aria-label="Ganti Tema">
+                <!-- Moon icon (shows in light mode) -->
+                <svg class="theme-toggle-dark-icon hidden w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                </svg>
+                <!-- Sun icon (shows in dark mode) -->
+                <svg class="theme-toggle-light-icon hidden w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 5a7 7 0 100 14 7 7 0 000-14z" />
+                </svg>
+            </button>
             <button type="button" id="sidebar-open" class="inline-flex items-center justify-center h-11 w-11 rounded-full border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition" aria-label="Menu" aria-controls="sidebar" aria-expanded="false">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
                     <path d="M4 6h16M4 12h16M4 18h10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -86,14 +101,14 @@
     </nav>
 
     <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 opacity-0 pointer-events-none transition-opacity duration-300 z-40"></div>
-    <aside id="sidebar" class="fixed top-0 right-0 h-screen w-[85vw] max-w-sm bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white translate-x-full transition-transform duration-300 z-50 shadow-2xl border-l border-zinc-200 dark:border-zinc-850">
+    <aside id="sidebar" class="fixed top-0 right-0 h-screen w-[85vw] max-w-sm bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white translate-x-full transition-transform duration-300 z-50 shadow-2xl border-l border-zinc-200 dark:border-zinc-800">
         <div class="h-full flex flex-col">
             <div class="flex items-center justify-between p-5 border-b border-zinc-200 dark:border-zinc-800">
                 <a href="{{ route('home') }}" class="flex items-center gap-2">
                     <img src="{{ asset('img/image-removebg-preview (3).png') }}" alt="" class="w-12 h-12 object-contain">
                     <span class="text-xl font-bengkel tracking-wider text-zinc-900 dark:text-white">Bengkel<span class="text-red-600">in</span></span>
                 </a>
-                <button type="button" id="sidebar-close" class="inline-flex items-center justify-center h-9 w-9 rounded-full border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-850 transition text-zinc-700 dark:text-zinc-350" aria-label="Tutup menu">
+                <button type="button" id="sidebar-close" class="inline-flex items-center justify-center h-9 w-9 rounded-full border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition text-zinc-700 dark:text-zinc-300" aria-label="Tutup menu">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
                         <path d="M6 6l12 12M18 6l-12 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
@@ -147,7 +162,7 @@
                                 </button>
                             </form>
                         </div>
-                        <div class="flex items-center justify-between text-sm text-zinc-750 dark:text-zinc-300">
+                        <div class="flex items-center justify-between text-sm text-zinc-700 dark:text-zinc-300">
                             <div class="inline-flex items-center gap-2">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500 dark:text-zinc-400">
                                     <path d="M7 7h10M7 12h10M7 17h6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -165,7 +180,7 @@
                     <details class="group">
                         <summary class="flex items-center justify-between py-2 cursor-pointer font-semibold text-zinc-900 dark:text-white">
                             <span class="group-open:text-red-600">Ban Motor</span>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-650 dark:text-zinc-400 transition-transform group-open:rotate-180 group-open:text-red-600">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-600 dark:text-zinc-400 transition-transform group-open:rotate-180 group-open:text-red-600">
                                 <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </summary>
@@ -179,7 +194,7 @@
                     <details class="group">
                         <summary class="flex items-center justify-between py-2 cursor-pointer font-semibold text-zinc-900 dark:text-white">
                             <span class="group-open:text-red-600">Oli Motor</span>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-650 dark:text-zinc-400 transition-transform group-open:rotate-180 group-open:text-red-600">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-600 dark:text-zinc-400 transition-transform group-open:rotate-180 group-open:text-red-600">
                                 <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </summary>
@@ -192,7 +207,7 @@
                     <details class="group">
                         <summary class="flex items-center justify-between py-2 cursor-pointer font-semibold text-zinc-900 dark:text-white">
                             <span class="group-open:text-red-600">Sparepart</span>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-650 dark:text-zinc-400 transition-transform group-open:rotate-180 group-open:text-red-600">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-600 dark:text-zinc-400 transition-transform group-open:rotate-180 group-open:text-red-600">
                                 <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </summary>
@@ -217,7 +232,7 @@
                 <h1 class="text-7xl md:text-8xl font-bengkel leading-none tracking-tight mb-6 text-zinc-900 dark:text-white">
                     KEEP YOUR ENGINE <br> <span class="text-red-600">PERFORMANCE</span>
                 </h1>
-                <p class="text-zinc-650 dark:text-zinc-400 text-lg max-w-lg mx-auto lg:mx-0 mb-10 leading-relaxed">
+                <p class="text-zinc-600 dark:text-zinc-400 text-lg max-w-lg mx-auto lg:mx-0 mb-10 leading-relaxed">
                     Solusi servis kendaraan sat-set tanpa antre. Mekanik pro, sparepart ori, harga gak bikin dompet mati.
                 </p>
                 
@@ -230,18 +245,18 @@
                     </a>
                 </div>
 
-                <div class="mt-16 grid grid-cols-3 gap-8 border-t border-zinc-200 dark:border-zinc-850 pt-8">
+                <div class="mt-16 grid grid-cols-3 gap-8 border-t border-zinc-200 dark:border-zinc-800 pt-8">
                     <div>
                         <p class="text-3xl font-bengkel text-zinc-900 dark:text-white">500+</p>
-                        <p class="text-xs text-zinc-500 dark:text-zinc-450 uppercase tracking-widest mt-1">Customers</p>
+                        <p class="text-xs text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mt-1">Customers</p>
                     </div>
                     <div>
                         <p class="text-3xl font-bengkel text-zinc-900 dark:text-white">10+</p>
-                        <p class="text-xs text-zinc-500 dark:text-zinc-450 uppercase tracking-widest mt-1">Expert Mechanics</p>
+                        <p class="text-xs text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mt-1">Expert Mechanics</p>
                     </div>
                     <div>
                         <p class="text-3xl font-bengkel text-zinc-900 dark:text-white">24/7</p>
-                        <p class="text-xs text-zinc-500 dark:text-zinc-450 uppercase tracking-widest mt-1">Support</p>
+                        <p class="text-xs text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mt-1">Support</p>
                     </div>
                 </div>
             </div>
@@ -257,13 +272,13 @@
             </div>
         </section>
 
-        <section id="about" class="max-w-7xl mx-auto px-8 py-24 border-t border-zinc-200 dark:border-zinc-850">
+        <section id="about" class="max-w-7xl mx-auto px-8 py-24 border-t border-zinc-200 dark:border-zinc-800">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 <div class="space-y-6">
                     <h2 class="text-5xl font-bengkel text-zinc-900 dark:text-white leading-tight uppercase">
                         Bukan Sekedar <br> <span class="text-red-600">Bengkel Biasa</span>
                     </h2>
-                    <p class="text-zinc-650 dark:text-zinc-400 leading-relaxed">
+                    <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed">
                         Berawal dari keresahan antrean panjang di bengkel konvensional, <span class="text-zinc-900 dark:text-white font-bold">Bengkelin</span> hadir sebagai solusi digital untuk para pengendara yang menghargai waktu. Kami menggabungkan presisi mekanik profesional dengan kemudahan teknologi.
                     </p>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
@@ -287,7 +302,7 @@
             </div>
         </section>
 
-        <section id="location" class="max-w-7xl mx-auto px-8 py-24 border-t border-zinc-200 dark:border-zinc-850">
+        <section id="location" class="max-w-7xl mx-auto px-8 py-24 border-t border-zinc-200 dark:border-zinc-800">
             <div class="text-center mb-16">
                 <p class="text-red-600 font-bold text-xs tracking-[0.3em] mb-4 uppercase">Kunjungi Workshop Kami</p>
                 <h2 class="text-4xl font-bengkel text-zinc-900 dark:text-white uppercase">Bengkelin Sidoarjo</h2>

@@ -24,14 +24,14 @@
 <body class="h-full bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-white antialiased transition-colors duration-300">
     
     <!-- Tombol Toggle Dark/Light Mode Melayang -->
-    <div class="fixed top-4 right-4 z-50">
-        <button id="theme-toggle" type="button" class="text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 focus:outline-none focus:ring-4 focus:ring-zinc-200 dark:focus:ring-zinc-700 rounded-lg text-sm p-2.5 shadow-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 transition-all duration-200">
+    <div id="floating-theme-toggle-container" class="fixed top-4 right-4 z-50">
+        <button id="theme-toggle" type="button" class="theme-toggle-btn text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 focus:outline-none focus:ring-4 focus:ring-zinc-200 dark:focus:ring-zinc-700 rounded-lg text-sm p-2.5 shadow-sm border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 transition-all duration-200">
             <!-- Ikon Bulan (Aktif jika sedang di Light Mode) -->
-            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <svg id="theme-toggle-dark-icon" class="theme-toggle-dark-icon hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
             </svg>
             <!-- Ikon Matahari (Aktif jika sedang di Dark Mode) -->
-            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <svg id="theme-toggle-light-icon" class="theme-toggle-light-icon hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.46 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
             </svg>
         </button>
@@ -92,44 +92,58 @@
         window.addEventListener('pageshow', bindPhoneInputs);
         window.addEventListener('load', () => setTimeout(bindPhoneInputs, 50));
 
-        // --- LOGIC TOGGLE DARK/LIGHT MODE ---
-        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
-        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
-        const themeToggleBtn = document.getElementById('theme-toggle');
-
-        if (themeToggleBtn && themeToggleDarkIcon && themeToggleLightIcon) {
-            // Tampilkan ikon yang sesuai berdasarkan tema saat ini
-            if (document.documentElement.classList.contains('dark')) {
-                themeToggleLightIcon.classList.remove('hidden');
-            } else {
-                themeToggleDarkIcon.classList.remove('hidden');
-            }
-
-            themeToggleBtn.addEventListener('click', function() {
-                // Bergantian ikon
-                themeToggleDarkIcon.classList.toggle('hidden');
-                themeToggleLightIcon.classList.toggle('hidden');
-
-                // Toggle tema dan simpan preferensi ke localStorage
-                if (localStorage.getItem('color-theme')) {
-                    if (localStorage.getItem('color-theme') === 'light') {
-                        document.documentElement.classList.add('dark');
-                        localStorage.setItem('color-theme', 'dark');
-                    } else {
-                        document.documentElement.classList.remove('dark');
-                        localStorage.setItem('color-theme', 'light');
-                    }
+        // --- LOGIC TOGGLE DARK/LIGHT MODE (Universal class-based toggler) ---
+        const updateThemeToggleIcons = () => {
+            const isDark = document.documentElement.classList.contains('dark');
+            
+            document.querySelectorAll('.theme-toggle-dark-icon').forEach(el => {
+                if (isDark) {
+                    el.classList.add('hidden');
                 } else {
-                    if (document.documentElement.classList.contains('dark')) {
-                        document.documentElement.classList.remove('dark');
-                        localStorage.setItem('color-theme', 'light');
-                    } else {
-                        document.documentElement.classList.add('dark');
-                        localStorage.setItem('color-theme', 'dark');
-                    }
+                    el.classList.remove('hidden');
                 }
             });
-        }
+            document.querySelectorAll('.theme-toggle-light-icon').forEach(el => {
+                if (isDark) {
+                    el.classList.remove('hidden');
+                } else {
+                    el.classList.add('hidden');
+                }
+            });
+
+            // Backward compatibility for old IDs
+            const idDarkIcon = document.getElementById('theme-toggle-dark-icon');
+            const idLightIcon = document.getElementById('theme-toggle-light-icon');
+            if (idDarkIcon && idLightIcon) {
+                if (isDark) {
+                    idDarkIcon.classList.add('hidden');
+                    idLightIcon.classList.remove('hidden');
+                } else {
+                    idDarkIcon.classList.remove('hidden');
+                    idLightIcon.classList.add('hidden');
+                }
+            }
+        };
+
+        // Run initialization
+        updateThemeToggleIcons();
+
+        document.addEventListener('click', function(event) {
+            const targetBtn = event.target.closest('.theme-toggle-btn') || event.target.closest('#theme-toggle');
+            if (!targetBtn) return;
+
+            // Toggle theme and save preference to localStorage
+            const currentTheme = localStorage.getItem('color-theme') || (document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+            if (currentTheme === 'light') {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            }
+            
+            updateThemeToggleIcons();
+        });
     </script>
 </body>
 </html>

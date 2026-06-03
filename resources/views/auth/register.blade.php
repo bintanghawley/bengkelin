@@ -1,9 +1,9 @@
 @extends('layouts.guest')
 
 @section('content')
-<div class="min-h-screen bg-zinc-950 text-white flex flex-col">
+<div class="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-white flex flex-col transition-colors duration-300">
     <div class="px-6 pt-6">
-        <a href="{{ route('home') }}" class="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-zinc-500 hover:text-white transition border border-zinc-800 rounded-full px-4 py-2">
+        <a href="{{ route('home') }}" class="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition border border-zinc-200 dark:border-zinc-800 rounded-full px-4 py-2 bg-white dark:bg-zinc-900">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
                 <path d="M15 18l-6-6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
@@ -12,7 +12,7 @@
     </div>
 
     <div class="flex-1 flex items-center justify-center p-6 pt-4">
-        <div class="max-w-4xl w-full grid grid-cols-1 md:grid-cols-2 bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl border border-zinc-800">
+        <div class="max-w-4xl w-full grid grid-cols-1 md:grid-cols-2 bg-white dark:bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl border border-zinc-200 dark:border-zinc-800 transition-colors duration-300">
         
         <div class="p-10 flex flex-col justify-center bg-red-600 shadow-inner relative overflow-hidden">
             <div class="absolute -bottom-10 -left-10 opacity-10 rotate-12">
@@ -36,7 +36,7 @@
             </div>
         </div>
 
-        <div class="p-10 bg-zinc-900 flex flex-col justify-center">
+        <div class="p-10 bg-white dark:bg-zinc-900 flex flex-col justify-center transition-colors duration-300">
             {{-- Tampilkan Error Validasi Jika Ada --}}
             @if ($errors->any())
                 <div class="mb-4 p-3 bg-red-500/10 border border-red-500/50 rounded-xl text-red-500 text-[10px] font-bold uppercase tracking-widest">
@@ -51,22 +51,22 @@
             <form action="{{ route('register') }}" method="POST" class="space-y-4">
                 @csrf
                 <div>
-                    <label class="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1 ml-1">Full Name</label>
+                    <label class="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-1 ml-1">Full Name</label>
                     <input type="text" name="name" value="{{ old('name') }}" required placeholder="Masukkan nama lengkap"
-                           class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-red-600 outline-none transition text-sm">
+                           class="w-full bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl px-4 py-3 text-zinc-900 dark:text-white focus:ring-2 focus:ring-red-600 outline-none transition text-sm placeholder:text-zinc-400 dark:placeholder:text-zinc-500">
                 </div>
 
                 <div>
-                    <label class="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1 ml-1">Nomor Telepon</label>
+                    <label class="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-1 ml-1">Nomor Telepon</label>
                     <input type="tel" name="nomor_telepon" value="{{ old('nomor_telepon') }}" required placeholder="08xxxxxxxxxx"
                            inputmode="numeric" autocomplete="tel" maxlength="16" data-phone-input
-                           class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-red-600 outline-none transition text-sm">
+                           class="w-full bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl px-4 py-3 text-zinc-900 dark:text-white focus:ring-2 focus:ring-red-600 outline-none transition text-sm placeholder:text-zinc-400 dark:placeholder:text-zinc-500">
                 </div>
 
                 <div>
-                    <label class="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1 ml-1">Password</label>
+                    <label class="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-1 ml-1">Password</label>
                     <input type="password" name="password" required placeholder="Minimal 6 Karakter"
-                           class="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-red-600 outline-none transition text-sm">
+                           class="w-full bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl px-4 py-3 text-zinc-900 dark:text-white focus:ring-2 focus:ring-red-600 outline-none transition text-sm placeholder:text-zinc-400 dark:placeholder:text-zinc-500">
                 </div>
                 
                 <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 rounded-xl mt-4 shadow-lg shadow-red-900/20 transition active:scale-95 uppercase tracking-widest text-sm">
@@ -74,8 +74,8 @@
                 </button>
             </form>
 
-            <p class="mt-8 text-center text-xs text-zinc-500 uppercase tracking-widest">
-                Already member? <a href="{{ route('login') }}" class="text-white font-bold hover:text-red-500 transition">Sign In Now</a>
+            <p class="mt-8 text-center text-xs text-zinc-500 dark:text-zinc-400 uppercase tracking-widest">
+                Already member? <a href="{{ route('login') }}" class="text-zinc-900 dark:text-white font-bold hover:text-red-500 transition">Sign In Now</a>
             </p>
         </div>
     </div>

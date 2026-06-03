@@ -11,6 +11,12 @@ export default defineConfig({
         tailwindcss(),
     ],
     server: {
+        // 1. Maksa Vite buat dengerin local IP / localhost dengan benar
+        host: 'localhost',
+        // 2. Biar hot reload lancar jaya pas diakses lewat domain Laragon (bengkelin.test)
+        hmr: {
+            host: 'localhost',
+        },
         watch: {
             ignored: ['**/storage/framework/views/**'],
         },
