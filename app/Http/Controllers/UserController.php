@@ -25,10 +25,7 @@ class UserController extends Controller
             return $checkAdmin;
         }
 
-        $users = User::orderBy('id', 'desc')->get();
-
-        return view('admin.users.index', compact('users'));
-
+        return redirect()->route('admin.dashboard');
     }
 
     public function create()

@@ -27,8 +27,7 @@
             </button>
         </nav>
 
-        <div class="p-4 space-y-2 border-t border-gray-200 dark:border-zinc-800">
-            <a href="{{ route('dashboard') }}" class="block text-center text-[10px] text-gray-500 dark:text-zinc-500 hover:text-gray-900 dark:hover:text-white uppercase tracking-widest border border-gray-300 dark:border-zinc-800 py-2 rounded-lg">Kembali ke User UI</a>
+        <div class="p-4 border-t border-gray-200 dark:border-zinc-800">
             <a href="{{ route('home') }}" class="block text-center text-[10px] text-gray-500 dark:text-zinc-500 hover:text-gray-900 dark:hover:text-white uppercase tracking-widest border border-gray-300 dark:border-zinc-800 py-2 rounded-lg">Kembali ke Beranda</a>
         </div>
     </aside>
@@ -58,99 +57,12 @@
         </section>
 
         <section id="admin-users" class="admin-section hidden ">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-bengkel uppercase tracking-widest">Kelola Users</h3>
-                <button onclick="toggleModalUser(true)" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2 px-4 rounded-lg uppercase tracking-widest">Tambah User</button>
-            </div>
-            <div class="bg-zinc-900 rounded-3xl border border-zinc-800 overflow-hidden">
-                <table class="w-full text-left text-sm">
-                    <thead class="bg-zinc-800 text-zinc-400 uppercase text-[10px] tracking-widest">
-                        <tr>
-                            <th class="px-6 py-4">No</th>
-                            <th class="px-6 py-4">Nama</th>
-                            <th class="px-6 py-4">No. Telepon</th>
-                            <th class="px-6 py-4">Role</th>
-                            <th class="px-6 py-4">Dibuat pada</th>
-                            <th class="px-6 py-4">Diperbarui pada</th>
-                            <th class="px-6 py-4">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-zinc-800">
-                        @forelse($users as $user)
-                        <tr class="hover:bg-zinc-800/30 transition">
-                            <td class="px-6 py-4">{{ $loop->iteration }}</td>
-                            <td class="px-6 py-4 font-bold">{{ $user->name }}</td>
-                            <td class="px-6 py-4 text-zinc-500">{{ $user->nomor_telepon ? implode('-', str_split($user->nomor_telepon, 4)) : '-' }}</td>
-                            <td class="px-6 py-4">
-                                <span class="px-2 py-1 rounded text-[10px] font-bold {{ $user->role == 'mekanik' ? 'bg-blue-500/20 text-blue-400' : 'bg-zinc-700 text-zinc-300' }}">
-                                    {{ strtoupper($user->role) }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 text-zinc-400">{{ $user->created_at }}</td>
-                            <td class="px-6 py-4 text-zinc-400">{{ $user->updated_at }}</td>
-                            <td class="px-6 py-4">
-                                <button type="button" onclick="openModalEditUser('{{ $user->id }}', '{{ htmlspecialchars($user->name, ENT_QUOTES) }}', '{{ $user->nomor_telepon }}', '{{ $user->role }}')" class="text-yellow-400 hover:text-yellow-300 text-[10px] font-bold uppercase tracking-tighter mr-3">Edit</button>
-                                <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" class="inline" onsubmit="return confirm('Yakin hapus user ini?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="text-red-500 hover:text-red-400 font-bold uppercase text-[10px] tracking-tighter">Hapus</button>
-                                </form>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="7" class="px-6 py-6 text-center text-zinc-400">Data user belum ada</td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
+            @include('admin.users.index')
         </section>
 
         <!-- KELOLA SERVIS -->
         <section id="admin-services" class="admin-section hidden ">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-bengkel uppercase tracking-widest">Kelola Layanan Servis</h3>
-                <button onclick="toggleModalService(true)" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2 px-4 rounded-lg uppercase tracking-widest">Tambah Layanan</button>
-            </div>
-            <div class="bg-zinc-900 rounded-3xl border border-zinc-800 overflow-hidden">
-                <table class="w-full text-left text-sm">
-                    <thead class="bg-zinc-800 text-zinc-400 uppercase text-[10px] tracking-widest">
-                        <tr>
-                            <th class="px-6 py-4">No</th>
-                            <th class="px-6 py-4">Nama Servis</th>
-                            <th class="px-6 py-4">Harga Mulai</th>
-                            <th class="px-6 py-4">Estimasi</th>
-                            <th class="px-6 py-4">Jml Pekerjaan</th>
-                            <th class="px-6 py-4 text-right">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-zinc-800">
-                        @forelse($services as $service)
-                        <tr class="hover:bg-zinc-800/30 transition">
-                            <td class="px-6 py-4">{{ $loop->iteration }}</td>
-                            <td class="px-6 py-4 font-bold">{{ strtoupper($service->nama) }}</td>
-                            <td class="px-6 py-4 text-emerald-500 font-bold">Rp {{ number_format($service->harga_mulai, 0, ',', '.') }}</td>
-                            <td class="px-6 py-4 text-zinc-400">{{ $service->estimasi_waktu }}</td>
-                            <td class="px-6 py-4 text-zinc-400">{{ $service->items_count }} Item</td>
-                            <td class="px-6 py-4 text-right">
-                                <a href="{{ route('servis.detail', $service->slug) }}" target="_blank" class="text-blue-400 hover:text-blue-300 text-[10px] font-bold uppercase tracking-tighter mr-3">Detail</a>
-                                <button onclick="openModalEditService('{{ $service->id }}', '{{ htmlspecialchars($service->nama, ENT_QUOTES) }}', '{{ htmlspecialchars($service->deskripsi, ENT_QUOTES) }}', '{{ $service->harga_mulai }}', '{{ htmlspecialchars($service->estimasi_waktu, ENT_QUOTES) }}', {{ json_encode($service->items->pluck('nama_pekerjaan')->toArray()) }})" class="text-yellow-400 hover:text-yellow-300 text-[10px] font-bold uppercase tracking-tighter mr-3">Edit</button>
-                                <form action="{{ route('admin.services.destroy', $service->id) }}" method="POST" class="inline" onsubmit="return confirm('Yakin hapus servis ini?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="text-red-500 hover:text-red-400 font-bold uppercase text-[10px] tracking-tighter">Hapus</button>
-                                </form>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="6" class="px-6 py-6 text-center text-zinc-400">Data servis belum ada</td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
+            @include('admin.services.index')
         </section>
   <section id="admin-orders" class="admin-section hidden ">
     <div class="grid grid-cols-1 gap-6">
@@ -380,186 +292,13 @@
     </section>
 
     <!-- Modals for User -->
-    <div id="modal-user" class="fixed inset-0 z-[99] hidden flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="toggleModalUser(false)"></div>
-        <div class="relative bg-zinc-900 w-full max-w-lg rounded-3xl border border-zinc-800 shadow-2xl overflow-hidden transform transition-all">
-            <div class="p-8">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="font-bengkel text-xl text-red-600 uppercase tracking-widest">Tambah User Baru</h3>
-                    <button type="button" onclick="toggleModalUser(false)" class="text-zinc-500 hover:text-white transition text-2xl">&times;</button>
-                </div>
-                <form action="{{ route('admin.users.store') }}" method="POST" class="space-y-4">
-                    @csrf
-                    <div class="space-y-1">
-                        <label class="text-[10px] uppercase text-zinc-500 font-bold">Nama</label>
-                        <input type="text" name="name" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-600 outline-none transition">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] uppercase text-zinc-500 font-bold">Nomor Telepon</label>
-                        <input type="text" name="nomor_telepon" required placeholder="08xxxxxxxxx" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-600 outline-none transition">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] uppercase text-zinc-500 font-bold">Password</label>
-                        <input type="password" name="password" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-600 outline-none transition">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] uppercase text-zinc-500 font-bold">Role</label>
-                        <select name="role" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-600 outline-none transition">
-                            <option value="">Pilih Role</option>
-                            <option value="admin">Admin</option>
-                            <option value="mekanik">Mekanik</option>
-                            <option value="pengguna">Pengguna</option>
-                        </select>
-                    </div>
-                    <div class="pt-4 flex gap-3">
-                        <button type="button" onclick="toggleModalUser(false)" class="flex-1 bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-3 rounded-xl uppercase text-[10px] transition">Batal</button>
-                        <button type="submit" class="flex-[2] bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl uppercase text-[10px] tracking-widest transition shadow-lg shadow-red-900/40">Simpan</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div id="modal-edit-user" class="fixed inset-0 z-[99] hidden flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="toggleModalEditUser(false)"></div>
-        <div class="relative bg-zinc-900 w-full max-w-lg rounded-3xl border border-zinc-800 shadow-2xl overflow-hidden transform transition-all">
-            <div class="p-8">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="font-bengkel text-xl text-yellow-500 uppercase tracking-widest">Edit Data User</h3>
-                    <button type="button" onclick="toggleModalEditUser(false)" class="text-zinc-500 hover:text-white transition text-2xl">&times;</button>
-                </div>
-                <form id="form-edit-user" method="POST" class="space-y-4">
-                    @csrf @method('PUT')
-                    <div class="space-y-1">
-                        <label class="text-[10px] uppercase text-zinc-500 font-bold">Nama</label>
-                        <input type="text" id="e_user_name" name="name" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-yellow-500 outline-none transition">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] uppercase text-zinc-500 font-bold">Nomor Telepon</label>
-                        <input type="text" id="e_user_phone" name="nomor_telepon" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-yellow-500 outline-none transition">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] uppercase text-zinc-500 font-bold">Password (Kosongkan jika tidak diubah)</label>
-                        <input type="password" name="password" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-yellow-500 outline-none transition">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] uppercase text-zinc-500 font-bold">Role</label>
-                        <select id="e_user_role" name="role" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-yellow-500 outline-none transition">
-                            <option value="admin">Admin</option>
-                            <option value="mekanik">Mekanik</option>
-                            <option value="pengguna">Pengguna</option>
-                        </select>
-                    </div>
-                    <div class="pt-4 flex gap-3">
-                        <button type="button" onclick="toggleModalEditUser(false)" class="flex-1 bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-3 rounded-xl uppercase text-[10px] transition">Batal</button>
-                        <button type="submit" class="flex-[2] bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 rounded-xl uppercase text-[10px] tracking-widest transition">Simpan</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+    @include('admin.users.create')
+    @include('admin.users.edit')
 
     <!-- Modals for Services -->
-    <div id="modal-service" class="fixed inset-0 z-[99] hidden flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="toggleModalService(false)"></div>
-        <div class="relative bg-zinc-900 w-full max-w-2xl rounded-3xl border border-zinc-800 shadow-2xl overflow-hidden transform transition-all max-h-[90vh] overflow-y-auto custom-scrollbar">
-            <div class="p-8">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="font-bengkel text-xl text-red-600 uppercase tracking-widest">Tambah Layanan Servis</h3>
-                    <button type="button" onclick="toggleModalService(false)" class="text-zinc-500 hover:text-white transition text-2xl">&times;</button>
-                </div>
-                <form action="{{ route('admin.services.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
-                    @csrf
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="space-y-1">
-                            <label class="text-[10px] uppercase text-zinc-500 font-bold">Nama Servis</label>
-                            <input type="text" name="nama" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-600 outline-none transition">
-                        </div>
-                        <div class="space-y-1">
-                            <label class="text-[10px] uppercase text-zinc-500 font-bold">Harga Mulai (Rp)</label>
-                            <input type="number" name="harga_mulai" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-600 outline-none transition">
-                        </div>
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] uppercase text-zinc-500 font-bold">Estimasi Waktu</label>
-                        <input type="text" name="estimasi_waktu" placeholder="Misal: 30-60 Menit" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-600 outline-none transition">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] uppercase text-zinc-500 font-bold">Deskripsi Singkat</label>
-                        <textarea name="deskripsi" rows="3" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-600 outline-none transition"></textarea>
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] uppercase text-zinc-500 font-bold">Gambar Layanan (Opsional)</label>
-                        <input type="file" name="gambar" accept="image/*" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-xs text-zinc-400 file:bg-red-600 file:border-0 file:text-white file:rounded-lg file:px-3 file:mr-3">
-                    </div>
-                    
-                    <hr class="border-zinc-800 my-4">
-                    <h4 class="text-sm font-bold text-white uppercase">Daftar Pekerjaan (Checklist)</h4>
-                    <div id="service-items-container" class="space-y-3">
-                        <div class="flex items-center gap-2">
-                            <input type="text" name="items[]" placeholder="Misal: Ganti Oli" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-600 outline-none transition">
-                            <button type="button" onclick="this.parentElement.remove()" class="text-zinc-500 hover:text-red-500 px-3 py-3 border border-zinc-800 rounded-xl bg-zinc-950">X</button>
-                        </div>
-                    </div>
-                    <button type="button" onclick="addServiceItemRow('service-items-container')" class="text-xs text-red-500 hover:text-red-400 font-bold">+ Tambah Pekerjaan Lain</button>
-
-                    <div class="pt-4 flex gap-3">
-                        <button type="button" onclick="toggleModalService(false)" class="flex-1 bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-3 rounded-xl uppercase text-[10px] transition">Batal</button>
-                        <button type="submit" class="flex-[2] bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl uppercase text-[10px] tracking-widest transition shadow-lg shadow-red-900/40">Simpan Layanan</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div id="modal-edit-service" class="fixed inset-0 z-[99] hidden flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="toggleModalEditService(false)"></div>
-        <div class="relative bg-zinc-900 w-full max-w-2xl rounded-3xl border border-zinc-800 shadow-2xl overflow-hidden transform transition-all max-h-[90vh] overflow-y-auto custom-scrollbar">
-            <div class="p-8">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="font-bengkel text-xl text-yellow-500 uppercase tracking-widest">Edit Layanan Servis</h3>
-                    <button type="button" onclick="toggleModalEditService(false)" class="text-zinc-500 hover:text-white transition text-2xl">&times;</button>
-                </div>
-                <form id="form-edit-service" method="POST" enctype="multipart/form-data" class="space-y-4">
-                    @csrf @method('PUT')
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="space-y-1">
-                            <label class="text-[10px] uppercase text-zinc-500 font-bold">Nama Servis</label>
-                            <input type="text" id="e_serv_nama" name="nama" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-yellow-500 outline-none transition">
-                        </div>
-                        <div class="space-y-1">
-                            <label class="text-[10px] uppercase text-zinc-500 font-bold">Harga Mulai (Rp)</label>
-                            <input type="number" id="e_serv_harga" name="harga_mulai" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-yellow-500 outline-none transition">
-                        </div>
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] uppercase text-zinc-500 font-bold">Estimasi Waktu</label>
-                        <input type="text" id="e_serv_waktu" name="estimasi_waktu" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-yellow-500 outline-none transition">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] uppercase text-zinc-500 font-bold">Deskripsi Singkat</label>
-                        <textarea id="e_serv_desc" name="deskripsi" rows="3" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-yellow-500 outline-none transition"></textarea>
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] uppercase text-zinc-500 font-bold">Gambar (Biarkan jika tidak diganti)</label>
-                        <input type="file" name="gambar" accept="image/*" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-xs text-zinc-400 file:bg-yellow-500 file:border-0 file:text-black file:rounded-lg file:px-3 file:mr-3">
-                    </div>
-                    
-                    <hr class="border-zinc-800 my-4">
-                    <h4 class="text-sm font-bold text-white uppercase">Daftar Pekerjaan (Checklist)</h4>
-                    <div id="e-service-items-container" class="space-y-3">
-                        <!-- JS WILL INJECT HERE -->
-                    </div>
-                    <button type="button" onclick="addServiceItemRow('e-service-items-container', '', true)" class="text-xs text-yellow-500 hover:text-yellow-400 font-bold">+ Tambah Pekerjaan Lain</button>
-
-                    <div class="pt-4 flex gap-3">
-                        <button type="button" onclick="toggleModalEditService(false)" class="flex-1 bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-3 rounded-xl uppercase text-[10px] transition">Batal</button>
-                        <button type="submit" class="flex-[2] bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 rounded-xl uppercase text-[10px] tracking-widest transition shadow-lg">Simpan Perubahan</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+    @include('admin.services.create')
+    @include('admin.services.edit')
+    @include('admin.services.show')
     </main>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -666,7 +405,165 @@
     document.addEventListener('keydown', function(event) {
         if (event.key === "Escape") {
             toggleModalProduk(false);
+            toggleModalEditProduk(false);
+            toggleModalUser(false);
+            toggleModalEditUser(false);
+            toggleModalService(false);
+            toggleModalEditService(false);
+            toggleModalDetailService(false);
         }
     });
+
+    // 4. USER MODALS
+    function toggleModalUser(show) {
+        const modal = document.getElementById('modal-user');
+        if (!modal) return;
+        if (show) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        } else {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    function toggleModalEditUser(show) {
+        const modal = document.getElementById('modal-edit-user');
+        if (!modal) return;
+        if (show) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        } else {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    function openModalEditUser(id, name, phone, role) {
+        document.getElementById('e_user_name').value = name;
+        document.getElementById('e_user_phone').value = phone;
+        document.getElementById('e_user_role').value = role;
+        document.getElementById('form-edit-user').action = '/admin/users/' + id;
+        toggleModalEditUser(true);
+    }
+
+    // 5. SERVICE MODALS
+    function toggleModalService(show) {
+        const modal = document.getElementById('modal-service');
+        if (!modal) return;
+        if (show) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        } else {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    function toggleModalEditService(show) {
+        const modal = document.getElementById('modal-edit-service');
+        if (!modal) return;
+        if (show) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        } else {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    function openModalEditService(id, nama, deskripsi, harga, estimasi, items) {
+        document.getElementById('e_serv_nama').value = nama;
+        document.getElementById('e_serv_harga').value = harga;
+        document.getElementById('e_serv_waktu').value = estimasi;
+        document.getElementById('e_serv_desc').value = deskripsi;
+        document.getElementById('form-edit-service').action = '/admin/services/' + id;
+
+        const container = document.getElementById('e-service-items-container');
+        container.innerHTML = '';
+        if (Array.isArray(items)) {
+            items.forEach(item => {
+                addServiceItemRow('e-service-items-container', item, true);
+            });
+        }
+        toggleModalEditService(true);
+    }
+
+    function toggleModalDetailService(show) {
+        const modal = document.getElementById('modal-detail-service');
+        if (!modal) return;
+        if (show) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        } else {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    function openModalDetailService(nama, deskripsi, harga, estimasi, gambarUrl, items) {
+        document.getElementById('d_serv_nama').innerText = nama;
+        document.getElementById('d_serv_desc').innerText = deskripsi;
+        document.getElementById('d_serv_harga').innerText = harga;
+        document.getElementById('d_serv_waktu').innerText = estimasi;
+
+        const imgEl = document.getElementById('d_serv_img');
+        const noImgEl = document.getElementById('d_serv_no_img');
+        if (gambarUrl) {
+            imgEl.src = gambarUrl;
+            imgEl.classList.remove('hidden');
+            noImgEl.classList.add('hidden');
+        } else {
+            imgEl.classList.add('hidden');
+            noImgEl.classList.remove('hidden');
+        }
+
+        const container = document.getElementById('d-service-items-container');
+        container.innerHTML = '';
+        if (Array.isArray(items)) {
+            items.forEach(item => {
+                const el = document.createElement('div');
+                el.className = 'flex items-center gap-3 bg-zinc-950/80 border border-zinc-800/60 rounded-xl px-4 py-3';
+                el.innerHTML = `
+                    <div class="flex-shrink-0 w-6 h-6 rounded-full bg-emerald-900/40 border border-emerald-700/60 flex items-center justify-center">
+                        <svg class="w-3 h-3 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M5 13l4 4L19 7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <span class="text-sm text-zinc-200">${item}</span>
+                `;
+                container.appendChild(el);
+            });
+        }
+
+        toggleModalDetailService(true);
+    }
+
+    function addServiceItemRow(containerId, value = '', isEdit = false) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        const row = document.createElement('div');
+        row.className = 'flex items-center gap-2';
+
+        const focusBorderClass = isEdit ? 'focus:border-yellow-500' : 'focus:border-red-600';
+        const btnHoverClass = isEdit ? 'hover:text-yellow-500' : 'hover:text-red-500';
+
+        row.innerHTML = `
+            <input type="text" name="items[]" value="${value}" placeholder="Misal: Ganti Oli" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white ${focusBorderClass} outline-none transition">
+            <button type="button" onclick="this.parentElement.remove()" class="text-zinc-500 ${btnHoverClass} px-3 py-3 border border-zinc-800 rounded-xl bg-zinc-950">X</button>
+        `;
+        container.appendChild(row);
+    }
 </script>
 @endsection

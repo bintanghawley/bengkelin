@@ -1,74 +1,38 @@
-@extends('layouts.guest')
-
-@section('content')
-<div class="flex min-h-screen bg-zinc-950 text-white font-sans">
-    <aside class="w-64 bg-zinc-900 border-r border-zinc-800 flex flex-col fixed h-full z-50">
-        <div class="p-6 flex items-center gap-3 border-b border-zinc-800/50">
-            <div class="h-10 w-10 bg-red-600 rounded-xl flex items-center justify-center shadow-lg -rotate-12">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" class="w-6 h-6 text-white">
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+<div id="modal-edit-user" class="fixed inset-0 z-[99] hidden flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="toggleModalEditUser(false)"></div>
+    <div class="relative bg-zinc-900 w-full max-w-lg rounded-3xl border border-zinc-800 shadow-2xl overflow-hidden transform transition-all">
+        <div class="p-8">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="font-bengkel text-xl text-yellow-500 uppercase tracking-widest">Edit Data User</h3>
+                <button type="button" onclick="toggleModalEditUser(false)" class="text-zinc-500 hover:text-white transition text-2xl">&times;</button>
             </div>
-            <span class="text-xl font-bengkel tracking-wider">ADMIN<span class="text-red-600">PANEL</span></span>
+            <form id="form-edit-user" method="POST" class="space-y-4">
+                @csrf @method('PUT')
+                <div class="space-y-1">
+                    <label class="text-[10px] uppercase text-zinc-500 font-bold">Nama</label>
+                    <input type="text" id="e_user_name" name="name" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-yellow-500 outline-none transition">
+                </div>
+                <div class="space-y-1">
+                    <label class="text-[10px] uppercase text-zinc-500 font-bold">Nomor Telepon</label>
+                    <input type="text" id="e_user_phone" name="nomor_telepon" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-yellow-500 outline-none transition">
+                </div>
+                <div class="space-y-1">
+                    <label class="text-[10px] uppercase text-zinc-500 font-bold">Password (Kosongkan jika tidak diubah)</label>
+                    <input type="password" name="password" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-yellow-500 outline-none transition">
+                </div>
+                <div class="space-y-1">
+                    <label class="text-[10px] uppercase text-zinc-500 font-bold">Role</label>
+                    <select id="e_user_role" name="role" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-yellow-500 outline-none transition">
+                        <option value="admin">Admin</option>
+                        <option value="mekanik">Mekanik</option>
+                        <option value="pengguna">Pengguna</option>
+                    </select>
+                </div>
+                <div class="pt-4 flex gap-3">
+                    <button type="button" onclick="toggleModalEditUser(false)" class="flex-1 bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-3 rounded-xl uppercase text-[10px] transition">Batal</button>
+                    <button type="submit" class="flex-[2] bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 rounded-xl uppercase text-[10px] tracking-widest transition">Simpan</button>
+                </div>
+            </form>
         </div>
-
-        <nav class="flex-1 px-4 space-y-2 mt-6">
-            <a href="{{ route('admin.dashboard') }}" class="admin-nav w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:bg-zinc-800 rounded-xl font-bold transition">
-                DASHBOARD
-            </a>
-            <a href="{{ route('admin.users.index') }}" class="admin-nav w-full flex items-center gap-3 px-4 py-3 bg-red-600 text-white rounded-xl font-bold transition">
-                KELOLA USER
-            </a>
-        </nav>
-
-        <div class="p-4 space-y-2">
-            <a href="{{ route('home') }}" class="block text-center text-[10px] text-zinc-500 hover:text-white uppercase tracking-widest border border-zinc-800 py-2 rounded-lg">Kembali ke Beranda</a>
-        </div>
-    </aside>
-
-    <main class="flex-1 ml-64 p-10">
-        <div class="flex items-center justify-between mb-6">
-            <h1 class="text-2xl font-bengkel uppercase tracking-widest">Edit User</h1>
-            <a href="{{ route('admin.users.index') }}" class="px-4 py-2 bg-zinc-800 rounded-md text-sm">Kembali</a>
-        </div>
-
-        @if ($errors->any())
-            <div class="bg-red-900/30 border border-red-700 text-red-300 px-4 py-3 rounded mb-4">
-                <ul class="list-disc pl-5">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-        <form action="{{ route('admin.users.update', $user->id) }}" method="POST" class="space-y-4 max-w-xl">
-            @csrf
-            @method('PUT')
-            <div>
-                <label class="block text-sm mb-1">Nama</label>
-                <input type="text" name="name" value="{{ old('name', $user->name) }}" class="w-full bg-zinc-900 border border-zinc-700 rounded px-3 py-2">
-            </div>
-            <div>
-                <label class="block text-sm mb-1">Nomor Telepon</label>
-                <input type="tel" name="nomor_telepon" value="{{ old('nomor_telepon', $user->nomor_telepon) }}" inputmode="numeric" autocomplete="tel" maxlength="16" data-phone-input class="w-full bg-zinc-900 border border-zinc-700 rounded px-3 py-2">
-                <p class="text-[10px] text-zinc-500 mt-2">Gunakan format 08xxxxxxxxxx (tanpa +62).</p>
-            </div>
-            <div>
-                <label class="block text-sm mb-1">Password Baru</label>
-                <input type="password" name="password" class="w-full bg-zinc-900 border border-zinc-700 rounded px-3 py-2">
-            </div>
-            <div>
-                <label class="block text-sm mb-1">Role</label>
-                <select name="role" class="w-full bg-zinc-900 border border-zinc-700 rounded px-3 py-2">
-                    <option value="">Pilih Role</option>
-                    <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>Admin</option>
-                    <option value="mekanik" {{ old('role', $user->role) == 'mekanik' ? 'selected' : '' }}>Mekanik</option>
-                    <option value="pengguna" {{ old('role', $user->role) == 'pengguna' ? 'selected' : '' }}>Pengguna</option>
-                </select>
-            </div>
-            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2 px-4 rounded-lg uppercase tracking-widest">Update</button>
-        </form>
-    </main>
+    </div>
 </div>
-@endsection

@@ -14,8 +14,7 @@ class ServiceController extends Controller
 {
     public function index()
     {
-        $services = Service::withCount('items')->orderBy('created_at', 'desc')->get();
-        return view('admin.services.index', compact('services'));
+        return redirect()->route('admin.dashboard');
     }
 
     public function create()
