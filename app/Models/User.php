@@ -33,4 +33,14 @@ class User extends Authenticatable
         $normalized = trim(preg_replace('/\s+/', ' ', $value));
         $this->attributes['name'] = ucwords(strtolower($normalized));
     }
+
+    public function serviceBookings()
+    {
+        return $this->hasMany(ServiceBooking::class, 'user_id');
+    }
+
+    public function mechanicBookings()
+    {
+        return $this->hasMany(ServiceBooking::class, 'mechanic_id');
+    }
 }

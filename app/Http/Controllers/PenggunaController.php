@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\Product;
+use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,18 +19,22 @@ class PenggunaController extends Controller
         return null;
     }
 
-   public function dashboard()
-{
-    $check = $this->checkPengguna();
-    if ($check) {
-        return $check;
-    }
+    public function dashboard()
+    {
+        $check = $this->checkPengguna();
+        if ($check) {
+            return $check;
+        }
 
-    $user = Auth::user();
-    $bookings = \App\Models\Booking::where('user_id', $user->id)->orderBy('id', 'desc')->get();
-    $products = Product::all();
-    return view('pengguna.dashboard', compact('user', 'products','bookings'));
-}
+        $user = Auth::user();
+        $bookings = \App\Models\ServiceBooking::with(['service', 'mechanic'])
+            ->where('user_id', $user->id)
+            ->orderBy('id', 'desc')
+            ->get();
+        $products = Product::all();
+        $services = Service::withCount('items')->orderBy('nama', 'asc')->get();
+        return view('pengguna.dashboard', compact('user', 'products', 'bookings', 'services'));
+    }
 
     public function bookingForm()
     {

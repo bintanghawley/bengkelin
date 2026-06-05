@@ -89,7 +89,7 @@
             </div>
 
             {{-- Tombol Booking --}}
-            <a href="#"
+            <a href="{{ route('booking.create', $service->slug) }}"
                class="block w-full text-center bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-4 px-6 rounded-2xl transition-all duration-200 shadow-lg shadow-red-900/40 text-sm uppercase tracking-widest">
                 🔧 Booking Servis
             </a>
@@ -137,7 +137,7 @@
 
             {{-- CTA Mobile --}}
             <div class="lg:hidden">
-                <a href="#"
+                <a href="{{ route('booking.create', $service->slug) }}"
                    class="block w-full text-center bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-4 px-6 rounded-2xl transition shadow-lg shadow-red-900/40 text-sm uppercase tracking-widest">
                     🔧 Booking Servis
                 </a>

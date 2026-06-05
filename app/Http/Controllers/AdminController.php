@@ -26,7 +26,7 @@ class AdminController extends Controller
         $products = Product::orderBy('created_at', 'desc')->get();
 
         // AMBIL DATA BOOKING
-        $allBookings = Booking::with('user')
+        $allBookings = \App\Models\ServiceBooking::with(['user', 'service', 'mechanic'])
                         ->orderBy('created_at', 'desc')
                         ->get();
 

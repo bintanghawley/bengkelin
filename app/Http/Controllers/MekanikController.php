@@ -24,7 +24,10 @@ class MekanikController extends Controller
             return $check;
         }
 
-        $bookings = Booking::with('user')->orderBy('id', 'desc')->get();
+        $bookings = \App\Models\ServiceBooking::with(['user', 'service'])
+            ->where('mechanic_id', \Illuminate\Support\Facades\Auth::id())
+            ->orderBy('id', 'desc')
+            ->get();
 
         return view('mekanik.dashboard', compact('bookings'));
     }

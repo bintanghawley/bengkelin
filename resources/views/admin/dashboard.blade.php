@@ -22,9 +22,9 @@
             <button onclick="showAdminSection('orders')" class="admin-nav w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 focus:text-red-600 outline-none rounded-xl font-bold transition">
                  E-COMMERCE
             </button>
-             <button onclick="showAdminSection('booking')" class="admin-nav w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 focus:text-red-600 outline-none rounded-xl font-bold transition">
-                ORDER
-            </button>
+             <a href="{{ route('admin.bookings.index') }}" class="admin-nav w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 rounded-xl font-bold transition">
+                BOOKING MASUK
+             </a>
         </nav>
 
         <div class="p-4 border-t border-gray-200 dark:border-zinc-800">
@@ -217,7 +217,9 @@
             <h3 class="font-bengkel text-2xl text-red-600 uppercase tracking-wider">Management Booking</h3>
             <p class="text-[10px] text-zinc-500  uppercase mt-1">Total Pesanan: {{ $allBookings->count() }} Entry terdeteksi</p>
         </div>
-        
+        <a href="{{ route('admin.bookings.index') }}" class="bg-red-600 hover:bg-red-700 text-white text-[10px] font-bold px-6 py-3 rounded-xl uppercase tracking-widest transition">
+            Kelola Semua →
+        </a>
     </div>
 
     <div class="overflow-x-auto">
@@ -225,11 +227,11 @@
             <thead class="bg-zinc-950 text-zinc-500 border-b border-zinc-800">
                 <tr>
                     <th class="px-6 py-4 font-bold text-white">Customer</th>
-                    <th class="px-6 py-4 font-bold text-white">Unit & Layanan</th>
-                    <th class="px-6 py-4 font-bold text-white">Metode</th>
+                    <th class="px-6 py-4 font-bold text-white">Kendaraan & Layanan</th>
                     <th class="px-6 py-4 font-bold text-white">Plat Nomor</th>
-                    <th class="px-6 py-4 font-bold text-center text-white">Schedule</th>
-                    <th class="px-6 py-4 font-bold text-right text-white">Action</th>
+                    <th class="px-6 py-4 font-bold text-center text-white">Jadwal</th>
+                    <th class="px-6 py-4 font-bold text-center text-white">Status</th>
+                    <th class="px-6 py-4 font-bold text-right text-white">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-zinc-800/50 text-zinc-300">
@@ -238,17 +240,12 @@
                         <td class="px-6 py-4">
                             <div class="flex flex-col">
                                 <span class="text-white font-bold">{{ $booking->user->name ?? 'Guest' }}</span>
-                                <span class="text-[9px] text-zinc-500 lowercase italic">UID: {{ $booking->user_id }}</span>
+                                <span class="text-[9px] text-zinc-500 lowercase italic">Telp: {{ $booking->user->nomor_telepon ?? '-' }}</span>
                             </div>
                         </td>
                         <td class="px-6 py-4">
-                            <span class="block text-red-500 font-bold">{{ $booking->jenis_motor }}</span>
-                            <span class="text-zinc-400  text-[10px]">{{ $booking->layanan }}</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="bg-zinc-800 px-2 py-1 rounded border border-zinc-700 text-[9px]">
-                                {{ $booking->metode }}
-                            </span>
+                            <span class="block text-red-500 font-bold">{{ $booking->nama_kendaraan }}</span>
+                            <span class="text-zinc-400 text-[10px]">{{ $booking->service->nama ?? '-' }}</span>
                         </td>
                         <td class="px-6 py-4">
                             <span class="bg-zinc-800 px-2 py-1 rounded border border-zinc-700 text-[9px]">
@@ -256,29 +253,27 @@
                             </span>
                         </td>
                         <td class="px-6 py-4 text-center">
-                            <span class="text-white">{{ \Carbon\Carbon::parse($booking->tanggal)->format('d/m/Y') }}</span>
+                            <span class="text-white">{{ $booking->tanggal_booking ? $booking->tanggal_booking->format('d/m/Y') : '-' }}</span>
+                            <span class="block text-[9px] text-zinc-500">{{ \Carbon\Carbon::parse($booking->jam_booking)->format('H:i') }} WIB</span>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="px-3 py-1 rounded-full text-[9px] font-bold border 
+                                {{ $booking->status === 'pending' ? 'bg-orange-900/20 text-orange-500 border-orange-800' : '' }}
+                                {{ $booking->status === 'ditugaskan' ? 'bg-blue-900/20 text-blue-500 border-blue-800' : '' }}
+                                {{ $booking->status === 'diproses' ? 'bg-yellow-900/20 text-yellow-500 border-yellow-800' : '' }}
+                                {{ $booking->status === 'selesai' ? 'bg-emerald-900/20 text-emerald-500 border-emerald-800' : '' }}
+                                {{ $booking->status === 'dibatalkan' ? 'bg-red-900/20 text-red-500 border-red-800' : '' }}
+                            ">
+                                {{ strtoupper($booking->status) }}
+                            </span>
                         </td>
                         <td class="px-6 py-4 text-right">
-                            <div class="flex justify-end gap-2">
-                                <!-- Status Badge -->
-                                <span class="px-3 py-1 rounded-full text-[9px] font-bold border 
-                                    {{ $booking->status == 'pending' ? 'bg-orange-900/20 text-orange-500 border-orange-800' : '' }}
-                                    {{ $booking->status == 'proses' ? 'bg-blue-900/20 text-blue-500 border-blue-800' : '' }}
-                                    {{ $booking->status == 'selesai' ? 'bg-emerald-900/20 text-emerald-500 border-emerald-800' : '' }}
-                                ">
-                                    {{ $booking->status }}
-                                </span>
-                                
-                                <!-- Dropdown Edit Status (Simulasi) -->
-                                <button class="text-zinc-500 hover:text-white transition-colors">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                                </button>
-                            </div>
+                            <a href="{{ route('admin.bookings.show', $booking->id) }}" class="text-blue-400 hover:text-blue-300 font-bold transition">Kelola</a>
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="px-6 py-16 text-center">
+                        <td colspan="6" class="px-6 py-16 text-center">
                             <div class="flex flex-col items-center justify-center space-y-3 opacity-20">
                                 <svg class="w-12 h-12 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                 <p class="italic tracking-[0.2em] text-sm">Tidak ada antrean servis saat ini</p>

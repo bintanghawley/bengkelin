@@ -38,6 +38,11 @@ class Service extends Model
         return $this->hasMany(ServiceItem::class);
     }
 
+    public function serviceBookings()
+    {
+        return $this->hasMany(ServiceBooking::class, 'service_id');
+    }
+
     public function getHargaMulaiFormattedAttribute(): string
     {
         return 'Rp ' . number_format($this->harga_mulai, 0, ',', '.');

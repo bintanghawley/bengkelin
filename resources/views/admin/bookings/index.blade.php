@@ -1,18 +1,20 @@
 @extends('layouts.guest')
 
 @section('content')
-<div class="flex min-h-screen font-sans bg-zinc-950">
+<div class="flex min-h-screen font-sans">
+    
+    <!-- Sidebar Admin -->
     <aside class="w-64 bg-gray-50 dark:bg-zinc-900 border-r border-gray-200 dark:border-zinc-800 flex flex-col fixed h-full z-50">
-        <div class="p-6 flex items-center gap-3 border-b border-gray-200 dark:border-zinc-800/50">
-            <span class="text-3xl font-bengkel tracking-wider dark:text-white">MEKANIK<span class="text-red-600">PANEL</span></span>
+        <div class="p-6 flex items-center gap-3 border-b border-gray-200 dark:border-zinc-800/100">
+            <span class="text-3xl font-bengkel tracking-wider">ADMIN<span class="text-red-600">PANEL</span></span>
         </div>
 
         <nav class="flex-1 px-4 space-y-2 mt-6">
-            <a href="{{ route('mekanik.dashboard') }}" class="w-full flex items-center gap-3 px-4 py-3 text-red-600 bg-red-50 dark:bg-red-900/20 rounded-xl font-bold transition">
+            <a href="{{ route('admin.dashboard') }}" class="w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 rounded-xl font-bold transition">
                 DASHBOARD
             </a>
-            <a href="{{ route('mekanik.bookings.index') }}" class="w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 rounded-xl font-bold transition">
-                TUGAS SAYA
+            <a href="{{ route('admin.bookings.index') }}" class="w-full flex items-center gap-3 px-4 py-3 text-red-600 bg-red-50 dark:bg-red-900/20 rounded-xl font-bold transition">
+                BOOKING MASUK
             </a>
         </nav>
 
@@ -21,41 +23,29 @@
         </div>
     </aside>
 
+    <!-- Main Content -->
     <main class="flex-1 ml-64 p-10 bg-zinc-950 min-h-screen text-white">
-        <div class="flex items-center justify-between mb-8">
-            <div>
-                <h1 class="text-2xl font-bengkel tracking-wider uppercase">Dashboard Mekanik</h1>
-                <p class="text-zinc-500 text-xs mt-1 uppercase tracking-widest">Selamat bekerja! Pantau tugas servis Anda di bawah ini.</p>
-            </div>
+        <div class="mb-8">
+            <h1 class="text-2xl font-bengkel uppercase tracking-widest">Semua Booking Servis</h1>
+            <p class="text-zinc-500 text-xs mt-1 uppercase tracking-widest">Total: {{ $bookings->total() }} booking terdaftar</p>
         </div>
 
-        @if (session('success'))
+        @if(session('success'))
             <div class="mb-6 bg-emerald-900/30 border border-emerald-700 text-emerald-400 px-6 py-4 rounded-2xl text-sm font-semibold">
                 ✓ {{ session('success') }}
             </div>
         @endif
 
-        @if (session('error'))
-            <div class="mb-6 bg-red-900/30 border border-red-700 text-red-400 px-6 py-4 rounded-2xl text-sm font-semibold">
-                ✗ {{ session('error') }}
-            </div>
-        @endif
-
         <div class="bg-zinc-900 rounded-3xl border border-zinc-800 overflow-hidden shadow-2xl">
-            <div class="p-6 border-b border-zinc-800 flex justify-between items-center">
-                <h3 class="font-bengkel text-lg text-white uppercase tracking-wider">Tugas Servis Aktif</h3>
-                <span class="text-[9px] bg-red-950/40 text-red-500 px-3 py-1 rounded-full border border-red-900/60 font-bold uppercase tracking-widest">
-                    {{ $bookings->count() }} Tugas
-                </span>
-            </div>
-
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-[11px] uppercase tracking-tighter">
                     <thead class="bg-zinc-950 text-zinc-500 border-b border-zinc-800">
                         <tr>
                             <th class="px-6 py-4">Pelanggan</th>
-                            <th class="px-6 py-4">Servis / Motor</th>
-                            <th class="px-6 py-4">Tanggal Booking</th>
+                            <th class="px-6 py-4">Layanan</th>
+                            <th class="px-6 py-4">Tanggal</th>
+                            <th class="px-6 py-4">Jam</th>
+                            <th class="px-6 py-4">Mekanik</th>
                             <th class="px-6 py-4 text-center">Status</th>
                             <th class="px-6 py-4 text-right">Aksi</th>
                         </tr>
@@ -64,18 +54,27 @@
                         @forelse ($bookings as $booking)
                         <tr class="hover:bg-zinc-800/30 transition-colors">
                             <td class="px-6 py-4">
-                                <span class="block font-bold text-white">{{ $booking->user->name ?? 'Guest' }}</span>
-                                <span class="text-[9px] text-zinc-500 italic font-mono lowercase">Telp: {{ $booking->user->nomor_telepon ?? '-' }}</span>
+                                <div class="flex flex-col">
+                                    <span class="text-white font-bold">{{ $booking->user->name ?? 'Guest' }}</span>
+                                    <span class="text-[9px] text-zinc-500 lowercase italic">Telp: {{ $booking->user->nomor_telepon ?? '-' }}</span>
+                                </div>
                             </td>
                             <td class="px-6 py-4">
                                 <span class="block text-red-500 font-bold">{{ $booking->nama_kendaraan }}</span>
                                 <span class="text-zinc-400 text-[10px]">{{ $booking->service->nama ?? '-' }}</span>
                             </td>
                             <td class="px-6 py-4">
-                                {{ $booking->tanggal_booking ? $booking->tanggal_booking->format('d/m/Y') : '-' }} @ {{ \Carbon\Carbon::parse($booking->jam_booking)->format('H:i') }}
+                                {{ $booking->tanggal_booking->format('d/m/Y') }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ \Carbon\Carbon::parse($booking->jam_booking)->format('H:i') }}
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="text-white">{{ $booking->mechanic->name ?? 'Belum Ditugaskan' }}</span>
                             </td>
                             <td class="px-6 py-4 text-center">
                                 <span class="px-3 py-1 rounded-full text-[9px] font-bold border inline-block
+                                    {{ $booking->status === 'pending' ? 'bg-orange-950/40 text-orange-400 border-orange-900/60' : '' }}
                                     {{ $booking->status === 'ditugaskan' ? 'bg-blue-950/40 text-blue-400 border-blue-900/60' : '' }}
                                     {{ $booking->status === 'diproses' ? 'bg-yellow-950/40 text-yellow-500 border-yellow-900/60' : '' }}
                                     {{ $booking->status === 'selesai' ? 'bg-emerald-950/40 text-emerald-400 border-emerald-900/60' : '' }}
@@ -85,22 +84,24 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-right">
-                                <a href="{{ route('mekanik.bookings.show', $booking->id) }}"
-                                   class="inline-block bg-zinc-800 hover:bg-zinc-700 text-white text-[9px] font-bold py-2 px-4 rounded-lg transition">
-                                    Detail & Update
-                                </a>
+                                <a href="{{ route('admin.bookings.show', $booking->id) }}"
+                                   class="text-blue-400 hover:text-blue-300 font-bold transition">Kelola</a>
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5" class="px-6 py-16 text-center text-zinc-600">
-                                Belum ada tugas servis yang ditugaskan kepada Anda.
+                            <td colspan="7" class="px-6 py-16 text-center text-zinc-600">
+                                Belum ada booking masuk.
                             </td>
                         </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
+        </div>
+
+        <div class="mt-6">
+            {{ $bookings->links() }}
         </div>
     </main>
 </div>

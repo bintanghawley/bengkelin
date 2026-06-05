@@ -131,89 +131,43 @@
     <div class="bg-gray-50 dark:bg-zinc-900 p-10 rounded-3xl border border-gray-200 dark:border-zinc-800 shadow-xl text-zinc-800 dark:text-white">
         <!-- Header Section -->
         <h3 class="text-3xl font-bengkel text-red-600 mb-2 uppercase">Reservasi Servis</h3>
-        <p class="text-zinc-500 text-sm mb-10 uppercase tracking-widest">Tentukan waktu terbaik untuk kendaraan lu.</p>
+        <p class="text-zinc-500 text-sm mb-10 uppercase tracking-widest">Pilih layanan servis dan booking jadwalmu sekarang.</p>
 
-        <!-- Display Error Validation -->
-        @if ($errors->any())
-            <div class="bg-red-100 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-2xl mb-6 text-xs italic tracking-wide">
-                <ul class="list-disc pl-5">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+        @if(isset($services) && $services->count() > 0)
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                @foreach($services as $service)
+                    <div class="bg-gray-100 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 rounded-2xl p-6 hover:border-red-600 transition duration-300 group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h4 class="font-bengkel text-lg text-zinc-800 dark:text-white uppercase tracking-wider">{{ $service->nama }}</h4>
+                                <p class="text-emerald-600 dark:text-emerald-500 font-bold text-sm mt-1">Mulai {{ $service->harga_mulai_formatted }}</p>
+                            </div>
+                            <span class="text-[9px] bg-red-100 dark:bg-red-950/40 text-red-600 dark:text-red-400 px-3 py-1 rounded-full border border-red-200 dark:border-red-900/60 font-bold uppercase tracking-widest">
+                                {{ $service->estimasi_waktu }}
+                            </span>
+                        </div>
+                        <p class="text-zinc-500 text-xs leading-relaxed mb-5 line-clamp-2">{{ $service->deskripsi }}</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-[9px] text-zinc-500 uppercase tracking-widest font-bold">{{ $service->items_count }} item pekerjaan</span>
+                            <a href="{{ route('booking.create', $service->slug) }}" 
+                               class="bg-red-600 hover:bg-red-700 text-white text-[9px] font-bold py-2.5 px-5 rounded-xl transition uppercase tracking-widest shadow-lg shadow-red-900/20">
+                                Booking Sekarang
+                            </a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            <div class="mt-8 text-center">
+                <a href="{{ route('servis') }}" class="text-zinc-500 hover:text-red-600 transition text-xs uppercase tracking-widest font-bold">
+                    Lihat Detail Semua Layanan →
+                </a>
+            </div>
+        @else
+            <div class="text-center py-12 text-zinc-500">
+                <p class="italic tracking-widest">Belum ada layanan servis yang tersedia.</p>
             </div>
         @endif
-
-        <form action="{{ route('pengguna.booking.store') }}" method="POST" class="max-w-xl space-y-6">
-            @csrf
-
-            <!-- Jenis Motor -->
-            <div class="space-y-2">
-                <label class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest ml-1">Jenis Motor</label>
-                <input type="text" name="jenis_motor" value="{{ old('jenis_motor') }}" placeholder="Contoh: Suzuki RC100 / Vario 150"
-                    class="w-full bg-gray-100 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-red-600 transition text-zinc-800 dark:text-white">
-            </div>
-             <div class="space-y-2">
-                <label class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest ml-1">Plat Nomor</label>
-                <input type="text" name="plat_nomor" value="{{ old('plat_nomor') }}" placeholder="Contoh: S 1234 AB"
-                    class="w-full bg-gray-100 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-red-600 transition text-zinc-800 dark:text-white">
-            </div>
-
-            <!-- Pilih Layanan (Dropdown) -->
-            <div class="space-y-2">
-                <label class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest ml-1">Paket Layanan</label>
-                <div class="relative group">
-                    <select name="layanan" id="layanan" 
-                        class="w-full bg-gray-100 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-red-600 transition text-zinc-800 dark:text-white appearance-none cursor-pointer">
-                        <option value="" disabled selected> Pilih Jenis Layanan </option>
-                        <option value="Ganti Oli" {{ old('layanan') == 'Ganti Oli' ? 'selected' : '' }}>Ganti Oli (Fast Track)</option>
-                        <option value="Service Rutin" {{ old('layanan') == 'Service Rutin' ? 'selected' : '' }}>Service Rutin 10rb KM</option>
-                        <option value="Tune Up Racing" {{ old('layanan') == 'Tune Up Racing' ? 'selected' : '' }}>Tune Up Racing 🔥</option>
-                        <option value="Cek Kelistrikan" {{ old('layanan') == 'Cek Kelistrikan' ? 'selected' : '' }}>Cek Kelistrikan</option>
-                    </select>
-                    <!-- Custom Arrow -->
-                    <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-zinc-500 group-focus-within:text-red-600 transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Metode -->
-                <div class="space-y-2">
-                     <label class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest ml-1">metode</label>
-                      <select name="metode" id="metode" 
-                        class="w-full bg-gray-100 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-red-600 transition text-zinc-800 dark:text-white appearance-none cursor-pointer">
-                        <option value="" disabled selected> Pilih Metode Servis </option>
-                        <option value="Home Service " {{ old('metode') == 'Home Service' ? 'selected' : '' }}>Home Service</option>
-                        <option value="Away Service" {{ old('metode') == 'Away Service' ? 'selected' : '' }}>Away Service</option>
-                        <option value="Service In Garage " {{ old('metode') == 'Service In Garage' ? 'selected' : '' }}>Service In Garage</option>
-                        
-                    </select>
-                </div>
-
-                <!-- Tanggal -->
-                <div class="space-y-2">
-                    <label class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest ml-1">Pilih Tanggal</label>
-                    <input type="date" name="tanggal" value="{{ old('tanggal') }}" 
-                        class="w-full bg-gray-100 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-red-600 transition text-zinc-800 dark:text-white [color-scheme:dark]">
-                </div>
-            </div>
-
-            <!-- Alamat -->
-            <div class="space-y-2">
-                <label class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest ml-1">Alamat Lengkap</label>
-                <input type="text" name="alamat" value="{{ old('alamat') }}" placeholder="Masukkan lokasi penjemputan/bengkel"
-                    class="w-full bg-gray-100 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-red-600 transition text-zinc-800 dark:text-white">
-            </div>
-
-            <!-- Submit Button -->
-            <button type="submit" class="w-full bg-red-600 py-5 rounded-2xl font-bold font-bengkel tracking-[0.2em] text-2xl shadow-xl shadow-red-900/40 hover:bg-red-700 transition active:scale-[0.98]">
-                KIRIM PERMINTAAN BOOKING
-            </button>
-        </form>
     </div>
 </section>
 
@@ -265,9 +219,10 @@
                         <tr>
                             <th class="px-6 py-4 font-bold text-zinc-800 dark:text-white">Unit</th>
                             <th class="px-6 py-4 font-bold text-zinc-800 dark:text-white">Layanan</th>
-                            <th class="px-6 py-4 font-bold text-zinc-800 dark:text-white">Metode</th>
                             <th class="px-6 py-4 font-bold text-center text-zinc-800 dark:text-white">Tanggal</th>
-                            <th class="px-6 py-4 font-bold text-right text-zinc-800 dark:text-white">Status</th>
+                            <th class="px-6 py-4 font-bold text-center text-zinc-800 dark:text-white">Jam</th>
+                            <th class="px-6 py-4 font-bold text-center text-zinc-800 dark:text-white">Status</th>
+                            <th class="px-6 py-4 font-bold text-right text-zinc-800 dark:text-white">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 dark:divide-zinc-800/50 text-zinc-600 dark:text-zinc-300">
@@ -275,33 +230,41 @@
                             @foreach ($bookings as $booking)
                                 <tr class="hover:bg-gray-100 dark:hover:bg-zinc-800/30 transition-colors group">
                                     <td class="px-6 py-4">
-                                        <span class="block font-bold text-zinc-800 dark:text-white">{{ $booking->jenis_motor }}</span>
-                                        <span class="text-[9px] text-zinc-500 italic lowercase">ID: {{ $booking->id }}</span>
+                                        <span class="block font-bold text-zinc-800 dark:text-white">{{ $booking->nama_kendaraan }}</span>
+                                        <span class="text-[9px] text-zinc-500 italic font-mono">{{ $booking->plat_nomor }}</span>
                                     </td>
-                                    <td class="px-6 py-4 font-medium">{{ $booking->layanan }}</td>
-                                    <td class="px-6 py-4 text-zinc-500">{{ $booking->metode }}</td>
+                                    <td class="px-6 py-4 font-medium">{{ $booking->service->nama ?? 'Custom Service' }}</td>
                                     <td class="px-6 py-4 text-center">
-                                        {{ is_string($booking->tanggal) ? \Carbon\Carbon::parse($booking->tanggal)->format('d M Y') : $booking->tanggal->format('d M Y') }}
+                                        {{ $booking->tanggal_booking ? $booking->tanggal_booking->format('d M Y') : '-' }}
                                     </td>
-                                    <td class="px-6 py-4 text-right">
+                                    <td class="px-6 py-4 text-center">
+                                        {{ \Carbon\Carbon::parse($booking->jam_booking)->format('H:i') }} WIB
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
                                         @php
                                             $statusColor = match($booking->status) {
-                                                'pending' => 'bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-300 dark:border-zinc-700',
-                                                'proses' => 'bg-red-100 dark:bg-red-900/20 text-red-600 dark:text-red-500 border border-red-200 dark:border-red-800',
-                                                'diterima' => 'bg-emerald-100 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-500 border border-emerald-200 dark:border-emerald-800',
-                                                'selesai' => 'bg-emerald-100 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-500 border border-emerald-200 dark:border-emerald-800',
-                                                default => 'bg-gray-200 dark:bg-zinc-800 text-gray-600 dark:text-zinc-400 border border-gray-300 dark:border-zinc-700'
+                                                'pending' => 'bg-orange-100 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 border border-orange-200 dark:border-orange-900/60',
+                                                'ditugaskan' => 'bg-blue-100 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-900/60',
+                                                'diproses' => 'bg-yellow-100 dark:bg-yellow-950/40 text-yellow-600 dark:text-yellow-500 border border-yellow-200 dark:border-yellow-900/60',
+                                                'selesai' => 'bg-emerald-100 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/60',
+                                                'dibatalkan' => 'bg-red-100 dark:bg-red-950/40 text-red-600 dark:text-red-500 border border-red-200 dark:border-red-900/60',
+                                                default => 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700'
                                             };
                                         @endphp
-                                        <span class="px-3 py-1 rounded-full text-[10px] font-bold {{ $statusColor }}">
-                                            {{ $booking->status }}
+                                        <span class="px-3 py-1 rounded-full text-[9px] font-bold border inline-block {{ $statusColor }}">
+                                            {{ strtoupper($booking->status) }}
                                         </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <a href="{{ route('pengguna.bookings.show', $booking->id) }}" class="inline-block bg-zinc-800 hover:bg-zinc-700 text-white text-[9px] font-bold py-2 px-4 rounded-lg transition uppercase tracking-wider">
+                                            Lihat Detail
+                                        </a>
                                     </td>
                                 </tr>
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="5" class="px-6 py-12 text-center text-zinc-500 dark:text-zinc-600 italic tracking-widest bg-gray-50 dark:bg-zinc-900">
+                                <td colspan="6" class="px-6 py-12 text-center text-zinc-500 dark:text-zinc-600 italic tracking-widest bg-gray-50 dark:bg-zinc-900">
                                     Belum ada catatan aktivitas mesin.
                                 </td>
                             </tr>
