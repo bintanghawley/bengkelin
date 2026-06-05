@@ -62,7 +62,7 @@ class UserController extends Controller
             'role' => $validated['role'],
         ]);
 
-        return redirect()->route('admin.users.index')->with('success', 'User berhasil ditambahkan');
+        return redirect()->route('admin.dashboard')->with('success', 'User berhasil ditambahkan');
     }
 
     public function edit(string $id)
@@ -105,7 +105,7 @@ class UserController extends Controller
 
         $user->update($data);
 
-        return redirect()->route('admin.users.index')->with('success', 'User berhasil diupdate');
+        return redirect()->route('admin.dashboard')->with('success', 'User berhasil diupdate');
     }
 
     public function destroy(string $id)
@@ -118,6 +118,6 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
 
-        return redirect()->route('admin.users.index')->with('success', 'User berhasil dihapus');
+        return redirect()->route('admin.dashboard')->with('success', 'User berhasil dihapus');
     }
 }

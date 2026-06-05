@@ -8,10 +8,13 @@ use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\TokoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ServisController;
+use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home')->name('home');
-Route::view('/servis', 'toko.servis')->name('servis');
+Route::get('/servis', [ServisController::class, 'index'])->name('servis');
+Route::get('/servis/{slug}', [ServisController::class, 'show'])->name('servis.detail');
 Route::view('/toko/ban-motor', 'toko.ban-motor')->name('toko.banmotor');
 Route::view('/toko/oli-motor', 'toko.oli-motor')->name('toko.oli');
 Route::view('/toko/sparepart', 'toko.sparepart')->name('toko.sparepart');
@@ -29,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
         Route::resource('users', UserController::class)->except(['show']);
+        Route::resource('services', AdminServiceController::class);
     });
 
     Route::get('/mekanik/dashboard', [MekanikController::class, 'dashboard'])->name('mekanik.dashboard');

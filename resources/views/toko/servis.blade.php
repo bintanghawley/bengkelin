@@ -147,165 +147,55 @@
         </div>
     </section>
 
-    <section class="bg-white text-zinc-900">
-        <div class="max-w-7xl mx-auto px-6 py-12">
-            <div class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-                <div class="w-full lg:flex-1">
-                    <div class="relative max-w-xl">
-                        <div class="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
-                                <path d="M21 21l-4.35-4.35M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </div>
-                        <input type="text" placeholder="Cari servis motor buat motormu disini" class="w-full pl-11 pr-4 py-3 rounded-full border border-zinc-200 text-sm focus:ring-2 focus:ring-red-600 focus:border-transparent outline-none">
-                    </div>
-                </div>
-                <div class="text-sm text-zinc-500">Menampilkan 0 dari 0 Data</div>
-                <div class="flex items-center gap-4">
-                    <span class="text-sm text-zinc-500">Urutkan</span>
-                    <div class="relative">
-                        <button type="button" id="sort-toggle" aria-expanded="false" aria-haspopup="true" class="min-w-[200px] inline-flex items-center justify-between gap-3 px-4 py-3 rounded-full border border-zinc-200 text-sm">
-                            <span id="sort-label" class="text-zinc-500">Pilih</span>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500">
-                                <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </button>
-                        <div id="sort-menu" class="absolute right-0 mt-2 w-56 bg-white border border-zinc-200 rounded-2xl shadow-lg py-2 hidden">
-                            <button type="button" data-sort="Harga Tertinggi" class="w-full text-left px-4 py-2 text-sm hover:bg-zinc-100">Harga Tertinggi</button>
-                            <button type="button" data-sort="Harga Paling Murah" class="w-full text-left px-4 py-2 text-sm hover:bg-zinc-100">Harga Paling Murah</button>
-                        </div>
-                    </div>
-                </div>
+    <section class="bg-zinc-50 text-zinc-900 py-20 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-3xl md:text-4xl font-bengkel uppercase tracking-wide mb-4">Layanan Servis Kami</h2>
+                <p class="text-zinc-500">Pilih layanan servis yang sesuai dengan kebutuhan motor Anda.</p>
             </div>
 
-            <div class="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-10">
-                <aside class="lg:col-span-3">
-                    <div class="bg-white border border-zinc-200 rounded-2xl p-6 shadow-sm">
-                        <h3 class="text-lg font-semibold mb-6">Filter</h3>
-                        <div class="space-y-6">
-                            <div class="space-y-4">
-                                <div class="flex items-center justify-between text-sm">
-                                    <span class="font-semibold">Harga</span>
-                                    <span class="text-zinc-500">Rp <span id="harga-min-label">0</span> - Rp <span id="harga-max-label">100.000</span></span>
-                                </div>
-                                <div class="relative h-2">
-                                    <div class="absolute inset-0 bg-zinc-200 rounded-full"></div>
-                                    <div id="harga-track" class="absolute h-2 bg-red-600 rounded-full"></div>
-                                    <input id="harga-min" type="range" min="0" max="100000" step="1000" value="0" class="range-input absolute inset-0 w-full h-2 bg-transparent appearance-none z-20">
-                                    <input id="harga-max" type="range" min="0" max="100000" step="1000" value="100000" class="range-input absolute inset-0 w-full h-2 bg-transparent appearance-none z-30">
-                                </div>
-                                <div class="grid grid-cols-2 gap-3">
-                                    <input id="harga-min-input" type="text" value="Rp 0" readonly class="w-full border border-zinc-200 rounded-xl px-3 py-2 text-sm text-zinc-600 bg-zinc-50">
-                                    <input id="harga-max-input" type="text" value="Rp 100.000" readonly class="w-full border border-zinc-200 rounded-xl px-3 py-2 text-sm text-zinc-600 bg-zinc-50">
-                                </div>
-                            </div>
-                            <button type="button" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-full">Tampilkan</button>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                @foreach($services as $service)
+                <div class="bg-white border border-zinc-200 rounded-[2rem] overflow-hidden shadow-xl shadow-zinc-200/40 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col group">
+                    <div class="relative aspect-video overflow-hidden">
+                        <img src="{{ $service->gambar_url }}" alt="{{ $service->nama }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
+                            <span class="inline-block bg-red-600 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-2 w-max">{{ $service->estimasi_waktu }}</span>
+                            <h3 class="text-2xl font-bengkel text-white uppercase tracking-wide">{{ $service->nama }}</h3>
                         </div>
                     </div>
-                </aside>
-                <div class="lg:col-span-9">
-                    <div class="min-h-[360px] rounded-2xl border border-dashed border-zinc-200 bg-white"></div>
+                    <div class="p-6 flex flex-col flex-1">
+                        <p class="text-zinc-600 text-sm line-clamp-2 mb-6 flex-1">{{ $service->deskripsi }}</p>
+                        
+                        <div class="flex items-center justify-between mb-6 pb-6 border-b border-zinc-100">
+                            <div>
+                                <p class="text-[10px] text-zinc-400 uppercase font-bold tracking-widest mb-1">Mulai Dari</p>
+                                <p class="text-lg font-bold text-red-600">{{ $service->harga_mulai_formatted }}</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-[10px] text-zinc-400 uppercase font-bold tracking-widest mb-1">Pekerjaan</p>
+                                <p class="text-sm font-semibold text-zinc-700">{{ $service->items_count }} Item</p>
+                            </div>
+                        </div>
+                        
+                        <a href="{{ route('servis.detail', $service->slug) }}" class="block w-full text-center border-2 border-zinc-200 hover:border-red-600 hover:bg-red-600 hover:text-white text-zinc-700 font-semibold py-3 px-6 rounded-xl transition-all duration-200 text-xs uppercase tracking-widest">
+                            Detail Servis
+                        </a>
+                    </div>
                 </div>
+                @endforeach
             </div>
+            
+            @if($services->isEmpty())
+            <div class="text-center py-20 bg-white rounded-3xl border border-zinc-200">
+                <svg class="w-16 h-16 text-zinc-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <h3 class="text-xl font-bold text-zinc-700 mb-2">Belum Ada Layanan Servis</h3>
+                <p class="text-zinc-500">Silakan kembali lagi nanti untuk melihat daftar layanan kami.</p>
+            </div>
+            @endif
         </div>
     </section>
-
-    <script>
-        const sortToggle = document.getElementById('sort-toggle');
-        const sortMenu = document.getElementById('sort-menu');
-        const sortLabel = document.getElementById('sort-label');
-
-        const closeSortMenu = () => {
-            if (!sortMenu) {
-                return;
-            }
-            sortMenu.classList.add('hidden');
-            sortToggle?.setAttribute('aria-expanded', 'false');
-        };
-
-        const openSortMenu = () => {
-            if (!sortMenu) {
-                return;
-            }
-            sortMenu.classList.remove('hidden');
-            sortToggle?.setAttribute('aria-expanded', 'true');
-        };
-
-        if (sortToggle) {
-            sortToggle.addEventListener('click', (event) => {
-                event.stopPropagation();
-                const isOpen = !sortMenu.classList.contains('hidden');
-                if (isOpen) {
-                    closeSortMenu();
-                    return;
-                }
-                openSortMenu();
-            });
-        }
-
-        if (sortMenu) {
-            sortMenu.querySelectorAll('button[data-sort]').forEach((button) => {
-                button.addEventListener('click', () => {
-                    sortLabel.textContent = button.dataset.sort;
-                    closeSortMenu();
-                });
-            });
-        }
-
-        document.addEventListener('click', () => {
-            closeSortMenu();
-        });
-
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') {
-                closeSortMenu();
-            }
-        });
-
-        const minRange = document.getElementById('harga-min');
-        const maxRange = document.getElementById('harga-max');
-        const minLabel = document.getElementById('harga-min-label');
-        const maxLabel = document.getElementById('harga-max-label');
-        const minInput = document.getElementById('harga-min-input');
-        const maxInput = document.getElementById('harga-max-input');
-        const track = document.getElementById('harga-track');
-        const maxValue = 100000;
-        const gap = 1000;
-
-        const formatRupiah = (value) => {
-            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-        };
-
-        const updateRange = (source) => {
-            if (!minRange || !maxRange || !track) {
-                return;
-            }
-            let minVal = parseInt(minRange.value, 10);
-            let maxVal = parseInt(maxRange.value, 10);
-            if (maxVal - minVal < gap) {
-                if (source === minRange) {
-                    minVal = maxVal - gap;
-                    minRange.value = minVal;
-                } else if (source === maxRange) {
-                    maxVal = minVal + gap;
-                    maxRange.value = maxVal;
-                }
-            }
-            minLabel.textContent = formatRupiah(minVal);
-            maxLabel.textContent = formatRupiah(maxVal);
-            minInput.value = `Rp ${formatRupiah(minVal)}`;
-            maxInput.value = `Rp ${formatRupiah(maxVal)}`;
-            const minPercent = (minVal / maxValue) * 100;
-            const maxPercent = (maxVal / maxValue) * 100;
-            track.style.left = `${minPercent}%`;
-            track.style.right = `${100 - maxPercent}%`;
-        };
-
-        if (minRange && maxRange) {
-            minRange.addEventListener('input', (event) => updateRange(event.target));
-            maxRange.addEventListener('input', (event) => updateRange(event.target));
-            updateRange();
-        }
-    </script>
 </div>
 @endsection
