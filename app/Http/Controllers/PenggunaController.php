@@ -33,7 +33,8 @@ class PenggunaController extends Controller
             ->get();
         $products = Product::all();
         $services = Service::withCount('items')->orderBy('nama', 'asc')->get();
-        return view('pengguna.dashboard', compact('user', 'products', 'bookings', 'services'));
+        $purchases = \App\Models\Purchase::where('user_id', $user->id)->orderBy('id', 'desc')->get();
+        return view('pengguna.dashboard', compact('user', 'products', 'bookings', 'services', 'purchases'));
     }
 
     public function bookingForm()

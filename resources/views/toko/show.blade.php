@@ -72,12 +72,9 @@
                 {{-- Action --}}
                 <div class="mt-8 space-y-3">
                     @if($product->stok > 0)
-                    <form action="{{ route('toko.buy', $product->id) }}" method="POST">
-                        @csrf
-                        <button type="submit" class="w-full px-6 py-4 bg-red-600 hover:bg-red-700 text-white rounded-2xl text-sm font-bold uppercase tracking-widest transition shadow-lg shadow-red-600/20">
-                            Beli Sekarang
-                        </button>
-                    </form>
+                    <a href="{{ route('toko.checkout', $product->id) }}" class="block w-full text-center px-6 py-4 bg-red-600 hover:bg-red-700 text-white rounded-2xl text-sm font-bold uppercase tracking-widest transition shadow-lg shadow-red-600/20">
+                        Beli Sekarang
+                    </a>
                     @else
                     <button disabled class="w-full px-6 py-4 bg-zinc-300 dark:bg-zinc-800 text-zinc-500 rounded-2xl text-sm font-bold uppercase tracking-widest cursor-not-allowed">
                         Stok Habis

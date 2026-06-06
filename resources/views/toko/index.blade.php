@@ -98,12 +98,9 @@
                            class="flex-1 text-center px-3 py-2.5 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 rounded-xl text-[10px] font-bold uppercase tracking-widest transition">
                             Detail
                         </a>
-                        <form action="{{ route('toko.buy', $product->id) }}" method="POST" class="flex-1">
-                            @csrf
-                            <button type="submit" class="w-full px-3 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl text-[10px] font-bold uppercase tracking-widest transition shadow-lg shadow-red-600/20">
-                                Beli
-                            </button>
-                        </form>
+                        <a href="{{ route('toko.checkout', $product->id) }}" class="flex-1 text-center px-3 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl text-[10px] font-bold uppercase tracking-widest transition shadow-lg shadow-red-600/20">
+                            Beli
+                        </a>
                     </div>
                 </div>
             </div>

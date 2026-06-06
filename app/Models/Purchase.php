@@ -12,6 +12,13 @@ class Purchase extends Model
         'barang_id',
         'barang_nama',
         'harga',
+        'jumlah',
+        'total_harga',
+        'alamat',
+        'telepon',
+        'metode_pembayaran',
+        'catatan',
+        'status',
     ];
 
     public function user(): BelongsTo
