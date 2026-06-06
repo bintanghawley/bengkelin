@@ -18,6 +18,8 @@ Route::get('/servis', [ServisController::class, 'index'])->name('servis');
 Route::get('/servis/{slug}', [ServisController::class, 'show'])->name('servis.detail');
 Route::get('/toko', [TokoController::class, 'index'])->name('toko.index');
 Route::get('/toko/show/{id}', [TokoController::class, 'show'])->name('toko.show');
+Route::get('/toko/hasil/{purchase}', [TokoController::class, 'result'])->name('toko.result')->middleware('auth');
+Route::post('/toko/buy/{id}', [TokoController::class, 'buy'])->name('toko.buy')->middleware('auth');
 Route::view('/toko/ban-motor', 'toko.ban-motor')->name('toko.banmotor');
 Route::view('/toko/oli-motor', 'toko.oli-motor')->name('toko.oli');
 Route::view('/toko/sparepart', 'toko.sparepart')->name('toko.sparepart');

@@ -2,62 +2,60 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\Purchase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class TokoController extends Controller
 {
-    private function barang()
+    public function index(Request $request)
     {
-        return [
-            [
-                'id' => 1,
-                'nama' => 'Piston Pro X',
-                'harga' => 850000,
-                'deskripsi' => 'Spare part original untuk performa mesin harian',
-            ],
-        ];
-    }
+        $kategori = $request->get('kategori'); // null, 'sparepart', 'ban', 'oli'
 
-    public function index()
-    {
-        $items = $this->barang();
+        $query = Product::where('stok', '>', 0);
 
-        return view('toko.index', compact('items'));
+        if ($kategori && in_array($kategori, ['sparepart', 'ban', 'oli'])) {
+            $query->where('kategori', $kategori);
+        }
+
+        $products = $query->latest()->get();
+
+        return view('toko.index', compact('products', 'kategori'));
     }
 
     public function show($id)
     {
-        $item = collect($this->barang())->firstWhere('id', (int) $id);
+        $product = Product::where('stok', '>', 0)->findOrFail($id);
 
-        if (!$item) {
-            abort(404);
-        }
-
-        return view('toko.show', compact('item'));
+        return view('toko.show', compact('product'));
     }
 
-    public function buy($id)
+    public function buy(Request $request, $id)
     {
-        $item = collect($this->barang())->firstWhere('id', (int) $id);
+        $product = Product::where('stok', '>', 0)->findOrFail($id);
 
-        if (!$item) {
-            abort(404);
-        }
+        // Kurangi stok
+        $product->decrement('stok');
 
         $purchase = Purchase::create([
-            'user_id' => Auth::id(),
-            'barang_id' => $item['id'],
-            'barang_nama' => $item['nama'],
-            'harga' => $item['harga'],
+            'user_id'     => Auth::id(),
+            'barang_id'   => $product->id,
+            'barang_nama' => $product->nama,
+            'harga'       => $product->harga,
         ]);
 
-        return redirect()->route('toko.result', $purchase->id);
+        return redirect()->route('toko.result', $purchase->id)
+            ->with('success', 'Pembelian berhasil! Stok telah dikurangi.');
     }
 
     public function result(Purchase $purchase)
     {
+        // Pastikan user hanya bisa lihat pembelian miliknya
+        if ($purchase->user_id !== Auth::id()) {
+            abort(403);
+        }
+
         return view('toko.hasil', compact('purchase'));
     }
 }

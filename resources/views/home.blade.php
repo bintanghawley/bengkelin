@@ -21,6 +21,49 @@
         .dark .map-iframe {
             filter: grayscale(20%) invert(90%) contrast(110%);
         }
+        
+        /* Scroll Reveal Animation Styles */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+        .scroll-reveal-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+        .scroll-reveal-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+        .scroll-reveal-scale {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+        
+        /* State transition to show */
+        .scroll-reveal.revealed,
+        .scroll-reveal-left.revealed,
+        .scroll-reveal-right.revealed,
+        .scroll-reveal-scale.revealed {
+            opacity: 1;
+            transform: translate(0) scale(1);
+        }
+
+        /* Animation delays */
+        .delay-75 { transition-delay: 75ms; }
+        .delay-100 { transition-delay: 100ms; }
+        .delay-150 { transition-delay: 150ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-500 { transition-delay: 500ms; }
     </style>
     <nav class="relative z-30 flex items-center justify-between px-8 py-6 max-w-7xl mx-auto">
        <div class="flex items-center gap-2">
@@ -31,7 +74,7 @@
         </div>
         <div class="hidden md:flex gap-8 text-xs font-semibold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
             <a href="#" class="hover:text-zinc-900 dark:hover:text-white transition">Services</a>
-            <a href="{{ route('register') }}" class="hover:text-zinc-900 dark:hover:text-white transition">Spareparts</a>
+            
             <a href="#about" class="hover:text-zinc-900 dark:hover:text-white transition">About</a>
             <a href="#location" class="hover:text-zinc-900 dark:hover:text-white transition">Location</a> 
         </div>
@@ -224,8 +267,8 @@
     </aside>
 
     <main>
-        <section id="home" class="max-w-7xl mx-auto px-8 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div class="order-2 lg:order-1 text-center lg:text-left">
+        <section id="home" class="max-w-7xl mx-auto px-8 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center overflow-hidden">
+            <div class="order-2 lg:order-1 text-center lg:text-left scroll-reveal-left">
                 <div class="inline-block px-4 py-1 rounded-full bg-red-600/10 border border-red-600/20 text-red-500 text-xs font-bold tracking-[0.2em] mb-6">
                     PREMIUM GARAGE SERVICE
                 </div>
@@ -261,7 +304,7 @@
                 </div>
             </div>
 
-            <div class="order-1 lg:order-2 relative">
+            <div class="order-1 lg:order-2 relative scroll-reveal-right">
                 <div class="absolute -inset-1 bg-red-600 rounded-3xl blur opacity-10"></div>
                 <div class="relative bg-zinc-100 dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 overflow-hidden aspect-video lg:aspect-square flex items-center justify-center group transition-colors duration-300">
                     <img src="{{ asset ('img/Gemini_Generated_Image_rlwfwprlwfwprlwf.png') }}" alt="Gambar" class="w-full h-full object-cover">
@@ -273,8 +316,8 @@
         </section>
 
         <section id="about" class="max-w-7xl mx-auto px-8 py-24 border-t border-zinc-200 dark:border-zinc-800">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <div class="space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center overflow-hidden">
+                <div class="space-y-6 scroll-reveal-left">
                     <h2 class="text-5xl font-bengkel text-zinc-900 dark:text-white leading-tight uppercase">
                         Bukan Sekedar <br> <span class="text-red-600">Bengkel Biasa</span>
                     </h2>
@@ -282,18 +325,18 @@
                         Berawal dari keresahan antrean panjang di bengkel konvensional, <span class="text-zinc-900 dark:text-white font-bold">Bengkelin</span> hadir sebagai solusi digital untuk para pengendara yang menghargai waktu. Kami menggabungkan presisi mekanik profesional dengan kemudahan teknologi.
                     </p>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
-                        <div class="p-6 bg-zinc-100/50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl transition-colors duration-300">
+                        <div class="p-6 bg-zinc-100/50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl transition-colors duration-300 scroll-reveal delay-100">
                             <p class="text-red-600 font-bold text-xs uppercase tracking-widest mb-2">Visi Kami</p>
                             <p class="text-zinc-500 dark:text-zinc-400 text-xs leading-relaxed">Menjadi ekosistem perawatan kendaraan nomor satu di Sidoarjo yang transparan dan terpercaya.</p>
                         </div>
-                        <div class="p-6 bg-zinc-100/50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl transition-colors duration-300">
+                        <div class="p-6 bg-zinc-100/50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl transition-colors duration-300 scroll-reveal delay-200">
                             <p class="text-red-600 font-bold text-xs uppercase tracking-widest mb-2">Misi Kami</p>
                             <p class="text-zinc-500 dark:text-zinc-400 text-xs leading-relaxed">Memberikan pelayanan berkualitas tinggi dengan standarisasi alat modern dan sparepart original.</p>
                         </div>
                     </div>
                 </div>
                 
-                <div class="relative group">
+                <div class="relative group scroll-reveal-right">
                     <div class="absolute -inset-1 bg-gradient-to-r from-red-600 to-zinc-300 dark:to-zinc-800 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
                     <div class="relative bg-zinc-100 dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 p-2 overflow-hidden transition-colors duration-300">
                         <img src="{{ asset("img/Gemini_Generated_Image_m0vuzjm0vuzjm0vu.png") }}" alt="Workshop" class="rounded-2xl grayscale hover:grayscale-0 transition duration-700 w-full object-cover aspect-video lg:aspect-auto">
@@ -302,13 +345,13 @@
             </div>
         </section>
 
-        <section id="location" class="max-w-7xl mx-auto px-8 py-24 border-t border-zinc-200 dark:border-zinc-800">
-            <div class="text-center mb-16">
+        <section id="location" class="max-w-7xl mx-auto px-8 py-24 border-t border-zinc-200 dark:border-zinc-800 overflow-hidden">
+            <div class="text-center mb-16 scroll-reveal">
                 <p class="text-red-600 font-bold text-xs tracking-[0.3em] mb-4 uppercase">Kunjungi Workshop Kami</p>
                 <h2 class="text-4xl font-bengkel text-zinc-900 dark:text-white uppercase">Bengkelin Sidoarjo</h2>
             </div>
 
-            <div class="bg-zinc-100 dark:bg-zinc-900 rounded-[2.5rem] border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-2xl transition-colors duration-300">
+            <div class="bg-zinc-100 dark:bg-zinc-900 rounded-[2.5rem] border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-2xl transition-colors duration-300 scroll-reveal-scale delay-100">
                 <div class="grid grid-cols-1 lg:grid-cols-3">
                     <div class="p-12 lg:border-r border-zinc-200 dark:border-zinc-800 flex flex-col justify-center">
                         <div class="space-y-8">
@@ -351,7 +394,7 @@
     
     <!-- FOOTER SECTION -->
     <footer class="bg-zinc-50 dark:bg-zinc-950 pt-20 pb-10 px-6 transition-colors duration-300">
-        <div class="max-w-7xl mx-auto">
+        <div class="max-w-7xl mx-auto scroll-reveal">
             <!-- Main Footer Card -->
             <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-[2.5rem] p-8 md:p-12 shadow-2xl transition-colors duration-300">
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
@@ -490,6 +533,25 @@
             if (event.key === 'Escape') {
                 closeSidebar();
             }
+        });
+
+        // IntersectionObserver for Scroll Reveal Animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const revealElements = document.querySelectorAll('.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right, .scroll-reveal-scale');
+            
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                        observer.unobserve(entry.target); // Animasi sekali saja saat scroll masuk
+                    }
+                });
+            }, {
+                threshold: 0.1, // Trigger jika 10% elemen masuk ke viewport
+                rootMargin: '0px 0px -50px 0px'
+            });
+            
+            revealElements.forEach(el => revealObserver.observe(el));
         });
     </script>
 </div>

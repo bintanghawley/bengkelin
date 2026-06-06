@@ -9,23 +9,23 @@ class Product extends Model
 {
     use HasFactory;
 
-    // Tentukan kolom mana saja yang boleh diisi secara massal
     protected $fillable = [
         'nama',
         'harga',
         'stok',
+        'deskripsi',
         'gambar',
+        'kategori',
     ];
 
     /**
-     * Opsional: Accessor untuk memudahkan pemanggilan URL gambar
-     * Jadi di Blade lu cukup panggil {{ $product->image_url }}
+     * Accessor untuk URL gambar
      */
     public function getImageUrlAttribute()
     {
         if ($this->gambar) {
             return asset('storage/' . $this->gambar);
         }
-        return asset('img/no-image.png'); // Sediakan gambar default jika kosong
+        return null;
     }
-}   
+}

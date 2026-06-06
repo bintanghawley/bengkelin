@@ -20,16 +20,16 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama' => 'required',
-            'harga' => 'required|numeric',
-            'stok' => 'required|numeric',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'nama'     => 'required',
+            'harga'    => 'required|numeric',
+            'stok'     => 'required|numeric',
+            'kategori' => 'required|in:sparepart,ban,oli',
+            'gambar'   => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
-        $data = $request->all();
+        $data = $request->only(['nama', 'harga', 'stok', 'kategori', 'deskripsi']);
 
         if ($request->hasFile('gambar')) {
-            // Simpan di folder storage/app/public/products
             $data['gambar'] = $request->file('gambar')->store('products', 'public');
         }
 
@@ -40,16 +40,16 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $request->validate([
-            'nama' => 'required',
-            'harga' => 'required|numeric',
-            'stok' => 'required|numeric',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'nama'     => 'required',
+            'harga'    => 'required|numeric',
+            'stok'     => 'required|numeric',
+            'kategori' => 'required|in:sparepart,ban,oli',
+            'gambar'   => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
-        $data = $request->all();
+        $data = $request->only(['nama', 'harga', 'stok', 'kategori', 'deskripsi']);
 
         if ($request->hasFile('gambar')) {
-            // Hapus gambar lama jika ada
             if ($product->gambar) {
                 Storage::disk('public')->delete($product->gambar);
             }

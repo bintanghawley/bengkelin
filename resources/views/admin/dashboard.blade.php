@@ -32,26 +32,26 @@
         </div>
     </aside>
 
-    <main class="flex-1 ml-64 p-10">
+    <main class="flex-1 ml-64 p-10 bg-gray-50 dark:bg-zinc-950 min-h-screen">
         
         <section id="admin-stats" class="admin-section space-y-10">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-zinc-900 p-6 rounded-3xl border border-zinc-800">
-                    <p class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest">Total Mekanik</p>
+                <div class="bg-white dark:bg-zinc-900 p-6 rounded-3xl border border-gray-200 dark:border-zinc-800 shadow-sm">
+                    <p class="text-gray-400 dark:text-zinc-500 text-[10px] font-bold uppercase tracking-widest">Total Mekanik</p>
                     <h3 class="text-4xl font-bengkel text-red-600">{{ $countMekanik }}</h3>
                 </div>
-                <div class="bg-zinc-900 p-6 rounded-3xl border border-zinc-800">
-                    <p class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest">Total Pengguna</p>
-                    <h3 class="text-4xl font-bengkel text-white">{{ $countPengguna }}</h3>
+                <div class="bg-white dark:bg-zinc-900 p-6 rounded-3xl border border-gray-200 dark:border-zinc-800 shadow-sm">
+                    <p class="text-gray-400 dark:text-zinc-500 text-[10px] font-bold uppercase tracking-widest">Total Pengguna</p>
+                    <h3 class="text-4xl font-bengkel text-gray-900 dark:text-white">{{ $countPengguna }}</h3>
                 </div>
-                <div class="bg-zinc-900 p-6 rounded-3xl border border-zinc-800">
-                    <p class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest">Pendapatan Bln Ini</p>
-                    <h3 class="text-4xl font-bengkel text-emerald-500">Rp 12.5M</h3>
+                <div class="bg-white dark:bg-zinc-900 p-6 rounded-3xl border border-gray-200 dark:border-zinc-800 shadow-sm">
+                    <p class="text-gray-400 dark:text-zinc-500 text-[10px] font-bold uppercase tracking-widest">Pendapatan Bln Ini</p>
+                    <h3 class="text-4xl font-bengkel text-emerald-600 dark:text-emerald-500">Rp 12.5M</h3>
                 </div>
             </div>
 
-            <div class="bg-zinc-900 p-8 rounded-3xl border border-zinc-800">
-                <h3 class="text-xl font-bengkel mb-6 uppercase tracking-widest">Grafik Pesanan & Penjualan</h3>
+            <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl border border-gray-200 dark:border-zinc-800 shadow-sm">
+                <h3 class="text-xl font-bengkel mb-6 uppercase tracking-widest text-gray-900 dark:text-white">Grafik Pesanan & Penjualan</h3>
                 <canvas id="salesChart" class="max-h-[300px]"></canvas>
             </div>
         </section>
@@ -67,10 +67,10 @@
   <section id="admin-orders" class="admin-section hidden ">
     <div class="grid grid-cols-1 gap-6">
         
-        <div class="flex justify-between items-center bg-zinc-900 p-6 rounded-3xl border border-zinc-800 shadow-xl">
+        <div class="flex justify-between items-center bg-white dark:bg-zinc-900 p-6 rounded-3xl border border-gray-200 dark:border-zinc-800 shadow-sm">
             <div>
-                <h3 class="font-bengkel text-xl text-white uppercase tracking-wider">Manajemen Stok</h3>
-                <p class="text-[9px] text-zinc-500 uppercase mt-1">Total: {{ $products->count() }} Produk terdaftar</p>
+                <h3 class="font-bengkel text-xl text-gray-900 dark:text-white uppercase tracking-wider">Manajemen Stok</h3>
+                <p class="text-[9px] text-gray-400 dark:text-zinc-500 uppercase mt-1">Total: {{ $products->count() }} Produk terdaftar</p>
             </div>
             <button onclick="toggleModalProduk(true)" class="bg-red-600 hover:bg-red-700 text-white text-[10px] font-bold px-6 py-3 rounded-xl uppercase tracking-widest transition flex items-center gap-2">
                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-width="3" stroke-linecap="round"/></svg>
@@ -78,44 +78,52 @@
             </button>
         </div>
 
-        <div class="bg-zinc-900 p-8 rounded-3xl border border-zinc-800 shadow-2xl">
+        <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl border border-gray-200 dark:border-zinc-800 shadow-sm">
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-[11px] uppercase tracking-tighter">
-                    <thead class="bg-zinc-950 text-zinc-500 border-b border-zinc-800">
+                    <thead class="bg-gray-100 dark:bg-zinc-950 text-gray-500 dark:text-zinc-500 border-b border-gray-200 dark:border-zinc-800">
                         <tr>
                             <th class="px-6 py-4 text-center">Gambar</th>
                             <th class="px-6 py-4">Nama Produk</th>
+                            <th class="px-6 py-4">Kategori</th>
                             <th class="px-6 py-4">Harga</th>
                             <th class="px-6 py-4 text-center">Stok</th>
                             <th class="px-6 py-4 text-right">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-zinc-800/50 text-zinc-300">
+                    <tbody class="divide-y divide-gray-100 dark:divide-zinc-800/50 text-gray-600 dark:text-zinc-300">
                         @forelse ($products as $product)
-                        <tr class="hover:bg-zinc-800/30 transition-colors">
+                        <tr class="hover:bg-gray-50 dark:hover:bg-zinc-800/30 transition-colors">
                             <td class="px-6 py-4 text-center">
                                 @if($product->gambar)
-                                    <img src="{{ asset('storage/' . $product->gambar) }}" class="w-10 h-10 object-cover rounded-lg border border-zinc-700 mx-auto">
+                                    <img src="{{ asset('storage/' . $product->gambar) }}" class="w-10 h-10 object-cover rounded-lg border border-gray-200 dark:border-zinc-700 mx-auto">
                                 @else
-                                    <div class="w-10 h-10 bg-zinc-800 rounded-lg border border-zinc-700 mx-auto"></div>
+                                    <div class="w-10 h-10 bg-gray-100 dark:bg-zinc-800 rounded-lg border border-gray-200 dark:border-zinc-700 mx-auto"></div>
                                 @endif
                             </td>
-                            <td class="px-6 py-4 font-bold text-white">{{ $product->nama }}</td>
-                            <td class="px-6 py-4 text-emerald-500 font-bold">Rp {{ number_format($product->harga, 0, ',', '.') }}</td>
+                            <td class="px-6 py-4 font-bold text-gray-900 dark:text-white">{{ $product->nama }}</td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 py-1 rounded text-[9px] font-bold uppercase
+                                    {{ $product->kategori === 'ban' ? 'bg-blue-500/20 text-blue-600 dark:text-blue-400' : '' }}
+                                    {{ $product->kategori === 'oli' ? 'bg-amber-500/20 text-amber-600 dark:text-amber-400' : '' }}
+                                    {{ $product->kategori === 'sparepart' ? 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-400' : '' }}
+                                ">{{ $product->kategori }}</span>
+                            </td>
+                            <td class="px-6 py-4 text-emerald-600 dark:text-emerald-500 font-bold">Rp {{ number_format($product->harga, 0, ',', '.') }}</td>
                             <td class="px-6 py-4 text-center">{{ $product->stok }}</td>
                             <td class="px-6 py-4 text-right flex justify-end items-center gap-3">
-                                <button onclick="openModalEditProduk('{{ $product->id }}', '{{ $product->nama }}', '{{ $product->stok }}', '{{ $product->harga }}')" class="text-amber-500 hover:text-white transition font-bold">
+                                <button onclick="openModalEditProduk('{{ $product->id }}', '{{ $product->nama }}', '{{ $product->stok }}', '{{ $product->harga }}', '{{ $product->kategori }}', '{{ $product->deskripsi }}')" class="text-amber-600 dark:text-amber-500 hover:text-gray-900 dark:hover:text-white transition font-bold">
                                     Edit
                                 </button>
                                 
                                 <form action="{{ route('products.destroy', $product->id) }}" method="POST" onsubmit="return confirm('Hapus?')">
                                     @csrf @method('DELETE')
-                                    <button class="text-red-500 hover:text-white transition font-bold">Hapus</button>
+                                    <button class="text-red-600 dark:text-red-500 hover:text-gray-900 dark:hover:text-white transition font-bold">Hapus</button>
                                 </form>
                             </td>
                         </tr>
                         @empty
-                        <tr><td colspan="5" class="px-6 py-10 text-center text-zinc-600">Gudang Kosong.</td></tr>
+                        <tr><td colspan="6" class="px-6 py-10 text-center text-gray-400 dark:text-zinc-600">Gudang Kosong.</td></tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -141,14 +149,29 @@
                             <input type="text" name="nama" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-600 outline-none transition">
                         </div>
                         <div class="space-y-1">
+                            <label class="text-[10px] uppercase text-zinc-500 font-bold">Kategori</label>
+                            <select name="kategori" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-600 outline-none transition">
+                                <option value="sparepart">Sparepart</option>
+                                <option value="ban">Ban Motor</option>
+                                <option value="oli">Oli Motor</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="space-y-1">
                             <label class="text-[10px] uppercase text-zinc-500 font-bold">Stok</label>
                             <input type="number" name="stok" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-600 outline-none transition">
                         </div>
+                        <div class="space-y-1">
+                            <label class="text-[10px] uppercase text-zinc-500 font-bold">Harga Jual (Rp)</label>
+                            <input type="number" name="harga" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-600 outline-none transition">
+                        </div>
                     </div>
-                    
+
                     <div class="space-y-1">
-                        <label class="text-[10px] uppercase text-zinc-500 font-bold">Harga Jual (Rp)</label>
-                        <input type="number" name="harga" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-600 outline-none transition">
+                        <label class="text-[10px] uppercase text-zinc-500 font-bold">Deskripsi (Opsional)</label>
+                        <textarea name="deskripsi" rows="2" placeholder="Deskripsi singkat produk..." class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-600 outline-none transition"></textarea>
                     </div>
 
                     <div class="space-y-1">
@@ -177,20 +200,36 @@
 
                 <form id="form-edit-produk" method="POST" enctype="multipart/form-data" class="space-y-4">
                     @csrf
-                    @method('PUT') <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    @method('PUT')
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="space-y-1">
                             <label class="text-[10px] uppercase text-zinc-500 font-bold">Nama Barang</label>
                             <input type="text" id="edit-nama" name="nama" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-500 outline-none transition">
                         </div>
                         <div class="space-y-1">
+                            <label class="text-[10px] uppercase text-zinc-500 font-bold">Kategori</label>
+                            <select id="edit-kategori" name="kategori" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-500 outline-none transition">
+                                <option value="sparepart">Sparepart</option>
+                                <option value="ban">Ban Motor</option>
+                                <option value="oli">Oli Motor</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="space-y-1">
                             <label class="text-[10px] uppercase text-zinc-500 font-bold">Stok</label>
                             <input type="number" id="edit-stok" name="stok" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-500 outline-none transition">
                         </div>
+                        <div class="space-y-1">
+                            <label class="text-[10px] uppercase text-zinc-500 font-bold">Harga Jual (Rp)</label>
+                            <input type="number" id="edit-harga" name="harga" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-500 outline-none transition">
+                        </div>
                     </div>
-                    
+
                     <div class="space-y-1">
-                        <label class="text-[10px] uppercase text-zinc-500 font-bold">Harga Jual (Rp)</label>
-                        <input type="number" id="edit-harga" name="harga" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-500 outline-none transition">
+                        <label class="text-[10px] uppercase text-zinc-500 font-bold">Deskripsi (Opsional)</label>
+                        <textarea id="edit-deskripsi" name="deskripsi" rows="2" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-500 outline-none transition"></textarea>
                     </div>
 
                     <div class="space-y-1">
@@ -211,11 +250,11 @@
 </section>
         <br>   
 
-         <section id="admin-booking" class=" admin-section hidden bg-zinc-900 p-8 rounded-3xl border border-zinc-800 shadow-2xl">
+        <section id="admin-booking" class=" admin-section hidden bg-white dark:bg-zinc-900 p-8 rounded-3xl border border-gray-200 dark:border-zinc-800 shadow-sm">
     <div class="flex justify-between items-center mb-8">
         <div>
             <h3 class="font-bengkel text-2xl text-red-600 uppercase tracking-wider">Management Booking</h3>
-            <p class="text-[10px] text-zinc-500  uppercase mt-1">Total Pesanan: {{ $allBookings->count() }} Entry terdeteksi</p>
+            <p class="text-[10px] text-gray-400 dark:text-zinc-500  uppercase mt-1">Total Pesanan: {{ $allBookings->count() }} Entry terdeteksi</p>
         </div>
         <a href="{{ route('admin.bookings.index') }}" class="bg-red-600 hover:bg-red-700 text-white text-[10px] font-bold px-6 py-3 rounded-xl uppercase tracking-widest transition">
             Kelola Semua →
@@ -224,37 +263,37 @@
 
     <div class="overflow-x-auto">
         <table class="w-full text-left text-[11px] uppercase tracking-tighter">
-            <thead class="bg-zinc-950 text-zinc-500 border-b border-zinc-800">
+            <thead class="bg-gray-100 dark:bg-zinc-950 text-gray-500 dark:text-zinc-500 border-b border-gray-200 dark:border-zinc-800">
                 <tr>
-                    <th class="px-6 py-4 font-bold text-white">Customer</th>
-                    <th class="px-6 py-4 font-bold text-white">Kendaraan & Layanan</th>
-                    <th class="px-6 py-4 font-bold text-white">Plat Nomor</th>
-                    <th class="px-6 py-4 font-bold text-center text-white">Jadwal</th>
-                    <th class="px-6 py-4 font-bold text-center text-white">Status</th>
-                    <th class="px-6 py-4 font-bold text-right text-white">Aksi</th>
+                    <th class="px-6 py-4 font-bold text-gray-700 dark:text-white">Customer</th>
+                    <th class="px-6 py-4 font-bold text-gray-700 dark:text-white">Kendaraan & Layanan</th>
+                    <th class="px-6 py-4 font-bold text-gray-700 dark:text-white">Plat Nomor</th>
+                    <th class="px-6 py-4 font-bold text-center text-gray-700 dark:text-white">Jadwal</th>
+                    <th class="px-6 py-4 font-bold text-center text-gray-700 dark:text-white">Status</th>
+                    <th class="px-6 py-4 font-bold text-right text-gray-700 dark:text-white">Aksi</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-zinc-800/50 text-zinc-300">
+            <tbody class="divide-y divide-gray-100 dark:divide-zinc-800/50 text-gray-600 dark:text-zinc-300">
                 @forelse ($allBookings as $booking)
-                    <tr class="hover:bg-zinc-800/30 transition-colors group">
+                    <tr class="hover:bg-gray-50 dark:hover:bg-zinc-800/30 transition-colors group">
                         <td class="px-6 py-4">
                             <div class="flex flex-col">
-                                <span class="text-white font-bold">{{ $booking->user->name ?? 'Guest' }}</span>
-                                <span class="text-[9px] text-zinc-500 lowercase italic">Telp: {{ $booking->user->nomor_telepon ?? '-' }}</span>
+                                <span class="text-gray-900 dark:text-white font-bold">{{ $booking->user->name ?? 'Guest' }}</span>
+                                <span class="text-[9px] text-gray-400 dark:text-zinc-500 lowercase italic">Telp: {{ $booking->user->nomor_telepon ?? '-' }}</span>
                             </div>
                         </td>
                         <td class="px-6 py-4">
-                            <span class="block text-red-500 font-bold">{{ $booking->nama_kendaraan }}</span>
-                            <span class="text-zinc-400 text-[10px]">{{ $booking->service->nama ?? '-' }}</span>
+                            <span class="block text-red-600 dark:text-red-500 font-bold">{{ $booking->nama_kendaraan }}</span>
+                            <span class="text-gray-400 dark:text-zinc-400 text-[10px]">{{ $booking->service->nama ?? '-' }}</span>
                         </td>
                         <td class="px-6 py-4">
-                            <span class="bg-zinc-800 px-2 py-1 rounded border border-zinc-700 text-[9px]">
+                            <span class="bg-gray-100 dark:bg-zinc-800 px-2 py-1 rounded border border-gray-200 dark:border-zinc-700 text-[9px] text-gray-700 dark:text-zinc-300">
                                 {{ $booking->plat_nomor }}
                             </span>
                         </td>
                         <td class="px-6 py-4 text-center">
-                            <span class="text-white">{{ $booking->tanggal_booking ? $booking->tanggal_booking->format('d/m/Y') : '-' }}</span>
-                            <span class="block text-[9px] text-zinc-500">{{ \Carbon\Carbon::parse($booking->jam_booking)->format('H:i') }} WIB</span>
+                            <span class="text-gray-900 dark:text-white">{{ $booking->tanggal_booking ? $booking->tanggal_booking->format('d/m/Y') : '-' }}</span>
+                            <span class="block text-[9px] text-gray-400 dark:text-zinc-500">{{ \Carbon\Carbon::parse($booking->jam_booking)->format('H:i') }} WIB</span>
                         </td>
                         <td class="px-6 py-4 text-center">
                             <span class="px-3 py-1 rounded-full text-[9px] font-bold border 
@@ -321,10 +360,12 @@
         }
 
         // Fungsi utama menyuntikkan data baris tabel ke input modal edit
-        function openModalEditProduk(id, nama, stok, harga) {
+        function openModalEditProduk(id, nama, stok, harga, kategori, deskripsi) {
             document.getElementById('edit-nama').value = nama;
             document.getElementById('edit-stok').value = stok;
             document.getElementById('edit-harga').value = harga;
+            document.getElementById('edit-kategori').value = kategori || 'sparepart';
+            document.getElementById('edit-deskripsi').value = deskripsi || '';
 
             // Update action form agar mengarah ke route update (Contoh: /products/12)
             document.getElementById('form-edit-produk').action = '/products/' + id;

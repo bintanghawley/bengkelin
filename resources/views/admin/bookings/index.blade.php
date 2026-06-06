@@ -24,10 +24,10 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 ml-64 p-10 bg-zinc-950 min-h-screen text-white">
+    <main class="flex-1 ml-64 p-10 bg-gray-50 dark:bg-zinc-950 min-h-screen text-gray-900 dark:text-white">
         <div class="mb-8">
-            <h1 class="text-2xl font-bengkel uppercase tracking-widest">Semua Booking Servis</h1>
-            <p class="text-zinc-500 text-xs mt-1 uppercase tracking-widest">Total: {{ $bookings->total() }} booking terdaftar</p>
+            <h1 class="text-2xl font-bengkel uppercase tracking-widest text-gray-900 dark:text-white">Semua Booking Servis</h1>
+            <p class="text-gray-400 dark:text-zinc-500 text-xs mt-1 uppercase tracking-widest">Total: {{ $bookings->total() }} booking terdaftar</p>
         </div>
 
         @if(session('success'))
@@ -36,10 +36,10 @@
             </div>
         @endif
 
-        <div class="bg-zinc-900 rounded-3xl border border-zinc-800 overflow-hidden shadow-2xl">
+        <div class="bg-white dark:bg-zinc-900 rounded-3xl border border-gray-200 dark:border-zinc-800 overflow-hidden shadow-sm dark:shadow-2xl">
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-[11px] uppercase tracking-tighter">
-                    <thead class="bg-zinc-950 text-zinc-500 border-b border-zinc-800">
+                    <thead class="bg-gray-100 dark:bg-zinc-950 text-gray-500 dark:text-zinc-500 border-b border-gray-200 dark:border-zinc-800">
                         <tr>
                             <th class="px-6 py-4">Pelanggan</th>
                             <th class="px-6 py-4">Layanan</th>
@@ -50,18 +50,18 @@
                             <th class="px-6 py-4 text-right">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-zinc-800/50 text-zinc-300">
+                    <tbody class="divide-y divide-gray-100 dark:divide-zinc-800/50 text-gray-600 dark:text-zinc-300">
                         @forelse ($bookings as $booking)
-                        <tr class="hover:bg-zinc-800/30 transition-colors">
+                        <tr class="hover:bg-gray-50 dark:hover:bg-zinc-800/30 transition-colors">
                             <td class="px-6 py-4">
                                 <div class="flex flex-col">
-                                    <span class="text-white font-bold">{{ $booking->user->name ?? 'Guest' }}</span>
-                                    <span class="text-[9px] text-zinc-500 lowercase italic">Telp: {{ $booking->user->nomor_telepon ?? '-' }}</span>
+                                    <span class="text-gray-900 dark:text-white font-bold">{{ $booking->user->name ?? 'Guest' }}</span>
+                                    <span class="text-[9px] text-gray-400 dark:text-zinc-500 lowercase italic">Telp: {{ $booking->user->nomor_telepon ?? '-' }}</span>
                                 </div>
                             </td>
                             <td class="px-6 py-4">
-                                <span class="block text-red-500 font-bold">{{ $booking->nama_kendaraan }}</span>
-                                <span class="text-zinc-400 text-[10px]">{{ $booking->service->nama ?? '-' }}</span>
+                                <span class="block text-red-600 dark:text-red-500 font-bold">{{ $booking->nama_kendaraan }}</span>
+                                <span class="text-gray-400 dark:text-zinc-400 text-[10px]">{{ $booking->service->nama ?? '-' }}</span>
                             </td>
                             <td class="px-6 py-4">
                                 {{ $booking->tanggal_booking->format('d/m/Y') }}
@@ -70,7 +70,7 @@
                                 {{ \Carbon\Carbon::parse($booking->jam_booking)->format('H:i') }}
                             </td>
                             <td class="px-6 py-4">
-                                <span class="text-white">{{ $booking->mechanic->name ?? 'Belum Ditugaskan' }}</span>
+                                <span class="text-gray-900 dark:text-white">{{ $booking->mechanic->name ?? 'Belum Ditugaskan' }}</span>
                             </td>
                             <td class="px-6 py-4 text-center">
                                 <span class="px-3 py-1 rounded-full text-[9px] font-bold border inline-block
@@ -90,7 +90,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="7" class="px-6 py-16 text-center text-zinc-600">
+                            <td colspan="7" class="px-6 py-16 text-center text-gray-400 dark:text-zinc-600">
                                 Belum ada booking masuk.
                             </td>
                         </tr>
