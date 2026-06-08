@@ -12,6 +12,8 @@ class DatabaseSeeder extends Seeder
             RoleUserSeeder::class,
             ServiceSeeder::class,
             TireSeeder::class,
+            OilSeeder::class,
+            SparepartSeeder::class,
         ]);
     }
 }

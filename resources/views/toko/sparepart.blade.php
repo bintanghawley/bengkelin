@@ -136,7 +136,7 @@
                     <div class="absolute -top-6 -left-6 h-24 w-24 bg-white/15 rounded-full blur-2xl"></div>
                     <div class="absolute -bottom-10 -right-12 h-32 w-32 bg-black/25 rounded-full blur-2xl"></div>
                     <div class="relative rounded-[2rem] bg-[#0a2f86] p-4 shadow-[0_30px_80px_rgba(0,0,0,0.35)]">
-                        <img src="{{ asset('img/image.png') }}" alt="Ban Motor" class="w-full h-full object-cover rounded-[1.5rem] aspect-[4/3]">
+                        <img src="{{ asset('img/image.png') }}" alt="Sparepart" class="w-full h-full object-cover rounded-[1.5rem] aspect-[4/3]">
                     </div>
                 </div>
             </div>
@@ -151,121 +151,161 @@
 
     <section class="bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-white transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-6 py-12">
-            <div class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-                <div class="w-full lg:flex-1">
-                    <div class="relative max-w-xl">
-                        <div class="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
-                                <path d="M21 21l-4.35-4.35M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </div>
-                        <input type="text" placeholder="Cari sparepart buat motormu disini" class="w-full pl-11 pr-4 py-3 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white text-sm focus:ring-2 focus:ring-red-600 focus:border-transparent outline-none transition placeholder:text-zinc-400 dark:placeholder:text-zinc-555">
-                    </div>
-                </div>
-                <div class="text-sm text-zinc-500">Menampilkan 0 dari 0 Data</div>
-                <div class="flex items-center gap-4">
-                    <span class="text-sm text-zinc-500">Urutkan</span>
-                    <div class="relative">
-                        <button type="button" id="sort-toggle" aria-expanded="false" aria-haspopup="true" class="min-w-[200px] inline-flex items-center justify-between gap-3 px-4 py-3 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-sm text-zinc-700 dark:text-zinc-300 transition">
-                            <span id="sort-label" class="text-zinc-500">Pilih</span>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500">
-                                <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </button>
-                        <div id="sort-menu" class="absolute right-0 mt-2 w-56 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-lg py-2 hidden z-40">
-                            <button type="button" data-sort="Harga Tertinggi" class="w-full text-left px-4 py-2 text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition">Harga Tertinggi</button>
-                            <button type="button" data-sort="Harga Paling Murah" class="w-full text-left px-4 py-2 text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition">Harga Paling Murah</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <form action="{{ route('toko.sparepart') }}" method="GET" id="filter-form">
+                <input type="hidden" name="sort" id="sort-input" value="{{ request('sort') }}">
 
-            <div class="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-10">
-                <aside class="lg:col-span-3">
-                    <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 shadow-sm transition">
-                        <h3 class="text-lg font-semibold mb-6">Filter</h3>
-                        <div class="space-y-6">
-                            <div>
-                                <p class="text-sm font-semibold mb-4">Kategori</p>
-                                <details open class="group">
-                                    <summary class="flex items-center justify-between text-sm font-semibold cursor-pointer">
-                                        <span class="text-zinc-900 dark:text-white">Sparepart</span>
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500 transition-transform group-open:rotate-180">
+                <div class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+                    <div class="w-full lg:flex-1">
+                        <div class="relative max-w-xl">
+                            <div class="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
+                                    <path d="M21 21l-4.35-4.35M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari sparepart buat motormu disini" class="w-full pl-11 pr-4 py-3 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white text-sm focus:ring-2 focus:ring-red-600 focus:border-transparent outline-none transition placeholder:text-zinc-400 dark:placeholder:text-zinc-555">
+                        </div>
+                    </div>
+                    <div class="text-sm text-zinc-500">
+                        Menampilkan {{ $spareparts->firstItem() ?: 0 }} - {{ $spareparts->lastItem() ?: 0 }} dari {{ $spareparts->total() }} Data
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-sm text-zinc-500">Urutkan</span>
+                        <div class="relative">
+                            <button type="button" id="sort-toggle" aria-expanded="false" aria-haspopup="true" class="min-w-[200px] inline-flex items-center justify-between gap-3 px-4 py-3 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-sm text-zinc-700 dark:text-zinc-300 transition">
+                                <span id="sort-label" class="text-zinc-500">{{ request('sort') ?: 'Pilih' }}</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-550">
+                                    <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </button>
+                            <div id="sort-menu" class="absolute right-0 mt-2 w-56 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-lg py-2 hidden z-40">
+                                <button type="button" data-sort="Harga Tertinggi" class="w-full text-left px-4 py-2 text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition">Harga Tertinggi</button>
+                                <button type="button" data-sort="Harga Paling Murah" class="w-full text-left px-4 py-2 text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition">Harga Paling Murah</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-10">
+                    <aside class="lg:col-span-3">
+                        <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 shadow-sm transition">
+                            <h3 class="text-lg font-semibold mb-6">Filter</h3>
+                            <div class="space-y-6">
+                                <div>
+                                    <p class="text-sm font-semibold mb-4">Kategori</p>
+                                    <details open class="group">
+                                        <summary class="flex items-center justify-between text-sm font-semibold cursor-pointer">
+                                            <span class="text-zinc-900 dark:text-white">Sparepart</span>
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500 transition-transform group-open:rotate-180">
+                                                <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                            </svg>
+                                        </summary>
+                                        <div class="mt-3 space-y-2 text-sm text-zinc-650 dark:text-zinc-400 pl-2">
+                                            <label class="flex items-center gap-2 cursor-pointer hover:text-zinc-800 dark:hover:text-zinc-300 transition">
+                                                <input type="checkbox" name="jenis_sparepart[]" value="aki motor" {{ in_array('aki motor', request('jenis_sparepart', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">
+                                                Aki Motor
+                                            </label>
+                                            <label class="flex items-center gap-2 cursor-pointer hover:text-zinc-800 dark:hover:text-zinc-300 transition">
+                                                <input type="checkbox" name="jenis_sparepart[]" value="filter udara motor" {{ in_array('filter udara motor', request('jenis_sparepart', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">
+                                                Filter Udara Motor
+                                            </label>
+                                            <label class="flex items-center gap-2 cursor-pointer hover:text-zinc-800 dark:hover:text-zinc-300 transition">
+                                                <input type="checkbox" name="jenis_sparepart[]" value="kampas rem" {{ in_array('kampas rem', request('jenis_sparepart', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">
+                                                Kampas Rem
+                                            </label>
+                                            <label class="flex items-center gap-2 cursor-pointer hover:text-zinc-800 dark:hover:text-zinc-300 transition">
+                                                <input type="checkbox" name="jenis_sparepart[]" value="cairan anti bocor" {{ in_array('cairan anti bocor', request('jenis_sparepart', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">
+                                                Cairan Anti Bocor
+                                            </label>
+                                        </div>
+                                    </details>
+                                </div>
+
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-between text-sm">
+                                        <span class="font-semibold">Harga</span>
+                                        <span class="text-zinc-500">Rp <span id="harga-min-label">{{ number_format(request('harga_min', 0), 0, ',', '.') }}</span> - Rp <span id="harga-max-label">{{ number_format(request('harga_max', 500000), 0, ',', '.') }}</span></span>
+                                    </div>
+                                    <div class="relative h-2">
+                                        <div class="absolute inset-0 bg-zinc-200 dark:bg-zinc-800 rounded-full"></div>
+                                        <div id="harga-track" class="absolute h-2 bg-red-600 rounded-full"></div>
+                                        <input id="harga-min" name="harga_min" type="range" min="0" max="500000" step="5000" value="{{ request('harga_min', 0) }}" class="range-input absolute inset-0 w-full h-2 bg-transparent appearance-none z-20">
+                                        <input id="harga-max" name="harga_max" type="range" min="0" max="500000" step="5000" value="{{ request('harga_max', 500000) }}" class="range-input absolute inset-0 w-full h-2 bg-transparent appearance-none z-30">
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <input id="harga-min-input" type="text" value="Rp {{ number_format(request('harga_min', 0), 0, ',', '.') }}" readonly class="w-full border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-sm text-zinc-650 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-950 transition">
+                                        <input id="harga-max-input" type="text" value="Rp {{ number_format(request('harga_max', 500000), 0, ',', '.') }}" readonly class="w-full border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-sm text-zinc-650 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-950 transition">
+                                    </div>
+                                </div>
+
+                                <details open class="group border-t border-zinc-200 dark:border-zinc-800 pt-6">
+                                    <summary class="flex items-center justify-between text-sm font-semibold cursor-pointer mb-4">
+                                        <span class="text-zinc-900 dark:text-white">Merek</span>
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-550 transition-transform group-open:rotate-180">
                                             <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                         </svg>
                                     </summary>
-                                    <div class="mt-3 space-y-3 text-sm text-zinc-500 font-medium pl-2">
-                                        <label class="flex items-center gap-2 cursor-pointer hover:text-zinc-800 dark:hover:text-zinc-300 transition">
-                                            Aki Motor
-                                        </label>
-                                        <label class="flex items-center gap-2 cursor-pointer hover:text-zinc-800 dark:hover:text-zinc-300 transition">
-                                            Filter Udara Motor
-                                        </label>
-                                        <label class="flex items-center gap-2 cursor-pointer hover:text-zinc-800 dark:hover:text-zinc-300 transition">
-                                            Kampas Rem
-                                        </label>
-                                        <label class="flex items-center gap-2 cursor-pointer hover:text-zinc-800 dark:hover:text-zinc-300 transition">
-                                            Cairan Anti Bocor
-                                        </label>
+                                    <div class="mt-3 space-y-2 text-sm text-zinc-650 dark:text-zinc-400">
+                                        @foreach(['X-Grade', 'X-Ten', 'MK', 'Denso', 'Jossz', 'X-Guard', 'X-Smart'] as $mr)
+                                            <label class="flex items-center gap-2 cursor-pointer">
+                                                <input type="checkbox" name="merek[]" value="{{ $mr }}" {{ in_array($mr, request('merek', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">
+                                                {{ $mr }}
+                                            </label>
+                                        @endforeach
                                     </div>
                                 </details>
+
+                                <button type="submit" class="w-full bg-[#004aad] hover:bg-blue-800 text-white font-semibold py-3 rounded-full transition uppercase tracking-widest text-[11px]">Tampilkan</button>
                             </div>
-
-                            <div>
-                                <p class="text-sm font-semibold mb-4">Kompatibilitas untuk motor</p>
-                                <div class="relative">
-                                    <select class="w-full appearance-none border border-zinc-200 dark:border-zinc-800 rounded-lg px-4 py-3 text-sm text-zinc-400 bg-white dark:bg-zinc-900 focus:outline-none focus:ring-1 focus:ring-red-600 cursor-pointer transition">
-                                        <option value="">Cari tipe motormu di sini</option>
-                                    </select>
-                                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                        <svg class="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="space-y-4">
-                                <div class="flex items-center justify-between text-sm">
-                                    <span class="font-semibold">Harga</span>
-                                    <span class="text-zinc-500">Rp <span id="harga-min-label">0</span> - Rp <span id="harga-max-label">252.000</span></span>
-                                </div>
-                                <div class="relative h-2">
-                                    <div class="absolute inset-0 bg-zinc-200 dark:bg-zinc-800 rounded-full"></div>
-                                    <div id="harga-track" class="absolute h-2 bg-red-600 rounded-full"></div>
-                                    <input id="harga-min" type="range" min="0" max="252000" step="10000" value="0" class="range-input absolute inset-0 w-full h-2 bg-transparent appearance-none z-20">
-                                    <input id="harga-max" type="range" min="0" max="252000" step="10000" value="252000" class="range-input absolute inset-0 w-full h-2 bg-transparent appearance-none z-30">
-                                </div>
-                                <div class="grid grid-cols-2 gap-3">
-                                    <input id="harga-min-input" type="text" value="Rp 0" readonly class="w-full border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-sm text-zinc-600 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-950 transition">
-                                    <input id="harga-max-input" type="text" value="Rp 252.000" readonly class="w-full border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-sm text-zinc-600 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-950 transition">
-                                </div>
-                            </div>
-
-                            <details open class="group border-t border-zinc-200 dark:border-zinc-800 pt-6">
-                                <summary class="flex items-center justify-between text-sm font-semibold cursor-pointer mb-4">
-                                    <span class="text-base text-zinc-900 dark:text-white">Merek</span>
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500 transition-transform group-open:rotate-180">
-                                        <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                </summary>
-                                <div class="mt-3 space-y-4 text-sm text-zinc-600 dark:text-zinc-400">
-                                    <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900"><span class="text-base text-zinc-650 dark:text-zinc-400">X-Grade</span></label>
-                                    <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900"><span class="text-base text-zinc-650 dark:text-zinc-400">X-Ten</span></label>
-                                    <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900"><span class="text-base text-zinc-650 dark:text-zinc-400">MK</span></label>
-                                    <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900"><span class="text-base text-zinc-650 dark:text-zinc-400">Denso</span></label>
-                                    <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900"><span class="text-base text-zinc-650 dark:text-zinc-400">Jossz</span></label>
-                                    <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900"><span class="text-base text-zinc-650 dark:text-zinc-400">X-Guard</span></label>
-                                    <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900"><span class="text-base text-zinc-650 dark:text-zinc-400">X-Smart</span></label>
-                                </div>
-                            </details>
-
-                            <button type="button" class="w-full bg-[#004aad] hover:bg-blue-800 text-white font-semibold py-3 rounded-full transition">Tampilkan</button>
                         </div>
+                    </aside>
+                    <div class="lg:col-span-9">
+                        @if ($spareparts->count() > 0)
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                @foreach ($spareparts as $sparepart)
+                                    <div class="group relative bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                                        <a href="{{ route('toko.sparepart.show', $sparepart->id) }}" class="flex-1 flex flex-col">
+                                            <div class="aspect-square bg-zinc-100 dark:bg-zinc-800/30 flex items-center justify-center relative p-6">
+                                                @if($sparepart->gambar)
+                                                    <img src="{{ asset('storage/' . $sparepart->gambar) }}" alt="{{ $sparepart->nama }}" class="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-500">
+                                                @else
+                                                    <div class="w-full h-full border border-dashed border-zinc-300 dark:border-zinc-700/60 rounded-2xl flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 gap-2">
+                                                        <svg class="w-10 h-10 stroke-[1.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/>
+                                                        </svg>
+                                                        <span class="text-[9px] uppercase tracking-widest font-bold">Gambar Kosong</span>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                            <div class="p-6 space-y-4 flex-1 flex flex-col justify-between">
+                                                <h4 class="font-bold text-sm uppercase tracking-wide text-zinc-800 dark:text-zinc-200 line-clamp-2 min-h-[2.5rem] group-hover:text-blue-600 transition">
+                                                    {{ $sparepart->nama }}
+                                                </h4>
+                                                <div class="flex items-baseline gap-0.5 text-zinc-950 dark:text-white">
+                                                    <span class="text-[10px] font-bold">Rp</span>
+                                                    <span class="text-2xl font-bengkel tracking-wider">{{ number_format($sparepart->harga, 0, ',', '.') }}</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                @endforeach
+                            </div>
+
+                            <!-- Custom Pagination -->
+                            <div class="mt-12 flex justify-center">
+                                {{ $spareparts->links() }}
+                            </div>
+                        @else
+                            <div class="min-h-[400px] rounded-3xl border border-dashed border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 flex flex-col items-center justify-center text-center p-8 transition duration-300">
+                                <svg class="w-16 h-16 text-zinc-300 dark:text-zinc-700 stroke-[1.2] mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <h3 class="text-lg font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200">Sparepart Tidak Ditemukan</h3>
+                                <p class="text-xs text-zinc-400 dark:text-zinc-500 mt-2 max-w-sm">Coba sesuaikan filter pencarian Anda untuk menemukan sparepart yang cocok.</p>
+                            </div>
+                        @endif
                     </div>
-                </aside>
-                <div class="lg:col-span-9">
-                    <div class="min-h-[360px] rounded-2xl border border-dashed border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 transition"></div>
                 </div>
-            </div>
+            </form>
         </div>
     </section>
 
@@ -306,7 +346,9 @@
             sortMenu.querySelectorAll('button[data-sort]').forEach((button) => {
                 button.addEventListener('click', () => {
                     sortLabel.textContent = button.dataset.sort;
+                    document.getElementById('sort-input').value = button.dataset.sort;
                     closeSortMenu();
+                    document.getElementById('filter-form').submit();
                 });
             });
         }
@@ -328,8 +370,8 @@
         const minInput = document.getElementById('harga-min-input');
         const maxInput = document.getElementById('harga-max-input');
         const track = document.getElementById('harga-track');
-        const maxValue = 252000;
-        const gap = 10000;
+        const maxValue = 500000;
+        const gap = 5000;
 
         const formatRupiah = (value) => {
             return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');

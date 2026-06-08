@@ -7,6 +7,8 @@ use App\Http\Controllers\MekanikController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\TokoController;
 use App\Http\Controllers\TireController;
+use App\Http\Controllers\OilController;
+use App\Http\Controllers\SparepartController;
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
@@ -26,8 +28,14 @@ Route::get('/toko/ban-motor', [TireController::class, 'index'])->name('toko.banm
 Route::get('/toko/ban-motor/{id}', [TireController::class, 'show'])->name('toko.banmotor.show');
 Route::get('/toko/ban-motor/checkout/{id}', [TireController::class, 'checkout'])->name('toko.banmotor.checkout')->middleware('auth');
 Route::post('/toko/ban-motor/buy/{id}', [TireController::class, 'buy'])->name('toko.banmotor.buy')->middleware('auth');
-Route::view('/toko/oli-motor', 'toko.oli-motor')->name('toko.oli');
-Route::view('/toko/sparepart', 'toko.sparepart')->name('toko.sparepart');
+Route::get('/toko/oli-motor', [OilController::class, 'index'])->name('toko.oli');
+Route::get('/toko/oli-motor/{id}', [OilController::class, 'show'])->name('toko.oli.show');
+Route::get('/toko/oli-motor/checkout/{id}', [OilController::class, 'checkout'])->name('toko.oli.checkout')->middleware('auth');
+Route::post('/toko/oli-motor/buy/{id}', [OilController::class, 'buy'])->name('toko.oli.buy')->middleware('auth');
+Route::get('/toko/sparepart', [SparepartController::class, 'index'])->name('toko.sparepart');
+Route::get('/toko/sparepart/{id}', [SparepartController::class, 'show'])->name('toko.sparepart.show');
+Route::get('/toko/sparepart/checkout/{id}', [SparepartController::class, 'checkout'])->name('toko.sparepart.checkout')->middleware('auth');
+Route::post('/toko/sparepart/buy/{id}', [SparepartController::class, 'buy'])->name('toko.sparepart.buy')->middleware('auth');
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
@@ -48,6 +56,8 @@ Route::middleware('auth')->group(function () {
         Route::resource('services', AdminServiceController::class);
         Route::resource('bookings', App\Http\Controllers\Admin\BookingController::class)->only(['index', 'show', 'update']);
         Route::resource('tires', App\Http\Controllers\Admin\TireController::class)->except(['index', 'show', 'create', 'edit']);
+        Route::resource('oils', App\Http\Controllers\Admin\OilController::class)->except(['index', 'show', 'create', 'edit']);
+        Route::resource('spareparts', App\Http\Controllers\Admin\SparepartController::class)->except(['index', 'show', 'create', 'edit']);
     });
 
     Route::get('/mekanik/dashboard', [MekanikController::class, 'dashboard'])->name('mekanik.dashboard');

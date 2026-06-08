@@ -25,6 +25,12 @@
             <button onclick="showAdminSection('tires')" class="admin-nav w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 focus:text-red-600 outline-none rounded-xl font-bold transition">
                 KELOLA BAN MOTOR
             </button>
+            <button onclick="showAdminSection('oils')" class="admin-nav w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 focus:text-red-600 outline-none rounded-xl font-bold transition">
+                KELOLA OLI MOTOR
+            </button>
+            <button onclick="showAdminSection('spareparts')" class="admin-nav w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 focus:text-red-600 outline-none rounded-xl font-bold transition">
+                KELOLA SPAREPART
+            </button>
              <a href="{{ route('admin.bookings.index') }}" class="admin-nav w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 rounded-xl font-bold transition">
                 BOOKING MASUK
              </a>
@@ -71,6 +77,16 @@
         <!-- KELOLA BAN MOTOR -->
         <section id="admin-tires" class="admin-section hidden ">
             @include('admin.tires.index')
+        </section>
+
+        <!-- KELOLA OLI MOTOR -->
+        <section id="admin-oils" class="admin-section hidden ">
+            @include('admin.oils.index')
+        </section>
+
+        <!-- KELOLA SPAREPART -->
+        <section id="admin-spareparts" class="admin-section hidden ">
+            @include('admin.spareparts.index')
         </section>
   <section id="admin-orders" class="admin-section hidden ">
     <div class="grid grid-cols-1 gap-6">
@@ -345,6 +361,14 @@
     <!-- Modals for Tires -->
     @include('admin.tires.create')
     @include('admin.tires.edit')
+
+    <!-- Modals for Oils -->
+    @include('admin.oils.create')
+    @include('admin.oils.edit')
+
+    <!-- Modals for Spareparts -->
+    @include('admin.spareparts.create')
+    @include('admin.spareparts.edit')
     </main>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -461,6 +485,31 @@
             toggleModalDetailService(false);
             toggleModalTire(false);
             toggleModalEditTire(false);
+            toggleModalSparepart(false);
+            toggleModalEditSparepart(false);
+        }
+    });
+
+    // Click outside modal to close
+    window.addEventListener('click', (event) => {
+        if (event.target === document.getElementById('modal-produk') || 
+            event.target === document.getElementById('modal-service') || 
+            event.target === document.getElementById('modal-edit-service') || 
+            event.target === document.getElementById('modal-detail-service') ||
+            event.target === document.getElementById('modal-tire') ||
+            event.target === document.getElementById('modal-edit-tire') ||
+            event.target === document.getElementById('modal-oil') ||
+            event.target === document.getElementById('modal-edit-oil') ||
+            event.target === document.getElementById('modal-sparepart') ||
+            event.target === document.getElementById('modal-edit-sparepart')) {
+            toggleModalProduk(false);
+            toggleModalService(false);
+            toggleModalEditService(false);
+            toggleModalDetailService(false);
+            toggleModalTire(false);
+            toggleModalEditTire(false);
+            toggleModalOil(false);
+            toggleModalEditOil(false);
         }
     });
 
@@ -661,6 +710,93 @@
 
         document.getElementById('form-edit-tire').action = '/admin/tires/' + id;
         toggleModalEditTire(true);
+    }
+
+    // 7. OIL MODALS
+    function toggleModalOil(show) {
+        const modal = document.getElementById('modal-oil');
+        if (!modal) return;
+        if (show) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        } else {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    function toggleModalEditOil(show) {
+        const modal = document.getElementById('modal-edit-oil');
+        if (!modal) return;
+        if (show) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        } else {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    function openModalEditOil(id, nama, harga, stok, jenis_oli, kekentalan, ukuran, tipe_oli, merek, fitur, deskripsi) {
+        document.getElementById('edit-oil-nama').value = nama;
+        document.getElementById('edit-oil-harga').value = harga;
+        document.getElementById('edit-oil-stok').value = stok;
+        document.getElementById('edit-oil-jenis_oli').value = jenis_oli;
+        document.getElementById('edit-oil-kekentalan').value = kekentalan;
+        document.getElementById('edit-oil-ukuran').value = ukuran;
+        document.getElementById('edit-oil-tipe_oli').value = tipe_oli;
+        document.getElementById('edit-oil-merek').value = merek;
+        document.getElementById('edit-oil-fitur').value = fitur || '';
+        document.getElementById('edit-oil-deskripsi').value = deskripsi || '';
+
+        document.getElementById('form-edit-oil').action = '/admin/oils/' + id;
+        toggleModalEditOil(true);
+    }
+
+    // 8. SPAREPART MODALS
+    function toggleModalSparepart(show) {
+        const modal = document.getElementById('modal-sparepart');
+        if (!modal) return;
+        if (show) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        } else {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    function toggleModalEditSparepart(show) {
+        const modal = document.getElementById('modal-edit-sparepart');
+        if (!modal) return;
+        if (show) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        } else {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    function openModalEditSparepart(id, nama, harga, stok, jenis_sparepart, merek, fitur, deskripsi) {
+        document.getElementById('edit-sp-nama').value = nama;
+        document.getElementById('edit-sp-harga').value = harga;
+        document.getElementById('edit-sp-stok').value = stok;
+        document.getElementById('edit-sp-jenis_sparepart').value = jenis_sparepart;
+        document.getElementById('edit-sp-merek').value = merek;
+        document.getElementById('edit-sp-fitur').value = fitur || '';
+        document.getElementById('edit-sp-deskripsi').value = deskripsi || '';
+
+        document.getElementById('form-edit-sparepart').action = '/admin/spareparts/' + id;
+        toggleModalEditSparepart(true);
     }
 </script>
 @endsection

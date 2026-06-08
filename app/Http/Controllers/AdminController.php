@@ -6,6 +6,8 @@ use App\Models\User;
 use App\Models\Product;
 use App\Models\Service;
 use App\Models\Tire;
+use App\Models\Oil;
+use App\Models\Sparepart;
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
@@ -35,7 +37,13 @@ class AdminController extends Controller
         // AMBIL DATA BAN MOTOR
         $tires = Tire::orderBy('created_at', 'desc')->get();
 
-        // 3. TAMBAHKAN 'products' dan 'tires' ke dalam compact
+        // AMBIL DATA OLI MOTOR
+        $oils = Oil::orderBy('created_at', 'desc')->get();
+
+        // AMBIL DATA SPAREPART MOTOR
+        $spareparts = Sparepart::orderBy('created_at', 'desc')->get();
+
+        // 3. TAMBAHKAN 'products', 'tires', 'oils', dan 'spareparts' ke dalam compact
         return view('admin.dashboard', compact(
             'users', 
             'countMekanik', 
@@ -43,7 +51,9 @@ class AdminController extends Controller
             'allBookings',
             'products',
             'services',
-            'tires'
+            'tires',
+            'oils',
+            'spareparts'
         ));
     }
 }
