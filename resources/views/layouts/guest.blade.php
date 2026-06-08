@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bengkelin - Auth</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     {{-- Force dark mode permanently --}}
     <script>document.documentElement.classList.add('dark');</script>
@@ -13,6 +14,32 @@
     <style>
         .font-bengkel { font-family: 'Bebas Neue', sans-serif; tracking-wide; }
         body { font-family: 'Inter', sans-serif; }
+
+        /* Prevent browser autofill from changing font styles, sizes, and colors */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 30px #27272a inset !important; /* zinc-800 */
+            -webkit-text-fill-color: #ffffff !important;
+            font-size: 0.875rem !important; /* text-sm */
+            font-family: 'Inter', sans-serif !important;
+        }
+
+        /* Toast animation */
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .animate-toast {
+            animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
     </style>
 </head>
 <body class="h-full bg-zinc-950 text-white antialiased">

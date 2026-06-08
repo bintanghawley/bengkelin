@@ -65,18 +65,18 @@
         .delay-300 { transition-delay: 300ms; }
         .delay-500 { transition-delay: 500ms; }
     </style>
-    <nav class="relative z-30 flex items-center justify-between px-8 py-6 max-w-7xl mx-auto">
+    <nav class="sticky top-4 z-30 flex items-center justify-between px-8 py-4 max-w-7xl mx-auto bg-zinc-950/80 backdrop-blur-md rounded-2xl border border-zinc-800 shadow-xl">
        <div class="flex items-center gap-2">
             <div>
-                <img src="{{ asset('img/image-removebg-preview (3).png') }}" alt="" class="w-20 h-20 object-contain">
+                <img src="{{ asset('img/home/logo.png') }}" alt="" class="w-20 h-20 object-contain">
             </div>
             <span class="text-2xl font-bengkel tracking-wider text-zinc-900 dark:text-white">Bengkel<span class="text-red-600">in</span></span>
         </div>
         <div class="hidden md:flex gap-8 text-xs font-semibold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
-            <a href="#" class="hover:text-zinc-900 dark:hover:text-white transition">Services</a>
+            <a href="#home" class="hover:text-zinc-900 dark:hover:text-white transition">Beranda</a>
             
-            <a href="#about" class="hover:text-zinc-900 dark:hover:text-white transition">About</a>
-            <a href="#location" class="hover:text-zinc-900 dark:hover:text-white transition">Location</a> 
+            <a href="#about" class="hover:text-zinc-900 dark:hover:text-white transition">Tentang Kami</a>
+            <a href="#location" class="hover:text-zinc-900 dark:hover:text-white transition">Lokasi</a> 
         </div>
         <div class="flex items-center gap-3">
             @include('partials.cart-widget')
@@ -94,7 +94,7 @@
         <div class="h-full flex flex-col">
             <div class="flex items-center justify-between p-5 border-b border-zinc-200 dark:border-zinc-800">
                 <a href="{{ route('home') }}" class="flex items-center gap-2">
-                    <img src="{{ asset('img/image-removebg-preview (3).png') }}" alt="" class="w-12 h-12 object-contain">
+                    <img src="{{ asset('img/home/logo.png') }}" alt="" class="w-12 h-12 object-contain">
                     <span class="text-xl font-bengkel tracking-wider text-zinc-900 dark:text-white">Bengkel<span class="text-red-600">in</span></span>
                 </a>
                 <button type="button" id="sidebar-close" class="inline-flex items-center justify-center h-9 w-9 rounded-full border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition text-zinc-700 dark:text-zinc-300" aria-label="Tutup menu">
@@ -175,15 +175,12 @@
                     KEEP YOUR ENGINE <br> <span class="text-red-600">PERFORMANCE</span>
                 </h1>
                 <p class="text-zinc-600 dark:text-zinc-400 text-lg max-w-lg mx-auto lg:mx-0 mb-10 leading-relaxed">
-                    Solusi servis kendaraan sat-set tanpa antre. Mekanik pro, sparepart ori, harga gak bikin dompet mati.
+                    Solusi perawatan kendaraan terpercaya dengan mekanik berpengalaman, suku cadang original, dan efisiensi waktu tanpa antrean panjang.
                 </p>
                 
                 <div class="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
-                    <a href="{{ route('register') }}" class="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white font-bold px-10 py-4 rounded-xl shadow-lg shadow-red-900/20 transition active:scale-95 text-center">
+                    <a href="{{ route('servis') }}" class="w-full sm:w-72 bg-red-600 hover:bg-red-700 text-white font-bold px-10 py-4 rounded-xl shadow-lg shadow-red-900/20 transition active:scale-95 text-center tracking-wider">
                         BOOKING SEKARANG
-                    </a>
-                    <a href="#" class="w-full sm:w-auto bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white font-bold px-10 py-4 rounded-xl transition text-center border border-zinc-300 dark:border-zinc-700">
-                        LIHAT LAYANAN
                     </a>
                 </div>
 
@@ -206,9 +203,9 @@
             <div class="order-1 lg:order-2 relative scroll-reveal-right">
                 <div class="absolute -inset-1 bg-red-600 rounded-3xl blur opacity-10"></div>
                 <div class="relative bg-zinc-100 dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 overflow-hidden aspect-video lg:aspect-square flex items-center justify-center group transition-colors duration-300">
-                    <img src="{{ asset ('img/Gemini_Generated_Image_rlwfwprlwfwprlwf.png') }}" alt="Gambar" class="w-full h-full object-cover">
+                    <img src="{{ asset ('img/home/bengkel.jpg') }}" alt="Gambar" class="w-full h-full object-cover">
                     <div class="absolute bottom-8 right-8 text-right">
-                        <p class="text-zinc-400 dark:text-zinc-600 text-6xl font-bengkel opacity-100 uppercase leading-none">Bengkelin<br>Sidoarjo</p>
+                        <p class="text-red-600 text-6xl font-bengkel opacity-100 uppercase leading-none">Bengkelin<br>Sidoarjo</p>
                     </div>
                 </div>
             </div>
@@ -238,7 +235,7 @@
                 <div class="relative group scroll-reveal-right">
                     <div class="absolute -inset-1 bg-gradient-to-r from-red-600 to-zinc-300 dark:to-zinc-800 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
                     <div class="relative bg-zinc-100 dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 p-2 overflow-hidden transition-colors duration-300">
-                        <img src="{{ asset("img/Gemini_Generated_Image_m0vuzjm0vuzjm0vu.png") }}" alt="Workshop" class="rounded-2xl grayscale hover:grayscale-0 transition duration-700 w-full object-cover aspect-video lg:aspect-auto">
+                        <img src="{{ asset("img/home/bengkel-samping.jpg") }}" alt="Workshop" class="rounded-2xl grayscale hover:grayscale-0 transition duration-700 w-full object-cover aspect-video lg:aspect-auto">
                     </div>
                 </div>
             </div>
@@ -302,7 +299,7 @@
                     <div class="md:col-span-4 space-y-6">
                         <div class="flex items-center gap-3">
                             <div>
-                                <img src="{{ asset('img/image-removebg-preview (3).png') }}" alt="" class="w-20 h-20 object-contain">
+                                <img src="{{ asset('img/home/logo.png') }}" alt="" class="w-20 h-20 object-contain">
                             </div>
                             <span class="text-2xl font-bengkel tracking-wider text-zinc-900 dark:text-white">BENGKEL<span class="text-red-600">IN</span></span>
                         </div>
@@ -311,49 +308,38 @@
                         </p>
                         <!-- Social Icons -->
                         <div class="flex gap-3">
-                            @foreach(['instagram', 'twitter', 'github', 'youtube'] as $social)
-                            <a href="#" class="h-10 w-10 bg-zinc-100 dark:bg-zinc-800 hover:bg-red-600 rounded-xl flex items-center justify-center text-zinc-500 dark:text-zinc-400 hover:text-white dark:hover:text-white transition-all duration-300">
-                                <i class="fab fa-{{ $social }}"></i>
+                            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="h-10 w-10 bg-zinc-100 dark:bg-zinc-800 hover:bg-red-600 rounded-xl flex items-center justify-center text-zinc-500 dark:text-zinc-400 hover:text-white dark:hover:text-white transition-all duration-300" aria-label="Instagram">
+                                <i class="fa-brands fa-instagram text-lg"></i>
                             </a>
-                            @endforeach
+                            <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="h-10 w-10 bg-zinc-100 dark:bg-zinc-800 hover:bg-red-600 rounded-xl flex items-center justify-center text-zinc-500 dark:text-zinc-400 hover:text-white dark:hover:text-white transition-all duration-300" aria-label="Twitter">
+                                <i class="fa-brands fa-x-twitter text-lg"></i>
+                            </a>
+                            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="h-10 w-10 bg-zinc-100 dark:bg-zinc-800 hover:bg-red-600 rounded-xl flex items-center justify-center text-zinc-500 dark:text-zinc-400 hover:text-white dark:hover:text-white transition-all duration-300" aria-label="Facebook">
+                                <i class="fa-brands fa-facebook-f text-lg"></i>
+                            </a>
+                            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="h-10 w-10 bg-zinc-100 dark:bg-zinc-800 hover:bg-red-600 rounded-xl flex items-center justify-center text-zinc-500 dark:text-zinc-400 hover:text-white dark:hover:text-white transition-all duration-300" aria-label="YouTube">
+                                <i class="fa-brands fa-youtube text-lg"></i>
+                            </a>
                         </div>
                     </div>
 
                     <!-- Navigation Links -->
-                    <div class="md:col-span-8 grid grid-cols-2 md:grid-cols-4 gap-8">
+                    <div class="md:col-span-8 grid grid-cols-2 gap-8">
                         <div>
-                            <h4 class="text-zinc-900 dark:text-white font-bold text-sm mb-6 uppercase tracking-widest">Layanan</h4>
+                            <h4 class="text-zinc-900 dark:text-white font-bold text-sm mb-6 uppercase tracking-widest">Navigasi</h4>
                             <ul class="space-y-4 text-zinc-500 dark:text-zinc-400 text-sm">
-                                <li><a href="#" class="hover:text-red-500 dark:hover:text-red-400 transition">Service Ringan</a></li>
-                                <li><a href="#" class="hover:text-red-500 dark:hover:text-red-400 transition">Tune Up</a></li>
-                                <li><a href="#" class="hover:text-red-500 dark:hover:text-red-400 transition">Ganti Oli</a></li>
-                                <li><a href="#" class="hover:text-red-500 dark:hover:text-red-400 transition">Overhaul</a></li>
+                                <li><a href="#home" class="hover:text-red-500 dark:hover:text-red-400 transition">Beranda</a></li>
+                                <li><a href="#about" class="hover:text-red-500 dark:hover:text-red-400 transition">Tentang Kami</a></li>
+                                <li><a href="#location" class="hover:text-red-500 dark:hover:text-red-400 transition">Lokasi</a></li>
                             </ul>
                         </div>
                         <div>
-                            <h4 class="text-zinc-900 dark:text-white font-bold text-sm mb-6 uppercase tracking-widest">Perusahaan</h4>
+                            <h4 class="text-zinc-900 dark:text-white font-bold text-sm mb-6 uppercase tracking-widest">Layanan & Toko</h4>
                             <ul class="space-y-4 text-zinc-500 dark:text-zinc-400 text-sm">
-                                <li><a href="#" class="hover:text-red-500 dark:hover:text-red-400 transition">Tentang Kami</a></li>
-                                <li><a href="#" class="hover:text-red-500 dark:hover:text-red-400 transition">Mekanik Kami</a></li>
-                                <li><a href="#" class="hover:text-red-500 dark:hover:text-red-400 transition">Karir</a></li>
-                                <li><a href="#" class="hover:text-red-500 dark:hover:text-red-400 transition">Kontak</a></li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 class="text-zinc-900 dark:text-white font-bold text-sm mb-6 uppercase tracking-widest">Bantuan</h4>
-                            <ul class="space-y-4 text-zinc-500 dark:text-zinc-400 text-sm">
-                                <li><a href="#" class="hover:text-red-500 dark:hover:text-red-400 transition">FAQ</a></li>
-                                <li><a href="#" class="hover:text-red-500 dark:hover:text-red-400 transition">Pusat Bantuan</a></li>
-                                <li><a href="#" class="hover:text-red-500 dark:hover:text-red-400 transition">Panduan</a></li>
-                                <li><a href="#" class="hover:text-red-500 dark:hover:text-red-400 transition">Komunitas</a></li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 class="text-zinc-900 dark:text-white font-bold text-sm mb-6 uppercase tracking-widest">Legal</h4>
-                            <ul class="space-y-4 text-zinc-500 dark:text-zinc-400 text-sm">
-                                <li><a href="#" class="hover:text-red-500 dark:hover:text-red-400 transition">Privasi</a></li>
-                                <li><a href="#" class="hover:text-red-500 dark:hover:text-red-400 transition">Ketentuan</a></li>
-                                <li><a href="#" class="hover:text-red-500 dark:hover:text-red-400 transition">Keamanan</a></li>
+                                <li><a href="{{ route('servis') }}" class="hover:text-red-500 dark:hover:text-red-400 transition">Servis Motor</a></li>
+                                <li><a href="{{ route('toko.banmotor') }}" class="hover:text-red-500 dark:hover:text-red-400 transition">Ban Motor</a></li>
+                                <li><a href="{{ route('toko.oli') }}" class="hover:text-red-500 dark:hover:text-red-400 transition">Oli Motor</a></li>
+                                <li><a href="{{ route('toko.sparepart') }}" class="hover:text-red-500 dark:hover:text-red-400 transition">Sparepart</a></li>
                             </ul>
                         </div>
                     </div>
@@ -374,14 +360,9 @@
                 </div>
             </div>
 
-            <!-- Copyright & Status -->
-            <div class="mt-10 flex flex-col md:flex-row justify-between items-center text-[10px] text-zinc-500 dark:text-zinc-600 uppercase tracking-[0.2em] font-medium px-4">
-                <p>© 2026 Bengkelin. </p>
-                <div class="flex gap-8 mt-4 md:mt-0">
-                    <a href="#" class="hover:text-zinc-900 dark:hover:text-white transition">Status</a>
-                    <a href="#" class="hover:text-zinc-900 dark:hover:text-white transition">Sitemap</a>
-                    <a href="#" class="hover:text-zinc-900 dark:hover:text-white transition">Aksesibilitas</a>
-                </div>
+            <!-- Copyright -->
+            <div class="mt-10 text-center text-[10px] text-zinc-500 dark:text-zinc-600 uppercase tracking-[0.2em] font-medium">
+                <p>© 2026 Bengkelin.</p>
             </div>
         </div>
     </footer>
