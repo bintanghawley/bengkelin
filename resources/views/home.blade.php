@@ -84,46 +84,8 @@
                     <path d="M21 21l-4.35-4.35M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
             </button>
-            @guest
-                <a href="{{ route('login') }}" class="inline-flex items-center justify-center h-11 w-11 rounded-full border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition" aria-label="Keranjang">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
-                        <path d="M6 6h15l-1.5 9h-12z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M6 6l-2-3H2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                        <circle cx="9" cy="20" r="1" />
-                        <circle cx="18" cy="20" r="1" />
-                    </svg>
-                </a>
-            @endguest
-            @auth
-                <div class="relative group">
-                    <a href="{{ route('toko.index') }}" class="inline-flex items-center justify-center h-11 w-11 rounded-full border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition" aria-label="Keranjang">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
-                            <path d="M6 6h15l-1.5 9h-12z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M6 6l-2-3H2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            <circle cx="9" cy="20" r="1" />
-                            <circle cx="18" cy="20" r="1" />
-                        </svg>
-                    </a>
-                    <div class="absolute right-0 mt-3 w-80 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-2xl z-50 opacity-0 translate-y-2 pointer-events-none transition group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto">
-                        <div class="p-5">
-                            <p class="text-lg font-semibold">Keranjang</p>
-                            <div class="mt-5 flex flex-col items-center text-center">
-                                <div class="relative h-24 w-24 rounded-full bg-red-50 dark:bg-red-950/20 flex items-center justify-center">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-10 h-10 text-red-400">
-                                        <path d="M6 6h15l-1.5 9h-12z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                        <path d="M6 6l-2-3H2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                        <circle cx="9" cy="20" r="1" />
-                                        <circle cx="18" cy="20" r="1" />
-                                    </svg>
-                                    <span class="absolute top-1 right-1 h-6 min-w-6 px-2 rounded-full bg-red-600 text-white text-xs font-semibold flex items-center justify-center">0</span>
-                                </div>
-                                <p class="mt-4 font-semibold">Belum Ada Barang di Keranjangmu</p>
-                                <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">Yuk isi dulu dengan barang otomotif impianmu.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endauth
+            @include('partials.cart-widget')
+
             <!-- Theme Toggle Button -->
             <button type="button" class="theme-toggle-btn inline-flex items-center justify-center h-11 w-11 rounded-full border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition" aria-label="Ganti Tema">
                 <!-- Moon icon (shows in light mode) -->

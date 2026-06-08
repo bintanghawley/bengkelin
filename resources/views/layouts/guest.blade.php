@@ -37,7 +37,9 @@
         </button>
     </div>
 
+
     @yield('content')
+
 
     <script>
         // --- LOGIC PHONE INPUT ---
