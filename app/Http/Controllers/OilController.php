@@ -99,6 +99,10 @@ class OilController extends Controller
         // Kurangi stok
         $oil->decrement('stok', $jumlah);
 
+        $purchaseStatus = $request->input('metode_pembayaran') === 'Transfer Bank' 
+            ? 'menunggu_pembayaran' 
+            : 'diproses';
+
         // Buat purchase
         $purchase = Purchase::create([
             'user_id'           => Auth::id(),
@@ -111,8 +115,21 @@ class OilController extends Controller
             'telepon'           => $request->input('telepon'),
             'metode_pembayaran' => $request->input('metode_pembayaran'),
             'catatan'           => $request->input('catatan'),
-            'status'            => 'pending',
+            'status'            => $purchaseStatus,
         ]);
+
+        if ($request->input('metode_pembayaran') === 'Transfer Bank') {
+            $payment = \App\Models\Payment::create([
+                'invoice_number' => \App\Models\Payment::generateInvoice(),
+                'amount'         => $totalHarga,
+                'status'         => 'pending',
+                'expired_at'     => now()->addHour(),
+            ]);
+
+            $purchase->update(['payment_id' => $payment->id]);
+
+            return redirect()->route('pengguna.payments.show', $payment->id);
+        }
 
         return redirect()->route('toko.result', $purchase->id)
             ->with('success', 'Pembelian oli berhasil! Pesanan Anda sedang diproses.');

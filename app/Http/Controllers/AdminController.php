@@ -8,6 +8,7 @@ use App\Models\Service;
 use App\Models\Tire;
 use App\Models\Oil;
 use App\Models\Sparepart;
+use App\Models\Purchase;
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
@@ -43,6 +44,15 @@ class AdminController extends Controller
         // AMBIL DATA SPAREPART MOTOR
         $spareparts = Sparepart::orderBy('created_at', 'desc')->get();
 
+        // AMBIL DATA PEMBELIAN (ORDERS)
+        $purchases = Purchase::with('user')->orderBy('created_at', 'desc')->get();
+
+        // STATISTIK PENDAPATAN BULAN INI
+        $pendapatanBulanIni = Purchase::where('status', '!=', 'dibatalkan')
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->sum('total_harga');
+
         // 3. TAMBAHKAN 'products', 'tires', 'oils', dan 'spareparts' ke dalam compact
         return view('admin.dashboard', compact(
             'users', 
@@ -53,7 +63,9 @@ class AdminController extends Controller
             'services',
             'tires',
             'oils',
-            'spareparts'
+            'spareparts',
+            'purchases',
+            'pendapatanBulanIni'
         ));
     }
 }

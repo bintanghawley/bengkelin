@@ -401,7 +401,13 @@
         refreshAll();
     };
     window.cartCheckout = function() {
-        alert('Fitur checkout keranjang akan segera hadir!');
+        var checkedItems = cartLoad().filter(function(i) { return i.checked !== false; });
+        if (checkedItems.length === 0) {
+            alert('Pilih minimal satu produk terlebih dahulu!');
+            return;
+        }
+        // Redirect to checkout page (auth required — server will redirect to login if not authenticated)
+        window.location.href = '{{ route("cart.checkout") }}';
     };
 
     // ── Toast ──────────────────────────────────────────────────────

@@ -150,32 +150,38 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 @foreach($services as $service)
-                <div class="bg-zinc-900 border border-zinc-800 rounded-[2rem] overflow-hidden shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col group">
-                    <div class="relative aspect-video overflow-hidden">
-                        <img src="{{ $service->gambar_url }}" alt="{{ $service->nama }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
-                            <span class="inline-block bg-red-600 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-2 w-max">{{ $service->estimasi_waktu }}</span>
-                            <h3 class="text-2xl font-bengkel text-white uppercase tracking-wide">{{ $service->nama }}</h3>
+                <div class="group relative bg-zinc-900 border border-zinc-800 rounded-[2rem] overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                    <a href="{{ route('servis.detail', $service->slug) }}" class="flex-1 flex flex-col">
+                        <div class="aspect-video bg-zinc-800/30 flex items-center justify-center relative overflow-hidden">
+                            <img src="{{ $service->gambar_url }}" alt="{{ $service->nama }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <div class="absolute top-4 left-4">
+                                <span class="inline-block bg-red-600 text-white text-[9px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full">{{ $service->estimasi_waktu }}</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="p-6 flex flex-col flex-1">
-                        <p class="text-zinc-400 text-sm line-clamp-2 mb-6 flex-1">{{ $service->deskripsi }}</p>
-                        
-                        <div class="flex items-center justify-between mb-6 pb-6 border-b border-zinc-800">
+                        <div class="p-6 space-y-4 flex-1 flex flex-col justify-between">
                             <div>
-                                <p class="text-[10px] text-zinc-400 uppercase font-bold tracking-widest mb-1">Mulai Dari</p>
-                                <p class="text-lg font-bold text-red-600">{{ $service->harga_mulai_formatted }}</p>
+                                <span class="inline-block text-[10px] text-zinc-500 font-bold uppercase tracking-widest">Layanan Servis</span>
+                                <h4 class="font-bold text-lg uppercase tracking-wide text-zinc-200 line-clamp-1 mt-1 group-hover:text-red-500 transition">
+                                    {{ $service->nama }}
+                                </h4>
+                                <p class="text-xs text-zinc-400 line-clamp-2 mt-2 leading-relaxed">{{ $service->deskripsi }}</p>
                             </div>
-                            <div class="text-right">
-                                <p class="text-[10px] text-zinc-400 uppercase font-bold tracking-widest mb-1">Pekerjaan</p>
-                                <p class="text-sm font-semibold text-zinc-300">{{ $service->items_count }} Item</p>
+                            
+                            <div class="flex items-center justify-between pt-4 border-t border-zinc-800/60 mt-auto">
+                                <div>
+                                    <span class="block text-[9px] text-zinc-500 font-bold uppercase tracking-widest">Mulai Dari</span>
+                                    <div class="flex items-baseline gap-0.5 text-white mt-1">
+                                        <span class="text-[10px] font-bold text-red-500">Rp</span>
+                                        <span class="text-xl font-bengkel tracking-wider text-red-500">{{ number_format($service->harga_mulai, 0, ',', '.') }}</span>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <span class="block text-[9px] text-zinc-500 font-bold uppercase tracking-widest">Pekerjaan</span>
+                                    <span class="block text-xs font-semibold text-zinc-300 mt-1.5">{{ $service->items_count }} Item</span>
+                                </div>
                             </div>
                         </div>
-                        
-                        <a href="{{ route('servis.detail', $service->slug) }}" class="block w-full text-center border-2 border-zinc-700 hover:border-red-600 hover:bg-red-600 hover:text-white text-zinc-300 font-semibold py-3 px-6 rounded-xl transition-all duration-200 text-xs uppercase tracking-widest">
-                            Detail Servis
-                        </a>
-                    </div>
+                    </a>
                 </div>
                 @endforeach
             </div>

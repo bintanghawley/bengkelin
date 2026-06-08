@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ServiceBooking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,12 +24,32 @@ class MekanikController extends Controller
             return $check;
         }
 
-        $bookings = \App\Models\ServiceBooking::with(['user', 'service'])
-            ->where('mechanic_id', \Illuminate\Support\Facades\Auth::id())
+        // Pending bookings - all mekaniks can see & accept
+        $pendingCount = ServiceBooking::where('status', 'pending')->count();
+
+        // My active bookings (diterima/diproses)
+        $activeBookings = ServiceBooking::with(['user', 'service'])
+            ->where('mechanic_id', Auth::id())
+            ->whereIn('status', ['diterima', 'diproses'])
+            ->orderBy('tanggal_booking', 'asc')
+            ->get();
+
+        // My completed bookings
+        $completedCount = ServiceBooking::where('mechanic_id', Auth::id())
+            ->where('status', 'selesai')
+            ->count();
+
+        // All my bookings for the table
+        $bookings = ServiceBooking::with(['user', 'service'])
+            ->where('mechanic_id', Auth::id())
             ->orderBy('id', 'desc')
             ->get();
 
-        return view('mekanik.dashboard', compact('bookings'));
+        return view('mekanik.dashboard', compact(
+            'bookings',
+            'pendingCount',
+            'activeBookings',
+            'completedCount'
+        ));
     }
 }
-

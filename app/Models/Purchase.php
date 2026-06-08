@@ -19,10 +19,16 @@ class Purchase extends Model
         'metode_pembayaran',
         'catatan',
         'status',
+        'payment_id',
     ];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function payment(): BelongsTo
+    {
+        return $this->belongsTo(Payment::class, 'payment_id');
     }
 }

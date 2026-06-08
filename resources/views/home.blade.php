@@ -79,24 +79,8 @@
             <a href="#location" class="hover:text-zinc-900 dark:hover:text-white transition">Location</a> 
         </div>
         <div class="flex items-center gap-3">
-            <button type="button" class="inline-flex items-center justify-center h-11 w-11 rounded-full border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition" aria-label="Cari">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
-                    <path d="M21 21l-4.35-4.35M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-            </button>
             @include('partials.cart-widget')
 
-            <!-- Theme Toggle Button -->
-            <button type="button" class="theme-toggle-btn inline-flex items-center justify-center h-11 w-11 rounded-full border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition" aria-label="Ganti Tema">
-                <!-- Moon icon (shows in light mode) -->
-                <svg class="theme-toggle-dark-icon hidden w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
-                </svg>
-                <!-- Sun icon (shows in dark mode) -->
-                <svg class="theme-toggle-light-icon hidden w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 5a7 7 0 100 14 7 7 0 000-14z" />
-                </svg>
-            </button>
             <button type="button" id="sidebar-open" class="inline-flex items-center justify-center h-11 w-11 rounded-full border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition" aria-label="Menu" aria-controls="sidebar" aria-expanded="false">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
                     <path d="M4 6h16M4 12h16M4 18h10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -134,23 +118,14 @@
                                 @if (Auth::user()->role === 'admin')
                                     <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-zinc-900 dark:text-white hover:text-red-600 dark:hover:text-red-500 transition">
                                         {{ Auth::user()->name }}
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
-                                            <path d="M9 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
                                     </a>
                                 @elseif (Auth::user()->role === 'mekanik')
                                     <a href="{{ route('mekanik.dashboard') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-zinc-900 dark:text-white hover:text-red-600 dark:hover:text-red-500 transition">
                                         {{ Auth::user()->name }}
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
-                                            <path d="M9 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
                                     </a>
                                 @else
                                     <a href="{{ route('pengguna.dashboard') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-zinc-900 dark:text-white hover:text-red-600 dark:hover:text-red-500 transition">
                                         {{ Auth::user()->name }}
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
-                                            <path d="M9 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
                                     </a>
                                 @endif
                                 <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">{{ Auth::user()->nomor_telepon ? implode('-', str_split(Auth::user()->nomor_telepon, 4)) : '-' }}</p>
@@ -182,47 +157,9 @@
 
                 <div class="space-y-3">
                     <a href="{{ route('servis') }}" class="block w-full text-left py-2 font-semibold text-zinc-900 dark:text-white hover:text-red-600 dark:hover:text-red-500 transition">Servis</a>
-                    <details class="group">
-                        <summary class="flex items-center justify-between py-2 cursor-pointer font-semibold text-zinc-900 dark:text-white">
-                            <span class="group-open:text-red-600">Ban Motor</span>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-600 dark:text-zinc-400 transition-transform group-open:rotate-180 group-open:text-red-600">
-                                <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </summary>
-                        <div class="pl-4 pb-2 space-y-2 text-sm">
-                            <a href="#" class="block text-zinc-700 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-500">Ban Motor Matic</a>
-                            <a href="#" class="block text-zinc-700 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-500">Ban Motor Bebek</a>
-                            <a href="#" class="block text-zinc-700 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-500">Ban Motor Sport</a>
-                            <a href="#" class="block text-zinc-700 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-500">Ban Motor Big Matic</a>
-                        </div>
-                    </details>
-                    <details class="group">
-                        <summary class="flex items-center justify-between py-2 cursor-pointer font-semibold text-zinc-900 dark:text-white">
-                            <span class="group-open:text-red-600">Oli Motor</span>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-600 dark:text-zinc-400 transition-transform group-open:rotate-180 group-open:text-red-600">
-                                <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </summary>
-                        <div class="pl-4 pb-2 space-y-2 text-sm">
-                            <a href="#" class="block text-zinc-700 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-500">Oli Motor Matic</a>
-                            <a href="#" class="block text-zinc-700 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-500">Oli Motor Bebek</a>
-                            <a href="#" class="block text-zinc-700 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-500">Oli Motor Sport</a>
-                        </div>
-                    </details>
-                    <details class="group">
-                        <summary class="flex items-center justify-between py-2 cursor-pointer font-semibold text-zinc-900 dark:text-white">
-                            <span class="group-open:text-red-600">Sparepart</span>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-600 dark:text-zinc-400 transition-transform group-open:rotate-180 group-open:text-red-600">
-                                <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </summary>
-                        <div class="pl-4 pb-2 space-y-2 text-sm">
-                            <a href="#" class="block text-zinc-700 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-500">Aki Motor</a>
-                            <a href="#" class="block text-zinc-700 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-500">Filter Udara Motor</a>
-                            <a href="#" class="block text-zinc-700 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-500">Kampas Rem</a>
-                            <a href="#" class="block text-zinc-700 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-500">Cairan Anti Bocor</a>
-                        </div>
-                    </details>
+                    <a href="{{ route('toko.banmotor') }}" class="block w-full text-left py-2 font-semibold text-zinc-900 dark:text-white hover:text-red-600 dark:hover:text-red-500 transition">Ban Motor</a>
+                    <a href="{{ route('toko.oli') }}" class="block w-full text-left py-2 font-semibold text-zinc-900 dark:text-white hover:text-red-600 dark:hover:text-red-500 transition">Oli Motor</a>
+                    <a href="{{ route('toko.sparepart') }}" class="block w-full text-left py-2 font-semibold text-zinc-900 dark:text-white hover:text-red-600 dark:hover:text-red-500 transition">Sparepart</a>
                 </div>
             </div>
         </div>

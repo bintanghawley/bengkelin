@@ -25,6 +25,24 @@ class ServiceBooking extends Model
         'tanggal_booking' => 'date',
     ];
 
+    /**
+     * Status list for display
+     */
+    public static function statusList(): array
+    {
+        return ['pending', 'diterima', 'ditolak', 'diproses', 'selesai', 'dibatalkan'];
+    }
+
+    public function isPending(): bool
+    {
+        return $this->status === 'pending';
+    }
+
+    public function isDiterima(): bool
+    {
+        return $this->status === 'diterima';
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');

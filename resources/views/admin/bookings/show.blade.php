@@ -30,13 +30,18 @@
             <a href="{{ route('admin.bookings.index') }}" class="text-xs text-red-600 dark:text-red-500 hover:text-red-500 dark:hover:text-red-400 transition uppercase font-bold tracking-widest">← Kembali ke Daftar</a>
                 <h1 class="text-2xl font-bengkel uppercase tracking-widest mt-2 text-gray-900 dark:text-white">Kelola Booking #{{ $booking->id }}</h1>
             </div>
-            <span class="px-4 py-1.5 rounded-full text-xs font-bold border
-                {{ $booking->status === 'pending' ? 'bg-orange-950/40 text-orange-400 border-orange-900/60' : '' }}
-                {{ $booking->status === 'ditugaskan' ? 'bg-blue-950/40 text-blue-400 border-blue-900/60' : '' }}
-                {{ $booking->status === 'diproses' ? 'bg-yellow-950/40 text-yellow-500 border-yellow-900/60' : '' }}
-                {{ $booking->status === 'selesai' ? 'bg-emerald-950/40 text-emerald-400 border-emerald-900/60' : '' }}
-                {{ $booking->status === 'dibatalkan' ? 'bg-red-950/40 text-red-500 border-red-900/60' : '' }}
-            ">
+            @php
+                $sc = match($booking->status) {
+                    'pending'    => 'bg-orange-950/40 text-orange-400 border-orange-900/60',
+                    'diterima'   => 'bg-blue-950/40 text-blue-400 border-blue-900/60',
+                    'diproses'   => 'bg-yellow-950/40 text-yellow-500 border-yellow-900/60',
+                    'selesai'    => 'bg-emerald-950/40 text-emerald-400 border-emerald-900/60',
+                    'ditolak'    => 'bg-red-950/40 text-red-400 border-red-900/60',
+                    'dibatalkan' => 'bg-red-950/40 text-red-500 border-red-900/60',
+                    default      => 'bg-zinc-800 text-zinc-400 border-zinc-700',
+                };
+            @endphp
+            <span class="px-4 py-1.5 rounded-full text-xs font-bold border {{ $sc }}">
                 {{ strtoupper($booking->status) }}
             </span>
         </div>
@@ -95,63 +100,28 @@
                     </p>
                 </div>
 
-                <!-- Update Status & Penugasan -->
-                <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-3xl p-6 shadow-sm dark:shadow-2xl space-y-6">
-                    <h3 class="text-xs text-gray-500 dark:text-zinc-500 uppercase tracking-widest font-bold border-b border-gray-200 dark:border-zinc-800 pb-3">Penugasan & Status</h3>
+                <!-- Booking Status Info -->
+                <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-3xl p-6 shadow-sm dark:shadow-2xl space-y-4">
+                    <h3 class="text-xs text-gray-500 dark:text-zinc-500 uppercase tracking-widest font-bold border-b border-gray-200 dark:border-zinc-800 pb-3">Status Booking</h3>
                     
-                    @if($booking->status === 'pending')
-                    <!-- Form Tugaskan Mekanik -->
-                    <form action="{{ route('admin.bookings.update', $booking->id) }}" method="POST" class="space-y-4">
-                        @csrf
-                        @method('PUT')
-                        <input type="hidden" name="action" value="assign">
-
-                        <div class="space-y-2">
-                            <label class="text-[10px] uppercase text-gray-500 dark:text-zinc-500 font-bold tracking-widest">Pilih Mekanik Untuk Ditugaskan</label>
-                            <select name="mechanic_id" required class="w-full bg-gray-50 dark:bg-zinc-950 border border-gray-300 dark:border-zinc-800 rounded-xl px-4 py-3.5 text-sm text-gray-900 dark:text-white focus:border-red-600 outline-none transition">
-                                <option value="">-- Pilih Mekanik --</option>
-                                @foreach($mechanics as $mechanic)
-                                    <option value="{{ $mechanic->id }}">{{ $mechanic->name }}</option>
-                                @endforeach
-                            </select>
+                    <div class="text-sm text-zinc-700 dark:text-zinc-300 space-y-2 normal-case">
+                        <p>Booking ini dikelola langsung oleh mekanik. Admin dapat memantau status dan membatalkan bila diperlukan.</p>
+                        <div class="mt-3">
+                            <span class="text-[10px] uppercase font-bold tracking-widest text-zinc-500">Mekanik Bertugas</span>
+                            <p class="font-bold text-gray-900 dark:text-white mt-1">{{ $booking->mechanic ? $booking->mechanic->name : 'Belum ada yang menerima' }}</p>
                         </div>
-
-                        <div class="space-y-2">
-                            <label class="text-[10px] uppercase text-gray-500 dark:text-zinc-500 font-bold tracking-widest">Tambahkan Catatan Admin</label>
-                            <textarea name="catatan_admin" rows="3" placeholder="Misal: Kerjakan motor ini terlebih dahulu..." class="w-full bg-gray-50 dark:bg-zinc-950 border border-gray-300 dark:border-zinc-800 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:border-red-600 outline-none transition">{{ $booking->catatan_admin }}</textarea>
-                        </div>
-
-                        <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 rounded-xl uppercase text-[10px] tracking-widest transition shadow-lg shadow-red-900/40">
-                            Terima dan Tugaskan
-                        </button>
-                    </form>
-
-                    <div class="border-t border-zinc-800 pt-4">
-                        <form action="{{ route('admin.bookings.update', $booking->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan booking ini?')">
-                            @csrf
-                            @method('PUT')
-                            <input type="hidden" name="action" value="cancel">
-                            <button type="submit" class="w-full bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-red-950 hover:text-red-500 dark:hover:text-red-400 text-gray-700 dark:text-white font-bold py-4 rounded-xl uppercase text-[10px] tracking-widest transition">
-                                Batalkan Booking
-                            </button>
-                        </form>
                     </div>
-                    @else
-                    <!-- Hanya edit catatan admin jika status bukan pending lagi -->
-                    <form action="{{ route('admin.bookings.update', $booking->id) }}" method="POST" class="space-y-4">
-                        @csrf
-                        @method('PUT')
-                        <input type="hidden" name="action" value="update_notes">
 
-                        <div class="space-y-2">
-                            <label class="text-[10px] uppercase text-gray-500 dark:text-zinc-500 font-bold tracking-widest">Catatan Admin</label>
-                            <textarea name="catatan_admin" rows="3" class="w-full bg-gray-50 dark:bg-zinc-950 border border-gray-300 dark:border-zinc-800 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:border-red-600 outline-none transition">{{ $booking->catatan_admin }}</textarea>
-                        </div>
-
-                        <button type="submit" class="w-full bg-zinc-850 hover:bg-zinc-850 hover:text-white text-zinc-400 font-bold py-3.5 rounded-xl uppercase text-[10px] tracking-widest transition">
-                            Simpan Catatan
+                    @if(in_array($booking->status, ['pending', 'diterima', 'diproses']))
+                    <form action="{{ route('admin.bookings.update', $booking->id) }}" method="POST" onsubmit="return confirm('Batalkan booking ini?')">
+                        @csrf @method('PUT')
+                        <input type="hidden" name="action" value="cancel">
+                        <button type="submit" class="w-full bg-gray-100 dark:bg-zinc-800 hover:bg-red-900/30 hover:text-red-400 text-gray-700 dark:text-zinc-400 font-bold py-3.5 rounded-xl uppercase text-[10px] tracking-widest transition border border-gray-300 dark:border-zinc-700">
+                            Batalkan Booking
                         </button>
                     </form>
+                    @else
+                    <p class="text-xs text-zinc-500 italic normal-case">Booking tidak dapat dibatalkan pada status ini.</p>
                     @endif
                 </div>
 

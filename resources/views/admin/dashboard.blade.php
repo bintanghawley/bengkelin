@@ -22,6 +22,9 @@
             <button onclick="showAdminSection('orders')" class="admin-nav w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 focus:text-red-600 outline-none rounded-xl font-bold transition">
                  E-COMMERCE
             </button>
+            <button onclick="showAdminSection('purchases')" class="admin-nav w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 focus:text-red-600 outline-none rounded-xl font-bold transition">
+                 RIWAYAT PESANAN
+            </button>
             <button onclick="showAdminSection('tires')" class="admin-nav w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 focus:text-red-600 outline-none rounded-xl font-bold transition">
                 KELOLA BAN MOTOR
             </button>
@@ -31,9 +34,12 @@
             <button onclick="showAdminSection('spareparts')" class="admin-nav w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 focus:text-red-600 outline-none rounded-xl font-bold transition">
                 KELOLA SPAREPART
             </button>
-             <a href="{{ route('admin.bookings.index') }}" class="admin-nav w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 rounded-xl font-bold transition">
-                BOOKING MASUK
-             </a>
+              <a href="{{ route('admin.bookings.index') }}" class="admin-nav w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 rounded-xl font-bold transition">
+                 BOOKING MASUK
+              </a>
+              <a href="{{ route('admin.payments.index') }}" class="admin-nav w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 rounded-xl font-bold transition">
+                 RIWAYAT PEMBAYARAN
+              </a>
         </nav>
 
         <div class="p-4 border-t border-gray-200 dark:border-zinc-800">
@@ -55,7 +61,7 @@
                 </div>
                 <div class="bg-white dark:bg-zinc-900 p-6 rounded-3xl border border-gray-200 dark:border-zinc-800 shadow-sm">
                     <p class="text-gray-400 dark:text-zinc-500 text-[10px] font-bold uppercase tracking-widest">Pendapatan Bln Ini</p>
-                    <h3 class="text-4xl font-bengkel text-emerald-600 dark:text-emerald-500">Rp 12.5M</h3>
+                    <h3 class="text-4xl font-bengkel text-emerald-600 dark:text-emerald-500">Rp {{ number_format($pendapatanBulanIni / 1000000, 1) }}M</h3>
                 </div>
             </div>
 
@@ -320,13 +326,18 @@
                             <span class="block text-[9px] text-gray-400 dark:text-zinc-500">{{ \Carbon\Carbon::parse($booking->jam_booking)->format('H:i') }} WIB</span>
                         </td>
                         <td class="px-6 py-4 text-center">
-                            <span class="px-3 py-1 rounded-full text-[9px] font-bold border 
-                                {{ $booking->status === 'pending' ? 'bg-orange-900/20 text-orange-500 border-orange-800' : '' }}
-                                {{ $booking->status === 'ditugaskan' ? 'bg-blue-900/20 text-blue-500 border-blue-800' : '' }}
-                                {{ $booking->status === 'diproses' ? 'bg-yellow-900/20 text-yellow-500 border-yellow-800' : '' }}
-                                {{ $booking->status === 'selesai' ? 'bg-emerald-900/20 text-emerald-500 border-emerald-800' : '' }}
-                                {{ $booking->status === 'dibatalkan' ? 'bg-red-900/20 text-red-500 border-red-800' : '' }}
-                            ">
+                            @php
+                                $bc = match($booking->status) {
+                                    'pending'    => 'bg-orange-900/20 text-orange-500 border-orange-800',
+                                    'diterima'   => 'bg-blue-900/20 text-blue-500 border-blue-800',
+                                    'diproses'   => 'bg-yellow-900/20 text-yellow-500 border-yellow-800',
+                                    'selesai'    => 'bg-emerald-900/20 text-emerald-500 border-emerald-800',
+                                    'ditolak'    => 'bg-red-900/20 text-red-400 border-red-800',
+                                    'dibatalkan' => 'bg-red-900/20 text-red-500 border-red-800',
+                                    default      => 'bg-zinc-800 text-zinc-400 border-zinc-700',
+                                };
+                            @endphp
+                            <span class="px-3 py-1 rounded-full text-[9px] font-bold border inline-block {{ $bc }}">
                                 {{ strtoupper($booking->status) }}
                             </span>
                         </td>
@@ -347,6 +358,85 @@
             </tbody>
         </table>
     </div>
+    </section>
+
+    {{-- RIWAYAT PESANAN / PURCHASES --}}
+    <section id="admin-purchases" class="admin-section hidden">
+        <div class="space-y-6">
+            <div class="flex justify-between items-center bg-white dark:bg-zinc-900 p-6 rounded-3xl border border-gray-200 dark:border-zinc-800 shadow-sm">
+                <div>
+                    <h3 class="font-bengkel text-xl text-gray-900 dark:text-white uppercase tracking-wider">Riwayat Pesanan Produk</h3>
+                    <p class="text-[9px] text-gray-400 dark:text-zinc-500 uppercase mt-1">Total: {{ $purchases->count() }} Pesanan</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-[9px] text-zinc-500 uppercase font-bold">Total Pendapatan</p>
+                    <p class="font-bengkel text-xl text-emerald-500">Rp {{ number_format($purchases->where('status', '!=', 'dibatalkan')->sum('total_harga'), 0, ',', '.') }}</p>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-zinc-900 rounded-3xl border border-gray-200 dark:border-zinc-800 overflow-hidden shadow-sm">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-[11px] uppercase tracking-tighter">
+                        <thead class="bg-gray-100 dark:bg-zinc-950 text-gray-500 dark:text-zinc-500 border-b border-gray-200 dark:border-zinc-800">
+                            <tr>
+                                <th class="px-6 py-4 font-bold text-gray-700 dark:text-white">Invoice</th>
+                                <th class="px-6 py-4 font-bold text-gray-700 dark:text-white">Pelanggan</th>
+                                <th class="px-6 py-4 font-bold text-gray-700 dark:text-white">Produk</th>
+                                <th class="px-6 py-4 font-bold text-center text-gray-700 dark:text-white">Qty</th>
+                                <th class="px-6 py-4 font-bold text-center text-gray-700 dark:text-white">Total</th>
+                                <th class="px-6 py-4 font-bold text-center text-gray-700 dark:text-white">Metode</th>
+                                <th class="px-6 py-4 font-bold text-center text-gray-700 dark:text-white">Status</th>
+                                <th class="px-6 py-4 font-bold text-right text-gray-700 dark:text-white">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 dark:divide-zinc-800/50 text-gray-600 dark:text-zinc-300">
+                            @forelse($purchases as $purchase)
+                            <tr class="hover:bg-gray-50 dark:hover:bg-zinc-800/30 transition-colors">
+                                <td class="px-6 py-4">
+                                    <span class="block font-bold text-gray-900 dark:text-white">#INV/{{ $purchase->created_at->format('Ymd') }}/{{ $purchase->id }}</span>
+                                    <span class="text-[9px] text-gray-400 dark:text-zinc-500">{{ $purchase->created_at->format('d M Y H:i') }}</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="block font-bold text-gray-900 dark:text-white">{{ $purchase->user->name ?? '-' }}</span>
+                                    <span class="text-[9px] text-gray-400">{{ $purchase->user->nomor_telepon ?? '' }}</span>
+                                </td>
+                                <td class="px-6 py-4 font-medium">{{ $purchase->barang_nama }}</td>
+                                <td class="px-6 py-4 text-center font-bold">{{ $purchase->jumlah }}</td>
+                                <td class="px-6 py-4 text-center font-bold text-emerald-600 dark:text-emerald-400">
+                                    Rp {{ number_format($purchase->total_harga, 0, ',', '.') }}
+                                </td>
+                                <td class="px-6 py-4 text-center">{{ $purchase->metode_pembayaran }}</td>
+                                <td class="px-6 py-4 text-center">
+                                    @php
+                                        $pc = match($purchase->status) {
+                                            'pending'    => 'bg-orange-900/20 text-orange-500 border-orange-800',
+                                            'diproses'   => 'bg-blue-900/20 text-blue-500 border-blue-800',
+                                            'dikirim'    => 'bg-yellow-900/20 text-yellow-500 border-yellow-800',
+                                            'selesai'    => 'bg-emerald-900/20 text-emerald-500 border-emerald-800',
+                                            'dibatalkan' => 'bg-red-900/20 text-red-500 border-red-800',
+                                            default      => 'bg-zinc-800 text-zinc-400 border-zinc-700',
+                                        };
+                                    @endphp
+                                    <span class="px-2 py-1 rounded-full text-[9px] font-bold border inline-block {{ $pc }}">
+                                        {{ strtoupper($purchase->status) }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <a href="{{ route('toko.result', $purchase->id) }}" class="text-blue-400 hover:text-blue-300 font-bold transition text-[9px]">Lihat →</a>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="8" class="px-6 py-16 text-center text-gray-400 dark:text-zinc-600 italic">
+                                    Belum ada pesanan produk.
+                                </td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- Modals for User -->

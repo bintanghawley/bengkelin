@@ -73,14 +73,19 @@
                                 <span class="text-gray-900 dark:text-white">{{ $booking->mechanic->name ?? 'Belum Ditugaskan' }}</span>
                             </td>
                             <td class="px-6 py-4 text-center">
-                                <span class="px-3 py-1 rounded-full text-[9px] font-bold border inline-block
-                                    {{ $booking->status === 'pending' ? 'bg-orange-950/40 text-orange-400 border-orange-900/60' : '' }}
-                                    {{ $booking->status === 'ditugaskan' ? 'bg-blue-950/40 text-blue-400 border-blue-900/60' : '' }}
-                                    {{ $booking->status === 'diproses' ? 'bg-yellow-950/40 text-yellow-500 border-yellow-900/60' : '' }}
-                                    {{ $booking->status === 'selesai' ? 'bg-emerald-950/40 text-emerald-400 border-emerald-900/60' : '' }}
-                                    {{ $booking->status === 'dibatalkan' ? 'bg-red-950/40 text-red-500 border-red-900/60' : '' }}
-                                ">
-                                    {{ $booking->status }}
+                                @php
+                                    $bc = match($booking->status) {
+                                        'pending'    => 'bg-orange-950/40 text-orange-400 border-orange-900/60',
+                                        'diterima'   => 'bg-blue-950/40 text-blue-400 border-blue-900/60',
+                                        'diproses'   => 'bg-yellow-950/40 text-yellow-500 border-yellow-900/60',
+                                        'selesai'    => 'bg-emerald-950/40 text-emerald-400 border-emerald-900/60',
+                                        'ditolak'    => 'bg-red-950/40 text-red-400 border-red-900/60',
+                                        'dibatalkan' => 'bg-red-950/40 text-red-500 border-red-900/60',
+                                        default      => 'bg-zinc-800 text-zinc-400 border-zinc-700',
+                                    };
+                                @endphp
+                                <span class="px-3 py-1 rounded-full text-[9px] font-bold border inline-block {{ $bc }}">
+                                    {{ strtoupper($booking->status) }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-right">

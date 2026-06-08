@@ -50,9 +50,12 @@ class Service extends Model
 
     public function getGambarUrlAttribute(): string
     {
-        if ($this->gambar && file_exists(public_path('storage/' . $this->gambar))) {
+        if ($this->gambar) {
+            if (str_starts_with($this->gambar, 'http') || str_starts_with($this->gambar, 'img/')) {
+                return asset($this->gambar);
+            }
             return asset('storage/' . $this->gambar);
         }
-        return asset('images/services/default-service.jpg');
+        return asset('img/Gemini_Generated_Image_m0vuzjm0vuzjm0vu.png');
     }
 }
