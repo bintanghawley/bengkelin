@@ -101,10 +101,10 @@
                                 </svg>
                             </button>
                             <div class="absolute right-0 top-full pt-2 w-72 z-50 opacity-0 translate-y-1 pointer-events-none transition group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto">
-                                <div class="bg-white text-zinc-900 border border-zinc-200 rounded-2xl shadow-2xl p-4 space-y-3">
+                                <div class="bg-zinc-900 text-white border border-zinc-800 rounded-2xl shadow-2xl p-4 space-y-3">
                                     <p class="text-sm font-semibold">Akun</p>
                                     <a href="{{ route('login') }}" class="block w-full text-center bg-red-600 hover:bg-red-700 text-white font-semibold py-2.5 rounded-full transition">Login</a>
-                                    <a href="{{ route('register') }}" class="block w-full text-center border border-red-600 text-red-600 hover:bg-red-50 font-semibold py-2.5 rounded-full transition">Daftar Akun</a>
+                                    <a href="{{ route('register') }}" class="block w-full text-center border border-red-600 text-red-600 hover:bg-red-600/10 font-semibold py-2.5 rounded-full transition">Daftar Akun</a>
                                 </div>
                             </div>
                         </div>
@@ -141,16 +141,16 @@
         </div>
     </section>
 
-    <section class="bg-zinc-50 text-zinc-900 py-20 relative">
+    <section class="py-20 relative z-10">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center max-w-2xl mx-auto mb-16">
                 <h2 class="text-3xl md:text-4xl font-bengkel uppercase tracking-wide mb-4">Layanan Servis Kami</h2>
-                <p class="text-zinc-500">Pilih layanan servis yang sesuai dengan kebutuhan motor Anda.</p>
+                <p class="text-zinc-400">Pilih layanan servis yang sesuai dengan kebutuhan motor Anda.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 @foreach($services as $service)
-                <div class="bg-white border border-zinc-200 rounded-[2rem] overflow-hidden shadow-xl shadow-zinc-200/40 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col group">
+                <div class="bg-zinc-900 border border-zinc-800 rounded-[2rem] overflow-hidden shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col group">
                     <div class="relative aspect-video overflow-hidden">
                         <img src="{{ $service->gambar_url }}" alt="{{ $service->nama }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
@@ -159,20 +159,20 @@
                         </div>
                     </div>
                     <div class="p-6 flex flex-col flex-1">
-                        <p class="text-zinc-600 text-sm line-clamp-2 mb-6 flex-1">{{ $service->deskripsi }}</p>
+                        <p class="text-zinc-400 text-sm line-clamp-2 mb-6 flex-1">{{ $service->deskripsi }}</p>
                         
-                        <div class="flex items-center justify-between mb-6 pb-6 border-b border-zinc-100">
+                        <div class="flex items-center justify-between mb-6 pb-6 border-b border-zinc-800">
                             <div>
                                 <p class="text-[10px] text-zinc-400 uppercase font-bold tracking-widest mb-1">Mulai Dari</p>
                                 <p class="text-lg font-bold text-red-600">{{ $service->harga_mulai_formatted }}</p>
                             </div>
                             <div class="text-right">
                                 <p class="text-[10px] text-zinc-400 uppercase font-bold tracking-widest mb-1">Pekerjaan</p>
-                                <p class="text-sm font-semibold text-zinc-700">{{ $service->items_count }} Item</p>
+                                <p class="text-sm font-semibold text-zinc-300">{{ $service->items_count }} Item</p>
                             </div>
                         </div>
                         
-                        <a href="{{ route('servis.detail', $service->slug) }}" class="block w-full text-center border-2 border-zinc-200 hover:border-red-600 hover:bg-red-600 hover:text-white text-zinc-700 font-semibold py-3 px-6 rounded-xl transition-all duration-200 text-xs uppercase tracking-widest">
+                        <a href="{{ route('servis.detail', $service->slug) }}" class="block w-full text-center border-2 border-zinc-700 hover:border-red-600 hover:bg-red-600 hover:text-white text-zinc-300 font-semibold py-3 px-6 rounded-xl transition-all duration-200 text-xs uppercase tracking-widest">
                             Detail Servis
                         </a>
                     </div>
@@ -181,12 +181,12 @@
             </div>
             
             @if($services->isEmpty())
-            <div class="text-center py-20 bg-white rounded-3xl border border-zinc-200">
-                <svg class="w-16 h-16 text-zinc-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="text-center py-20 bg-zinc-900 rounded-3xl border border-zinc-800">
+                <svg class="w-16 h-16 text-zinc-700 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                <h3 class="text-xl font-bold text-zinc-700 mb-2">Belum Ada Layanan Servis</h3>
-                <p class="text-zinc-500">Silakan kembali lagi nanti untuk melihat daftar layanan kami.</p>
+                <h3 class="text-xl font-bold text-white mb-2">Belum Ada Layanan Servis</h3>
+                <p class="text-zinc-400">Silakan kembali lagi nanti untuk melihat daftar layanan kami.</p>
             </div>
             @endif
         </div>

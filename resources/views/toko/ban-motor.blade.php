@@ -63,17 +63,7 @@
                     </button>
                     @include('partials.cart-widget')
 
-                    <!-- Theme Toggle Button -->
-                    <button type="button" class="theme-toggle-btn inline-flex items-center justify-center h-10 w-10 rounded-full border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-zinc-700 dark:text-zinc-300 transition" aria-label="Ganti Tema">
-                        <!-- Moon icon -->
-                        <svg class="theme-toggle-dark-icon hidden w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
-                        </svg>
-                        <!-- Sun icon -->
-                        <svg class="theme-toggle-light-icon hidden w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 5a7 7 0 100 14 7 7 0 000-14z" />
-                        </svg>
-                    </button>
+
                     @auth
                         @if (Auth::user()->role === 'admin')
                             <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center justify-center h-10 w-10 rounded-full border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-zinc-700 dark:text-zinc-300 transition" aria-label="Dashboard">
@@ -338,15 +328,17 @@
                                 @foreach ($tires as $tire)
                                     <div class="group relative bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
                                         <a href="{{ route('toko.banmotor.show', $tire->id) }}" class="flex-1 flex flex-col">
-                                            <div class="aspect-square bg-zinc-100 dark:bg-zinc-800/30 flex items-center justify-center relative p-6">
+                                            <div class="aspect-square bg-zinc-100 dark:bg-zinc-800/30 flex items-center justify-center relative overflow-hidden">
                                                 @if($tire->gambar)
-                                                    <img src="{{ asset('storage/' . $tire->gambar) }}" alt="{{ $tire->nama }}" class="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-500">
+                                                    <img src="{{ str_starts_with($tire->gambar, 'img/') || str_starts_with($tire->gambar, 'http') ? asset($tire->gambar) : asset('storage/' . $tire->gambar) }}" alt="{{ $tire->nama }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                                                 @else
-                                                    <div class="w-full h-full border border-dashed border-zinc-300 dark:border-zinc-700/60 rounded-2xl flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 gap-2">
-                                                        <svg class="w-10 h-10 stroke-[1.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/>
-                                                        </svg>
-                                                        <span class="text-[9px] uppercase tracking-widest font-bold">Gambar Ban Kosong</span>
+                                                    <div class="absolute inset-0 p-6">
+                                                        <div class="w-full h-full border border-dashed border-zinc-300 dark:border-zinc-700/60 rounded-2xl flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 gap-2">
+                                                            <svg class="w-10 h-10 stroke-[1.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/>
+                                                            </svg>
+                                                            <span class="text-[9px] uppercase tracking-widest font-bold">Gambar Ban Kosong</span>
+                                                        </div>
                                                     </div>
                                                 @endif
                                             </div>

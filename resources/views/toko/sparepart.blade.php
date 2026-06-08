@@ -258,15 +258,17 @@
                                 @foreach ($spareparts as $sparepart)
                                     <div class="group relative bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
                                         <a href="{{ route('toko.sparepart.show', $sparepart->id) }}" class="flex-1 flex flex-col">
-                                            <div class="aspect-square bg-zinc-100 dark:bg-zinc-800/30 flex items-center justify-center relative p-6">
+                                            <div class="aspect-square bg-zinc-100 dark:bg-zinc-800/30 flex items-center justify-center relative overflow-hidden">
                                                 @if($sparepart->gambar)
-                                                    <img src="{{ asset('storage/' . $sparepart->gambar) }}" alt="{{ $sparepart->nama }}" class="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-500">
+                                                    <img src="{{ str_starts_with($sparepart->gambar, 'img/') || str_starts_with($sparepart->gambar, 'http') ? asset($sparepart->gambar) : asset('storage/' . $sparepart->gambar) }}" alt="{{ $sparepart->nama }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                                                 @else
-                                                    <div class="w-full h-full border border-dashed border-zinc-300 dark:border-zinc-700/60 rounded-2xl flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 gap-2">
-                                                        <svg class="w-10 h-10 stroke-[1.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/>
-                                                        </svg>
-                                                        <span class="text-[9px] uppercase tracking-widest font-bold">Gambar Kosong</span>
+                                                    <div class="absolute inset-0 p-6">
+                                                        <div class="w-full h-full border border-dashed border-zinc-300 dark:border-zinc-700/60 rounded-2xl flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 gap-2">
+                                                            <svg class="w-10 h-10 stroke-[1.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/>
+                                                            </svg>
+                                                            <span class="text-[9px] uppercase tracking-widest font-bold">Gambar Kosong</span>
+                                                        </div>
                                                     </div>
                                                 @endif
                                             </div>
