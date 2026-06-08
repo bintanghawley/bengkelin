@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Booking; 
 use App\Models\Product;
 use App\Models\Service;
+use App\Models\Tire;
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
@@ -32,14 +32,18 @@ class AdminController extends Controller
 
         $services = Service::withCount('items')->orderBy('created_at', 'desc')->get();
 
-        // 3. TAMBAHKAN 'products' ke dalam compact
+        // AMBIL DATA BAN MOTOR
+        $tires = Tire::orderBy('created_at', 'desc')->get();
+
+        // 3. TAMBAHKAN 'products' dan 'tires' ke dalam compact
         return view('admin.dashboard', compact(
             'users', 
             'countMekanik', 
             'countPengguna', 
             'allBookings',
             'products',
-            'services'
+            'services',
+            'tires'
         ));
     }
 }

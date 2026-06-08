@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Booking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,22 +30,5 @@ class MekanikController extends Controller
 
         return view('mekanik.dashboard', compact('bookings'));
     }
-
-    public function updateStatus(Request $request, Booking $booking)
-    {
-        $check = $this->checkMekanik();
-        if ($check) {
-            return $check;
-        }
-
-        $validated = $request->validate([
-            'status' => 'required|in:pending,diterima,diproses,selesai',
-        ]);
-
-        $booking->update([
-            'status' => $validated['status'],
-        ]);
-
-        return redirect()->route('mekanik.dashboard')->with('success', 'Status booking diperbarui');
-    }
 }
+

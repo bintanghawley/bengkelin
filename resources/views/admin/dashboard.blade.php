@@ -22,6 +22,9 @@
             <button onclick="showAdminSection('orders')" class="admin-nav w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 focus:text-red-600 outline-none rounded-xl font-bold transition">
                  E-COMMERCE
             </button>
+            <button onclick="showAdminSection('tires')" class="admin-nav w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 focus:text-red-600 outline-none rounded-xl font-bold transition">
+                KELOLA BAN MOTOR
+            </button>
              <a href="{{ route('admin.bookings.index') }}" class="admin-nav w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 rounded-xl font-bold transition">
                 BOOKING MASUK
              </a>
@@ -63,6 +66,11 @@
         <!-- KELOLA SERVIS -->
         <section id="admin-services" class="admin-section hidden ">
             @include('admin.services.index')
+        </section>
+
+        <!-- KELOLA BAN MOTOR -->
+        <section id="admin-tires" class="admin-section hidden ">
+            @include('admin.tires.index')
         </section>
   <section id="admin-orders" class="admin-section hidden ">
     <div class="grid grid-cols-1 gap-6">
@@ -333,6 +341,10 @@
     @include('admin.services.create')
     @include('admin.services.edit')
     @include('admin.services.show')
+
+    <!-- Modals for Tires -->
+    @include('admin.tires.create')
+    @include('admin.tires.edit')
     </main>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -447,6 +459,8 @@
             toggleModalService(false);
             toggleModalEditService(false);
             toggleModalDetailService(false);
+            toggleModalTire(false);
+            toggleModalEditTire(false);
         }
     });
 
@@ -600,6 +614,53 @@
             <button type="button" onclick="this.parentElement.remove()" class="text-zinc-500 ${btnHoverClass} px-3 py-3 border border-zinc-800 rounded-xl bg-zinc-950">X</button>
         `;
         container.appendChild(row);
+    }
+
+    // 6. TIRE MODALS
+    function toggleModalTire(show) {
+        const modal = document.getElementById('modal-tire');
+        if (!modal) return;
+        if (show) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        } else {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    function toggleModalEditTire(show) {
+        const modal = document.getElementById('modal-edit-tire');
+        if (!modal) return;
+        if (show) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        } else {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    function openModalEditTire(id, nama, harga, stok, jenis_ban, merek, ukuran_ban, posisi_ban, material, diameter, tipe, fitur, deskripsi) {
+        document.getElementById('edit-tire-nama').value = nama;
+        document.getElementById('edit-tire-harga').value = harga;
+        document.getElementById('edit-tire-stok').value = stok;
+        document.getElementById('edit-tire-jenis_ban').value = jenis_ban;
+        document.getElementById('edit-tire-merek').value = merek;
+        document.getElementById('edit-tire-ukuran_ban').value = ukuran_ban;
+        document.getElementById('edit-tire-posisi_ban').value = posisi_ban;
+        document.getElementById('edit-tire-material').value = material;
+        document.getElementById('edit-tire-diameter').value = diameter;
+        document.getElementById('edit-tire-tipe').value = tipe;
+        document.getElementById('edit-tire-fitur').value = fitur || '';
+        document.getElementById('edit-tire-deskripsi').value = deskripsi || '';
+
+        document.getElementById('form-edit-tire').action = '/admin/tires/' + id;
+        toggleModalEditTire(true);
     }
 </script>
 @endsection

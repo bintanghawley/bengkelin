@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MekanikController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\TokoController;
+use App\Http\Controllers\TireController;
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
@@ -21,7 +22,10 @@ Route::get('/toko/show/{id}', [TokoController::class, 'show'])->name('toko.show'
 Route::get('/toko/checkout/{id}', [TokoController::class, 'checkout'])->name('toko.checkout')->middleware('auth');
 Route::get('/toko/hasil/{purchase}', [TokoController::class, 'result'])->name('toko.result')->middleware('auth');
 Route::post('/toko/buy/{id}', [TokoController::class, 'buy'])->name('toko.buy')->middleware('auth');
-Route::view('/toko/ban-motor', 'toko.ban-motor')->name('toko.banmotor');
+Route::get('/toko/ban-motor', [TireController::class, 'index'])->name('toko.banmotor');
+Route::get('/toko/ban-motor/{id}', [TireController::class, 'show'])->name('toko.banmotor.show');
+Route::get('/toko/ban-motor/checkout/{id}', [TireController::class, 'checkout'])->name('toko.banmotor.checkout')->middleware('auth');
+Route::post('/toko/ban-motor/buy/{id}', [TireController::class, 'buy'])->name('toko.banmotor.buy')->middleware('auth');
 Route::view('/toko/oli-motor', 'toko.oli-motor')->name('toko.oli');
 Route::view('/toko/sparepart', 'toko.sparepart')->name('toko.sparepart');
 
@@ -43,10 +47,10 @@ Route::middleware('auth')->group(function () {
         Route::resource('users', UserController::class)->except(['show']);
         Route::resource('services', AdminServiceController::class);
         Route::resource('bookings', App\Http\Controllers\Admin\BookingController::class)->only(['index', 'show', 'update']);
+        Route::resource('tires', App\Http\Controllers\Admin\TireController::class)->except(['index', 'show', 'create', 'edit']);
     });
 
     Route::get('/mekanik/dashboard', [MekanikController::class, 'dashboard'])->name('mekanik.dashboard');
-    Route::post('/mekanik/booking/{booking}/status', [MekanikController::class, 'updateStatus'])->name('mekanik.booking.update');
     Route::get('/mekanik/bookings', [App\Http\Controllers\Mekanik\BookingController::class, 'index'])->name('mekanik.bookings.index');
     Route::get('/mekanik/bookings/{booking}', [App\Http\Controllers\Mekanik\BookingController::class, 'show'])->name('mekanik.bookings.show');
     Route::put('/mekanik/bookings/{booking}', [App\Http\Controllers\Mekanik\BookingController::class, 'update'])->name('mekanik.bookings.update');
