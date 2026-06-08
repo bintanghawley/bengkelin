@@ -12,6 +12,15 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
+        /* Hide all scrollbars globally */
+        *::-webkit-scrollbar {
+            display: none !important;
+        }
+        * {
+            -ms-overflow-style: none !important;
+            scrollbar-width: none !important;
+        }
+
         .font-bengkel { font-family: 'Bebas Neue', sans-serif; tracking-wide; }
         body { font-family: 'Inter', sans-serif; }
 

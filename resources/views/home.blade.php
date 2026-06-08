@@ -166,25 +166,40 @@
     </aside>
 
     <main>
-        <section id="home" class="max-w-7xl mx-auto px-8 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center overflow-hidden">
-            <div class="order-2 lg:order-1 text-center lg:text-left scroll-reveal-left">
-                <div class="inline-block px-4 py-1 rounded-full bg-red-600/10 border border-red-600/20 text-red-500 text-xs font-bold tracking-[0.2em] mb-6">
-                    PREMIUM GARAGE SERVICE
-                </div>
-                <h1 class="text-7xl md:text-8xl font-bengkel leading-none tracking-tight mb-6 text-zinc-900 dark:text-white">
-                    KEEP YOUR ENGINE <br> <span class="text-red-600">PERFORMANCE</span>
-                </h1>
-                <p class="text-zinc-600 dark:text-zinc-400 text-lg max-w-lg mx-auto lg:mx-0 mb-10 leading-relaxed">
-                    Solusi perawatan kendaraan terpercaya dengan mekanik berpengalaman, suku cadang original, dan efisiensi waktu tanpa antrean panjang.
-                </p>
-                
-                <div class="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
-                    <a href="{{ route('servis') }}" class="w-full sm:w-72 bg-red-600 hover:bg-red-700 text-white font-bold px-10 py-4 rounded-xl shadow-lg shadow-red-900/20 transition active:scale-95 text-center tracking-wider">
-                        BOOKING SEKARANG
-                    </a>
+        <section id="home" class="max-w-7xl mx-auto px-8 pt-16 pb-0 overflow-hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+                <div class="order-2 lg:order-1 text-center lg:text-left scroll-reveal-left">
+                    <div class="inline-block px-4 py-1 rounded-full bg-red-600/10 border border-red-600/20 text-red-500 text-xs font-bold tracking-[0.2em] mb-6">
+                        PREMIUM GARAGE SERVICE
+                    </div>
+                    <h1 class="text-7xl md:text-8xl font-bengkel leading-none tracking-tight mb-6 text-zinc-900 dark:text-white">
+                        KEEP YOUR ENGINE <br> <span class="text-red-600">PERFORMANCE</span>
+                    </h1>
+                    <p class="text-zinc-600 dark:text-zinc-400 text-lg max-w-lg mx-auto lg:mx-0 mb-10 leading-relaxed">
+                        Solusi perawatan kendaraan terpercaya dengan mekanik berpengalaman, suku cadang original, dan efisiensi waktu tanpa antrean panjang.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
+                        <a href="{{ route('servis') }}" class="w-full sm:w-72 bg-red-600 hover:bg-red-700 text-white font-bold px-10 py-4 rounded-xl shadow-lg shadow-red-900/20 transition active:scale-95 text-center tracking-wider">
+                            BOOKING SEKARANG
+                        </a>
+                    </div>
                 </div>
 
-                <div class="mt-16 grid grid-cols-3 gap-8 border-t border-zinc-200 dark:border-zinc-800 pt-8">
+                <div class="order-1 lg:order-2 relative scroll-reveal-right">
+                    <div class="absolute -inset-1 bg-red-600 rounded-3xl blur opacity-10"></div>
+                    <div class="relative bg-zinc-100 dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 overflow-hidden aspect-video lg:aspect-square flex items-center justify-center group transition-colors duration-300">
+                        <img src="{{ asset ('img/home/bengkel.jpg') }}" alt="Gambar" class="w-full h-full object-cover">
+                        <div class="absolute bottom-8 right-8 text-right">
+                            <p class="text-red-600 text-6xl font-bengkel opacity-100 uppercase leading-none">Bengkelin<br>Sidoarjo</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Row -->
+            <div class="border-t border-zinc-200 dark:border-zinc-800 py-12 scroll-reveal">
+                <div class="grid grid-cols-3 gap-8 text-center max-w-3xl mx-auto">
                     <div>
                         <p class="text-3xl font-bengkel text-zinc-900 dark:text-white">500+</p>
                         <p class="text-xs text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mt-1">Customers</p>
@@ -199,35 +214,38 @@
                     </div>
                 </div>
             </div>
-
-            <div class="order-1 lg:order-2 relative scroll-reveal-right">
-                <div class="absolute -inset-1 bg-red-600 rounded-3xl blur opacity-10"></div>
-                <div class="relative bg-zinc-100 dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 overflow-hidden aspect-video lg:aspect-square flex items-center justify-center group transition-colors duration-300">
-                    <img src="{{ asset ('img/home/bengkel.jpg') }}" alt="Gambar" class="w-full h-full object-cover">
-                    <div class="absolute bottom-8 right-8 text-right">
-                        <p class="text-red-600 text-6xl font-bengkel opacity-100 uppercase leading-none">Bengkelin<br>Sidoarjo</p>
-                    </div>
-                </div>
-            </div>
         </section>
 
         <section id="about" class="max-w-7xl mx-auto px-8 py-24 border-t border-zinc-200 dark:border-zinc-800">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center overflow-hidden">
                 <div class="space-y-6 scroll-reveal-left">
                     <h2 class="text-5xl font-bengkel text-zinc-900 dark:text-white leading-tight uppercase">
-                        Bukan Sekedar <br> <span class="text-red-600">Bengkel Biasa</span>
+                        Lebih Dari Sekadar <br> <span class="text-red-600">Layanan Bengkel</span>
                     </h2>
-                    <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                        Berawal dari keresahan antrean panjang di bengkel konvensional, <span class="text-zinc-900 dark:text-white font-bold">Bengkelin</span> hadir sebagai solusi digital untuk para pengendara yang menghargai waktu. Kami menggabungkan presisi mekanik profesional dengan kemudahan teknologi.
+                    <p class="text-zinc-650 dark:text-zinc-450 leading-relaxed text-sm">
+                        Lahir dari komitmen untuk merevolusi sistem perawatan kendaraan konvensional, <span class="text-zinc-900 dark:text-white font-bold">Bengkelin</span> mengintegrasikan presisi mekanik bersertifikasi dengan efisiensi platform digital. Kami hadir untuk mengeliminasi antrean panjang dan memberikan transparansi penuh demi kenyamanan dan keselamatan berkendara Anda.
                     </p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
-                        <div class="p-6 bg-zinc-100/50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl transition-colors duration-300 scroll-reveal delay-100">
-                            <p class="text-red-600 font-bold text-xs uppercase tracking-widest mb-2">Visi Kami</p>
-                            <p class="text-zinc-500 dark:text-zinc-400 text-xs leading-relaxed">Menjadi ekosistem perawatan kendaraan nomor satu di Sidoarjo yang transparan dan terpercaya.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+                        <!-- Visi Card -->
+                        <div class="group/card relative p-6 bg-zinc-100/30 dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800 hover:border-red-600/30 rounded-2xl transition-all duration-500 hover:shadow-xl hover:shadow-red-950/5 hover:-translate-y-1 scroll-reveal delay-100">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="h-9 w-9 rounded-lg bg-red-600/10 flex items-center justify-center text-red-500 border border-red-600/20 group-hover/card:bg-red-600 group-hover/card:text-white group-hover/card:scale-110 group-hover/card:rotate-3 transition-all duration-300">
+                                    <i class="fa-solid fa-eye text-sm"></i>
+                                </div>
+                                <p class="text-red-600 font-bold text-xs uppercase tracking-widest">Visi Kami</p>
+                            </div>
+                            <p class="text-zinc-500 dark:text-zinc-400 text-xs leading-relaxed">Mewujudkan ekosistem digital perawatan otomotif terintegrasi di Sidoarjo yang mengedepankan transparansi, kecepatan layanan, dan kualitas standar prima.</p>
                         </div>
-                        <div class="p-6 bg-zinc-100/50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl transition-colors duration-300 scroll-reveal delay-200">
-                            <p class="text-red-600 font-bold text-xs uppercase tracking-widest mb-2">Misi Kami</p>
-                            <p class="text-zinc-500 dark:text-zinc-400 text-xs leading-relaxed">Memberikan pelayanan berkualitas tinggi dengan standarisasi alat modern dan sparepart original.</p>
+                        
+                        <!-- Misi Card -->
+                        <div class="group/card relative p-6 bg-zinc-100/30 dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800 hover:border-red-600/30 rounded-2xl transition-all duration-500 hover:shadow-xl hover:shadow-red-950/5 hover:-translate-y-1 scroll-reveal delay-200">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="h-9 w-9 rounded-lg bg-red-600/10 flex items-center justify-center text-red-500 border border-red-600/20 group-hover/card:bg-red-600 group-hover/card:text-white group-hover/card:scale-110 group-hover/card:rotate-3 transition-all duration-300">
+                                    <i class="fa-solid fa-bullseye text-sm"></i>
+                                </div>
+                                <p class="text-red-600 font-bold text-xs uppercase tracking-widest">Misi Kami</p>
+                            </div>
+                            <p class="text-zinc-500 dark:text-zinc-400 text-xs leading-relaxed">Menyediakan pelayanan berkualitas tinggi berbasis teknologi modern, menjamin keaslian suku cadang, dan membangun kepercayaan penuh konsumen.</p>
                         </div>
                     </div>
                 </div>
@@ -324,22 +342,74 @@
                     </div>
 
                     <!-- Navigation Links -->
-                    <div class="md:col-span-8 grid grid-cols-2 gap-8">
+                    <div class="md:col-span-8 flex flex-col sm:flex-row sm:justify-between gap-8 md:gap-12">
                         <div>
                             <h4 class="text-zinc-900 dark:text-white font-bold text-sm mb-6 uppercase tracking-widest">Navigasi</h4>
                             <ul class="space-y-4 text-zinc-500 dark:text-zinc-400 text-sm">
-                                <li><a href="#home" class="hover:text-red-500 dark:hover:text-red-400 transition">Beranda</a></li>
-                                <li><a href="#about" class="hover:text-red-500 dark:hover:text-red-400 transition">Tentang Kami</a></li>
-                                <li><a href="#location" class="hover:text-red-500 dark:hover:text-red-400 transition">Lokasi</a></li>
+                                <li>
+                                    <a href="#home" class="group flex items-center gap-2 hover:text-red-500 dark:hover:text-red-400 transition">
+                                        <i class="fa-solid fa-chevron-right text-[8px] text-red-500/60 group-hover:text-red-500 group-hover:translate-x-0.5 transition-all"></i>
+                                        <span>Beranda</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#about" class="group flex items-center gap-2 hover:text-red-500 dark:hover:text-red-400 transition">
+                                        <i class="fa-solid fa-chevron-right text-[8px] text-red-500/60 group-hover:text-red-500 group-hover:translate-x-0.5 transition-all"></i>
+                                        <span>Tentang Kami</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#location" class="group flex items-center gap-2 hover:text-red-500 dark:hover:text-red-400 transition">
+                                        <i class="fa-solid fa-chevron-right text-[8px] text-red-500/60 group-hover:text-red-500 group-hover:translate-x-0.5 transition-all"></i>
+                                        <span>Lokasi</span>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                         <div>
                             <h4 class="text-zinc-900 dark:text-white font-bold text-sm mb-6 uppercase tracking-widest">Layanan & Toko</h4>
                             <ul class="space-y-4 text-zinc-500 dark:text-zinc-400 text-sm">
-                                <li><a href="{{ route('servis') }}" class="hover:text-red-500 dark:hover:text-red-400 transition">Servis Motor</a></li>
-                                <li><a href="{{ route('toko.banmotor') }}" class="hover:text-red-500 dark:hover:text-red-400 transition">Ban Motor</a></li>
-                                <li><a href="{{ route('toko.oli') }}" class="hover:text-red-500 dark:hover:text-red-400 transition">Oli Motor</a></li>
-                                <li><a href="{{ route('toko.sparepart') }}" class="hover:text-red-500 dark:hover:text-red-400 transition">Sparepart</a></li>
+                                <li>
+                                    <a href="{{ route('servis') }}" class="group flex items-center gap-2 hover:text-red-500 dark:hover:text-red-400 transition">
+                                        <i class="fa-solid fa-chevron-right text-[8px] text-red-500/60 group-hover:text-red-500 group-hover:translate-x-0.5 transition-all"></i>
+                                        <span>Servis Motor</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('toko.banmotor') }}" class="group flex items-center gap-2 hover:text-red-500 dark:hover:text-red-400 transition">
+                                        <i class="fa-solid fa-chevron-right text-[8px] text-red-500/60 group-hover:text-red-500 group-hover:translate-x-0.5 transition-all"></i>
+                                        <span>Ban Motor</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('toko.oli') }}" class="group flex items-center gap-2 hover:text-red-500 dark:hover:text-red-400 transition">
+                                        <i class="fa-solid fa-chevron-right text-[8px] text-red-500/60 group-hover:text-red-500 group-hover:translate-x-0.5 transition-all"></i>
+                                        <span>Oli Motor</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('toko.sparepart') }}" class="group flex items-center gap-2 hover:text-red-500 dark:hover:text-red-400 transition">
+                                        <i class="fa-solid fa-chevron-right text-[8px] text-red-500/60 group-hover:text-red-500 group-hover:translate-x-0.5 transition-all"></i>
+                                        <span>Sparepart</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-zinc-900 dark:text-white font-bold text-sm mb-6 uppercase tracking-widest">Hubungi Kami</h4>
+                            <ul class="space-y-4 text-zinc-500 dark:text-zinc-400 text-sm">
+                                <li class="flex items-center gap-2">
+                                    <i class="fa-solid fa-phone text-xs text-red-500"></i>
+                                    <span>0812-3022-0688</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fa-solid fa-envelope text-xs text-red-500"></i>
+                                    <span>support@bengkelin.id</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fa-solid fa-clock text-xs text-red-500"></i>
+                                    <span>Senin - Sabtu: 08:00 - 17:00</span>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -356,6 +426,11 @@
                             <span class="text-yellow-500">★★★★★</span>
                             4.9/5 Rating
                         </div>
+                    </div>
+                    
+                    <div class="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 bg-red-600 rounded-full animate-pulse"></span>
+                        <span>Suku Cadang 100% Original</span>
                     </div>
                 </div>
             </div>
