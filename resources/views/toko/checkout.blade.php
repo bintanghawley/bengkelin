@@ -201,7 +201,7 @@
             </div>
         </form>
 
-    </div>
+    @include('partials.footer')
 </div>
 
 <script>

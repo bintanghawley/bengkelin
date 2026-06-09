@@ -57,10 +57,10 @@
                         <form action="{{ route('pengguna.payments.select-method', $payment->id) }}" method="POST" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             @csrf
                             @foreach(['BCA Virtual Account', 'BRI Virtual Account', 'BNI Virtual Account', 'Mandiri Virtual Account', 'Permata Virtual Account'] as $bank)
-                                <button type="submit" name="payment_method" value="{{ $bank }}" class="px-4 py-3 bg-zinc-950/60 border {{ $payment->payment_method === $bank ? 'border-red-600 bg-red-950/10' : 'border-zinc-800 hover:border-zinc-700' }} rounded-2xl text-left text-xs font-bold uppercase tracking-wider flex items-center justify-between transition">
+                                <button type="submit" name="payment_method" value="{{ $bank }}" data-method-btn="{{ $bank }}" class="px-4 py-3 bg-zinc-950/60 border {{ $payment->payment_method === $bank ? 'border-red-600 bg-red-950/10' : 'border-zinc-800 hover:border-zinc-700' }} rounded-2xl text-left text-xs font-bold uppercase tracking-wider flex items-center justify-between transition">
                                     <span>{{ $bank }}</span>
                                     @if($payment->payment_method === $bank)
-                                        <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+                                        <span class="active-dot w-2.5 h-2.5 rounded-full bg-red-500"></span>
                                     @endif
                                 </button>
                             @endforeach
@@ -81,10 +81,10 @@
                         <p class="text-zinc-500 text-xs">Pindai kode QRIS menggunakan e-wallet atau aplikasi mobile banking Anda.</p>
                         <form action="{{ route('pengguna.payments.select-method', $payment->id) }}" method="POST">
                             @csrf
-                            <button type="submit" name="payment_method" value="QRIS" class="w-full sm:w-auto px-6 py-3.5 bg-zinc-950/60 border {{ $isQris ? 'border-red-600 bg-red-950/10' : 'border-zinc-800 hover:border-zinc-700' }} rounded-2xl text-xs font-bold uppercase tracking-wider flex items-center justify-between transition">
+                            <button type="submit" name="payment_method" value="QRIS" data-method-btn="QRIS" class="w-full sm:w-auto px-6 py-3.5 bg-zinc-950/60 border {{ $isQris ? 'border-red-600 bg-red-950/10' : 'border-zinc-800 hover:border-zinc-700' }} rounded-2xl text-xs font-bold uppercase tracking-wider flex items-center justify-between transition">
                                 <span>Pilih QRIS</span>
                                 @if($isQris)
-                                    <span class="ml-4 w-2.5 h-2.5 rounded-full bg-red-500"></span>
+                                    <span class="active-dot ml-4 w-2.5 h-2.5 rounded-full bg-red-500"></span>
                                 @endif
                             </button>
                         </form>
@@ -105,10 +105,10 @@
                         <form action="{{ route('pengguna.payments.select-method', $payment->id) }}" method="POST" class="grid grid-cols-2 gap-3">
                             @csrf
                             @foreach(['DANA', 'OVO', 'GoPay', 'ShopeePay'] as $ewallet)
-                                <button type="submit" name="payment_method" value="{{ $ewallet }}" class="px-4 py-3 bg-zinc-950/60 border {{ $payment->payment_method === $ewallet ? 'border-red-600 bg-red-950/10' : 'border-zinc-800 hover:border-zinc-700' }} rounded-2xl text-left text-xs font-bold uppercase tracking-wider flex items-center justify-between transition">
+                                <button type="submit" name="payment_method" value="{{ $ewallet }}" data-method-btn="{{ $ewallet }}" class="px-4 py-3 bg-zinc-950/60 border {{ $payment->payment_method === $ewallet ? 'border-red-600 bg-red-950/10' : 'border-zinc-800 hover:border-zinc-700' }} rounded-2xl text-left text-xs font-bold uppercase tracking-wider flex items-center justify-between transition">
                                     <span>{{ $ewallet }}</span>
                                     @if($payment->payment_method === $ewallet)
-                                        <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+                                        <span class="active-dot w-2.5 h-2.5 rounded-full bg-red-500"></span>
                                     @endif
                                 </button>
                             @endforeach
@@ -130,10 +130,10 @@
                         <form action="{{ route('pengguna.payments.select-method', $payment->id) }}" method="POST" class="grid grid-cols-2 gap-3">
                             @csrf
                             @foreach(['Alfamart', 'Indomaret'] as $store)
-                                <button type="submit" name="payment_method" value="{{ $store }}" class="px-4 py-3 bg-zinc-950/60 border {{ $payment->payment_method === $store ? 'border-red-600 bg-red-950/10' : 'border-zinc-800 hover:border-zinc-700' }} rounded-2xl text-left text-xs font-bold uppercase tracking-wider flex items-center justify-between transition">
+                                <button type="submit" name="payment_method" value="{{ $store }}" data-method-btn="{{ $store }}" class="px-4 py-3 bg-zinc-950/60 border {{ $payment->payment_method === $store ? 'border-red-600 bg-red-950/10' : 'border-zinc-800 hover:border-zinc-700' }} rounded-2xl text-left text-xs font-bold uppercase tracking-wider flex items-center justify-between transition">
                                     <span>{{ $store }}</span>
                                     @if($payment->payment_method === $store)
-                                        <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+                                        <span class="active-dot w-2.5 h-2.5 rounded-full bg-red-500"></span>
                                     @endif
                                 </button>
                             @endforeach
@@ -141,73 +141,62 @@
                     </div>
                 </div>
 
-                {{-- Payment Instructions Box (Only visible if a method is selected) --}}
-                @if($payment->payment_method)
-                    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 md:p-8 space-y-6">
-                        <div>
-                            <h4 class="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">Rincian Pembayaran</h4>
-                            <p class="text-sm font-bold text-white uppercase tracking-wider mt-1">{{ $payment->payment_method }}</p>
+                {{-- Payment Instructions Box (Initially hidden if no method is selected) --}}
+                <div id="instructions-box" class="{{ $payment->payment_method ? '' : 'hidden' }} bg-zinc-900 border border-zinc-800 rounded-3xl p-6 md:p-8 space-y-6">
+                    <div>
+                        <h4 class="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">Rincian Pembayaran</h4>
+                        <p class="text-sm font-bold text-white uppercase tracking-wider mt-1" id="selected-method-name">{{ $payment->payment_method }}</p>
+                    </div>
+
+                    <div id="qris-payment-container" class="{{ $isQris ? '' : 'hidden' }} flex flex-col items-center justify-center space-y-4 bg-zinc-950 p-6 rounded-2xl border border-zinc-850">
+                        <span class="text-[10px] text-zinc-550 uppercase tracking-widest font-bold">Scan QRIS CODE</span>
+                        
+                        <div class="bg-white p-4 rounded-3xl inline-block shadow-lg border border-zinc-200">
+                            <div id="qrcode-canvas" class="flex justify-center"></div>
                         </div>
+                        <span id="qris-code-text" class="font-mono text-xs text-zinc-400 font-bold bg-zinc-900 px-4 py-2 rounded-xl border border-zinc-800 mt-2">
+                            {{ $payment->payment_code }}
+                        </span>
+                    </div>
 
-                        @if($isQris)
-                            <div class="flex flex-col items-center justify-center space-y-4 bg-zinc-950 p-6 rounded-2xl border border-zinc-850">
-                                <span class="text-[10px] text-zinc-550 uppercase tracking-widest font-bold">Scan QRIS CODE</span>
-                                
-                                <div class="bg-white p-4 rounded-3xl inline-block shadow-lg border border-zinc-200">
-                                    @if (class_exists('SimpleSoftwareIO\QrCode\Facades\QrCode'))
-                                        {!! SimpleSoftwareIO\QrCode\Facades\QrCode::size(200)->color(0, 0, 0)->backgroundColor(255, 255, 255)->generate($payment->payment_code ?? 'PAY-INV') !!}
-                                    @else
-                                        <!-- Fallback client side QR Code generator -->
-                                        <div id="qrcode-fallback"></div>
-                                        <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-                                        <script>
-                                            document.addEventListener('DOMContentLoaded', function() {
-                                                new QRCode(document.getElementById("qrcode-fallback"), {
-                                                    text: "{{ $payment->payment_code }}",
-                                                    width: 200,
-                                                    height: 200
-                                                });
-                                            });
-                                        </script>
-                                    @endif
-                                </div>
-                                <span class="font-mono text-xs text-zinc-400 font-bold bg-zinc-900 px-4 py-2 rounded-xl border border-zinc-800 mt-2">
-                                    {{ $payment->payment_code }}
-                                </span>
-                            </div>
-                        @else
-                            <div class="bg-zinc-950 p-6 rounded-2xl border border-zinc-850 flex items-center justify-between gap-4">
-                                <div>
-                                    <span class="text-[10px] text-zinc-550 uppercase tracking-widest font-bold block">Kode Bayar / VA Number</span>
-                                    <span class="font-mono text-base md:text-lg font-bold text-white tracking-widest mt-1 block" id="payment-code-text">{{ $payment->payment_code }}</span>
-                                </div>
-                                <button type="button" onclick="copyToClipboard('{{ $payment->payment_code }}')" class="px-4 py-2.5 bg-zinc-900 hover:bg-zinc-850 text-zinc-300 font-bold uppercase text-[10px] tracking-wider rounded-xl border border-zinc-800 transition">
-                                    Salin
-                                </button>
-                            </div>
-                        @endif
+                    <div id="code-payment-container" class="{{ ($payment->payment_method && !$isQris) ? '' : 'hidden' }} bg-zinc-950 p-6 rounded-2xl border border-zinc-850 flex items-center justify-between gap-4">
+                        <div>
+                            <span class="text-[10px] text-zinc-550 uppercase tracking-widest font-bold block">Kode Bayar / VA Number</span>
+                            <span class="font-mono text-base md:text-lg font-bold text-white tracking-widest mt-1 block" id="payment-code-text">{{ $payment->payment_code }}</span>
+                        </div>
+                        <button type="button" onclick="copyToClipboard()" class="px-4 py-2.5 bg-zinc-900 hover:bg-zinc-850 text-zinc-300 font-bold uppercase text-[10px] tracking-wider rounded-xl border border-zinc-800 transition">
+                            Salin
+                        </button>
+                    </div>
 
-                        <div class="text-xs text-zinc-400 space-y-2 leading-relaxed">
-                            <span class="text-[10px] uppercase text-zinc-550 tracking-wider font-bold block mb-1">Petunjuk Pembayaran:</span>
-                            @if($isBank)
-                                <p>1. Salin kode Virtual Account di atas.</p>
-                                <p>2. Buka aplikasi M-Banking Anda atau pergi ke ATM terdekat.</p>
-                                <p>3. Pilih menu Transfer → Virtual Account / Virtual Billing.</p>
-                                <p>4. Masukkan kode Virtual Account yang telah disalin.</p>
-                                <p>5. Konfirmasi nominal pembayaran dan selesaikan transaksi.</p>
-                            @elseif($isEwallet)
-                                <p>1. Silakan masukkan nomor telepon e-wallet Anda.</p>
-                                <p>2. Buka notifikasi pada aplikasi {{ $payment->payment_method }} Anda.</p>
-                                <p>3. Konfirmasi pembayaran dan masukkan PIN Anda.</p>
-                            @elseif($isStore)
-                                <p>1. Kunjungi gerai {{ $payment->payment_method }} terdekat.</p>
-                                <p>2. Beritahukan ke kasir untuk melakukan pembayaran BENGKELIN.</p>
-                                <p>3. Tunjukkan Kode Bayar di atas ke kasir.</p>
-                                <p>4. Bayar sesuai nominal transaksi dan simpan struk pembayaran.</p>
-                            @endif
+                    <div class="text-xs text-zinc-400 space-y-2 leading-relaxed">
+                        <span class="text-[10px] uppercase text-zinc-550 tracking-wider font-bold block mb-1">Petunjuk Pembayaran:</span>
+                        
+                        {{-- Bank Instructions --}}
+                        <div id="instructions-bank" class="{{ $isBank ? '' : 'hidden' }} space-y-2">
+                            <p>1. Salin kode Virtual Account di atas.</p>
+                            <p>2. Buka aplikasi M-Banking Anda atau pergi ke ATM terdekat.</p>
+                            <p>3. Pilih menu Transfer → Virtual Account / Virtual Billing.</p>
+                            <p>4. Masukkan kode Virtual Account yang telah disalin.</p>
+                            <p>5. Konfirmasi nominal pembayaran dan selesaikan transaksi.</p>
+                        </div>
+                        
+                        {{-- E-Wallet Instructions --}}
+                        <div id="instructions-ewallet" class="{{ $isEwallet ? '' : 'hidden' }} space-y-2">
+                            <p>1. Silakan masukkan nomor telepon e-wallet Anda.</p>
+                            <p>2. Buka notifikasi pada aplikasi <span class="method-name-placeholder">{{ $payment->payment_method }}</span> Anda.</p>
+                            <p>3. Konfirmasi pembayaran dan masukkan PIN Anda.</p>
+                        </div>
+                        
+                        {{-- Convenience Store Instructions --}}
+                        <div id="instructions-store" class="{{ $isStore ? '' : 'hidden' }} space-y-2">
+                            <p>1. Kunjungi gerai <span class="method-name-placeholder">{{ $payment->payment_method }}</span> terdekat.</p>
+                            <p>2. Beritahukan ke kasir untuk melakukan pembayaran BENGKELIN.</p>
+                            <p>3. Tunjukkan Kode Bayar di atas ke kasir.</p>
+                            <p>4. Bayar sesuai nominal transaksi dan simpan struk pembayaran.</p>
                         </div>
                     </div>
-                @endif
+                </div>
             </div>
 
             {{-- Right Column: Order Summary --}}
@@ -221,7 +210,7 @@
                             <div class="flex items-center gap-4 py-2 border-b border-zinc-850 last:border-b-0">
                                 <div class="flex-1 min-w-0">
                                     <p class="text-xs font-bold text-white uppercase truncate">{{ $purchase->barang_nama }}</p>
-                                    <p class="text-[10px] text-zinc-500 mt-0.5">Rp {{ number_format($purchase->harga, 0, ',', '.') }} × {{ $purchase->jumlah }} unit</p>
+                                    <p class="text-[10px] text-zinc-550 mt-0.5">Rp {{ number_format($purchase->harga, 0, ',', '.') }} × {{ $purchase->jumlah }} unit</p>
                                 </div>
                                 <span class="text-xs font-bold text-zinc-300">
                                     Rp {{ number_format($purchase->total_harga, 0, ',', '.') }}
@@ -251,15 +240,11 @@
                     </div>
 
                     {{-- Checkout Button --}}
-                    @if($payment->payment_method)
-                        <button type="button" onclick="openModal()" class="w-full py-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-2xl uppercase text-xs tracking-widest transition shadow-xl shadow-red-900/30">
-                            Bayar Sekarang (Simulasi)
-                        </button>
-                    @else
-                        <button type="button" disabled class="w-full py-4 bg-zinc-800 text-zinc-500 font-bold rounded-2xl uppercase text-xs tracking-widest cursor-not-allowed opacity-50">
-                            Pilih Metode Pembayaran
-                        </button>
-                    @endif
+                    <button type="button" id="pay-button" onclick="openModal()" 
+                        class="w-full py-4 font-bold rounded-2xl uppercase text-xs tracking-widest transition {{ $payment->payment_method ? 'bg-red-600 hover:bg-red-700 text-white shadow-xl shadow-red-900/30' : 'bg-zinc-800 text-zinc-500 cursor-not-allowed opacity-50' }}"
+                        {{ $payment->payment_method ? '' : 'disabled' }}>
+                        {{ $payment->payment_method ? 'Bayar Sekarang' : 'Pilih Metode Pembayaran' }}
+                    </button>
 
                 </div>
             </div>
@@ -277,7 +262,7 @@
         <div class="space-y-2">
             <h3 class="text-lg font-bengkel uppercase tracking-wider text-white">Konfirmasi Pembayaran</h3>
             <p class="text-zinc-400 text-xs leading-relaxed">
-                Pembayaran Anda akan disimulasikan berhasil secara lokal di database kami. Apakah Anda yakin ingin melanjutkan?
+                Pembayaran Anda akan diproses secara lokal di database kami. Apakah Anda yakin ingin melanjutkan?
             </p>
         </div>
         <div class="flex gap-4">
@@ -290,6 +275,7 @@
     </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
     // Accordion Toggle
     function toggleAccordion(id) {
@@ -315,13 +301,108 @@
         document.getElementById('confirm-modal').classList.add('hidden');
     }
 
-    // Copy to Clipboard
-    function copyToClipboard(text) {
-        navigator.clipboard.writeText(text).then(function() {
+    // Copy to Clipboard (dynamic target)
+    function copyToClipboard() {
+        const el = document.getElementById('payment-code-text');
+        if (!el) return;
+        navigator.clipboard.writeText(el.innerText).then(function() {
             alert("Kode pembayaran berhasil disalin!");
         }, function(err) {
             console.error("Gagal menyalin kode: ", err);
         });
+    }
+
+    // Dynamic QR Code generation
+    function generateQrCode(text) {
+        const container = document.getElementById("qrcode-canvas");
+        if (!container) return;
+        container.innerHTML = ""; // clear old
+        if (window.QRCode) {
+            new QRCode(container, {
+                text: text,
+                width: 200,
+                height: 200,
+                colorDark : "#000000",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        }
+    }
+
+    // Update UI on method selection
+    function updatePaymentUI(methodName, paymentCode) {
+        // Update active state of buttons
+        const allBtns = document.querySelectorAll('[data-method-btn]');
+        allBtns.forEach(btn => {
+            const isThis = btn.dataset.methodBtn === methodName;
+            if (isThis) {
+                btn.classList.add('border-red-600', 'bg-red-950/10');
+                btn.classList.remove('border-zinc-800', 'hover:border-zinc-700');
+                // Add dot if not exists
+                if (!btn.querySelector('.active-dot')) {
+                    const dot = document.createElement('span');
+                    dot.className = 'active-dot w-2.5 h-2.5 rounded-full bg-red-500 ' + (methodName === 'QRIS' ? 'ml-4' : '');
+                    btn.appendChild(dot);
+                }
+            } else {
+                btn.classList.remove('border-red-600', 'bg-red-950/10');
+                btn.classList.add('border-zinc-800', 'hover:border-zinc-700');
+                const dot = btn.querySelector('.active-dot');
+                if (dot) dot.remove();
+            }
+        });
+
+        // Show instruction box
+        const box = document.getElementById('instructions-box');
+        if (box) box.classList.remove('hidden');
+
+        // Update selected method name text
+        const nameEl = document.getElementById('selected-method-name');
+        if (nameEl) nameEl.innerText = methodName;
+
+        // Determine types
+        const isQris = methodName === 'QRIS';
+        const isBank = methodName.includes('Virtual Account');
+        const isEwallet = ['DANA', 'OVO', 'GoPay', 'ShopeePay'].includes(methodName);
+        const isStore = ['Alfamart', 'Indomaret'].includes(methodName);
+
+        // Toggle Code/QRIS container
+        const qrisContainer = document.getElementById('qris-payment-container');
+        const codeContainer = document.getElementById('code-payment-container');
+        
+        if (qrisContainer) qrisContainer.classList.toggle('hidden', !isQris);
+        if (codeContainer) codeContainer.classList.toggle('hidden', isQris);
+
+        if (isQris) {
+            const qrisText = document.getElementById('qris-code-text');
+            if (qrisText) qrisText.innerText = paymentCode;
+            generateQrCode(paymentCode);
+        } else {
+            const codeText = document.getElementById('payment-code-text');
+            if (codeText) codeText.innerText = paymentCode;
+        }
+
+        // Update instructions visibility
+        const instBank = document.getElementById('instructions-bank');
+        const instEwallet = document.getElementById('instructions-ewallet');
+        const instStore = document.getElementById('instructions-store');
+
+        if (instBank) instBank.classList.toggle('hidden', !isBank);
+        if (instEwallet) instEwallet.classList.toggle('hidden', !isEwallet);
+        if (instStore) instStore.classList.toggle('hidden', !isStore);
+
+        // Update method placeholders
+        document.querySelectorAll('.method-name-placeholder').forEach(el => {
+            el.innerText = methodName;
+        });
+
+        // Enable pay button
+        const payBtn = document.getElementById('pay-button');
+        if (payBtn) {
+            payBtn.disabled = false;
+            payBtn.className = "w-full py-4 font-bold rounded-2xl uppercase text-xs tracking-widest transition bg-red-600 hover:bg-red-700 text-white shadow-xl shadow-red-900/30";
+            payBtn.innerText = "Bayar Sekarang";
+        }
     }
 
     // Realtime JS Countdown
@@ -354,6 +435,57 @@
 
         updateCountdown();
         const interval = setInterval(updateCountdown, 1000);
+
+        // Handle form submissions via AJAX
+        document.querySelectorAll('form[action*="select-method"]').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const submitter = e.submitter;
+                if (!submitter) return;
+                const methodName = submitter.value;
+                
+                // Show a clean loading state (change button visual state slightly)
+                submitter.disabled = true;
+                submitter.classList.add('opacity-75');
+
+                fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN': form.querySelector('input[name="_token"]').value
+                    },
+                    body: new URLSearchParams({
+                        'payment_method': methodName
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('HTTP error ' + response.status);
+                    return response.json();
+                })
+                .then(data => {
+                    submitter.disabled = false;
+                    submitter.classList.remove('opacity-75');
+                    
+                    if (data.success) {
+                        updatePaymentUI(data.payment_method, data.payment_code);
+                    } else {
+                        alert(data.error || 'Gagal memilih metode pembayaran.');
+                    }
+                })
+                .catch(err => {
+                    submitter.disabled = false;
+                    submitter.classList.remove('opacity-75');
+                    console.error(err);
+                    alert('Terjadi kesalahan saat menghubungi server.');
+                });
+            });
+        });
+
+        // Initialize QR code if initially QRIS is active
+        @if($payment->payment_method === 'QRIS' && $payment->payment_code)
+            generateQrCode("{{ $payment->payment_code }}");
+        @endif
     });
 </script>
 @endsection

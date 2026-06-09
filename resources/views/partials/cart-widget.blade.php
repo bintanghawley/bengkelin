@@ -10,10 +10,10 @@
         id="cart-btn"
         type="button"
         onclick="openCartModal()"
-        class="relative inline-flex items-center justify-center h-11 w-11 rounded-full border border-zinc-700 hover:bg-zinc-800 text-zinc-300 transition"
+        class="relative inline-flex items-center justify-center h-10 w-10 rounded-full border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-zinc-700 dark:text-zinc-300 transition"
         aria-label="Keranjang Belanja"
     >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
             <path d="M6 6h15l-1.5 9h-12z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M6 6l-2-3H2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <circle cx="9" cy="20" r="1"/>

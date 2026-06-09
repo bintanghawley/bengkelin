@@ -52,6 +52,12 @@ class PaymentController extends Controller
         ]);
 
         if ($payment->status !== 'pending' || now()->greaterThan($payment->expired_at)) {
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Pembayaran tidak aktif atau sudah kadaluarsa.'
+                ], 422);
+            }
             return back()->with('error', 'Pembayaran tidak aktif atau sudah kadaluarsa.');
         }
 
@@ -80,6 +86,14 @@ class PaymentController extends Controller
             'payment_code' => $code,
         ]);
 
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'payment_method' => $method,
+                'payment_code' => $code,
+            ]);
+        }
+
         return back()->with('success', 'Metode pembayaran berhasil dipilih.');
     }
 
@@ -105,7 +119,7 @@ class PaymentController extends Controller
         });
 
         return redirect()->route('pengguna.payments.success', $payment->id)
-            ->with('success', 'Simulasi pembayaran berhasil! Pesanan Anda sedang diproses.');
+            ->with('success', 'Pembayaran berhasil! Pesanan Anda sedang diproses.');
     }
 
     /**

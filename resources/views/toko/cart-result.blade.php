@@ -84,7 +84,7 @@
                 Belanja Lagi
             </a>
         </div>
-    </div>
+    @include('partials.footer')
 </div>
 
 <script>
