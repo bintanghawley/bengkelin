@@ -142,16 +142,23 @@
                                 </button>
                             </form>
                         </div>
-                        <div class="flex items-center justify-between text-sm text-zinc-700 dark:text-zinc-300">
-                            <div class="inline-flex items-center gap-2">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500 dark:text-zinc-400">
-                                    <path d="M7 7h10M7 12h10M7 17h6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M5 4h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                <span>Daftar Pesanan</span>
-                            </div>
-                            <span class="inline-flex items-center justify-center h-6 min-w-6 px-2 rounded-full bg-red-600 text-white text-xs font-semibold">0</span>
-                        </div>
+                        @if (Auth::user()->role === 'pengguna')
+                            @php
+                                $activePurchasesCount = \App\Models\Purchase::where('user_id', Auth::id())
+                                    ->whereIn('status', ['pending', 'menunggu_pembayaran', 'diproses', 'dikirim'])
+                                    ->count();
+                            @endphp
+                            <a href="{{ route('pengguna.dashboard') }}?section=riwayat" class="flex items-center justify-between text-sm text-zinc-700 dark:text-zinc-300 hover:text-red-650 dark:hover:text-red-500 transition w-full">
+                                <div class="inline-flex items-center gap-2">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500 dark:text-zinc-400">
+                                        <path d="M7 7h10M7 12h10M7 17h6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M5 4h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                    <span>Daftar Pesanan</span>
+                                </div>
+                                <span class="inline-flex items-center justify-center h-6 min-w-6 px-2 rounded-full bg-red-600 text-white text-xs font-semibold">{{ $activePurchasesCount }}</span>
+                            </a>
+                        @endif
                     </div>
                 @endauth
 

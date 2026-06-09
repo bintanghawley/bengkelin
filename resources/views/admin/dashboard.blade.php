@@ -22,9 +22,6 @@
             <button onclick="showAdminSection('orders')" class="admin-nav w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 focus:text-red-600 outline-none rounded-xl font-bold transition">
                  E-COMMERCE
             </button>
-            <button onclick="showAdminSection('purchases')" class="admin-nav w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 focus:text-red-600 outline-none rounded-xl font-bold transition">
-                 RIWAYAT PESANAN
-            </button>
             <button onclick="showAdminSection('tires')" class="admin-nav w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 focus:text-red-600 outline-none rounded-xl font-bold transition">
                 KELOLA BAN MOTOR
             </button>
@@ -360,84 +357,6 @@
     </div>
     </section>
 
-    {{-- RIWAYAT PESANAN / PURCHASES --}}
-    <section id="admin-purchases" class="admin-section hidden">
-        <div class="space-y-6">
-            <div class="flex justify-between items-center bg-white dark:bg-zinc-900 p-6 rounded-3xl border border-gray-200 dark:border-zinc-800 shadow-sm">
-                <div>
-                    <h3 class="font-bengkel text-xl text-gray-900 dark:text-white uppercase tracking-wider">Riwayat Pesanan Produk</h3>
-                    <p class="text-[9px] text-gray-400 dark:text-zinc-500 uppercase mt-1">Total: {{ $purchases->count() }} Pesanan</p>
-                </div>
-                <div class="text-right">
-                    <p class="text-[9px] text-zinc-500 uppercase font-bold">Total Pendapatan</p>
-                    <p class="font-bengkel text-xl text-emerald-500">Rp {{ number_format($purchases->where('status', '!=', 'dibatalkan')->sum('total_harga'), 0, ',', '.') }}</p>
-                </div>
-            </div>
-
-            <div class="bg-white dark:bg-zinc-900 rounded-3xl border border-gray-200 dark:border-zinc-800 overflow-hidden shadow-sm">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-[11px] uppercase tracking-tighter">
-                        <thead class="bg-gray-100 dark:bg-zinc-950 text-gray-500 dark:text-zinc-500 border-b border-gray-200 dark:border-zinc-800">
-                            <tr>
-                                <th class="px-6 py-4 font-bold text-gray-700 dark:text-white">Invoice</th>
-                                <th class="px-6 py-4 font-bold text-gray-700 dark:text-white">Pelanggan</th>
-                                <th class="px-6 py-4 font-bold text-gray-700 dark:text-white">Produk</th>
-                                <th class="px-6 py-4 font-bold text-center text-gray-700 dark:text-white">Qty</th>
-                                <th class="px-6 py-4 font-bold text-center text-gray-700 dark:text-white">Total</th>
-                                <th class="px-6 py-4 font-bold text-center text-gray-700 dark:text-white">Metode</th>
-                                <th class="px-6 py-4 font-bold text-center text-gray-700 dark:text-white">Status</th>
-                                <th class="px-6 py-4 font-bold text-right text-gray-700 dark:text-white">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-100 dark:divide-zinc-800/50 text-gray-600 dark:text-zinc-300">
-                            @forelse($purchases as $purchase)
-                            <tr class="hover:bg-gray-50 dark:hover:bg-zinc-800/30 transition-colors">
-                                <td class="px-6 py-4">
-                                    <span class="block font-bold text-gray-900 dark:text-white">#INV/{{ $purchase->created_at->format('Ymd') }}/{{ $purchase->id }}</span>
-                                    <span class="text-[9px] text-gray-400 dark:text-zinc-500">{{ $purchase->created_at->format('d M Y H:i') }}</span>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span class="block font-bold text-gray-900 dark:text-white">{{ $purchase->user->name ?? '-' }}</span>
-                                    <span class="text-[9px] text-gray-400">{{ $purchase->user->nomor_telepon ?? '' }}</span>
-                                </td>
-                                <td class="px-6 py-4 font-medium">{{ $purchase->barang_nama }}</td>
-                                <td class="px-6 py-4 text-center font-bold">{{ $purchase->jumlah }}</td>
-                                <td class="px-6 py-4 text-center font-bold text-emerald-600 dark:text-emerald-400">
-                                    Rp {{ number_format($purchase->total_harga, 0, ',', '.') }}
-                                </td>
-                                <td class="px-6 py-4 text-center">{{ $purchase->metode_pembayaran }}</td>
-                                <td class="px-6 py-4 text-center">
-                                    @php
-                                        $pc = match($purchase->status) {
-                                            'pending'    => 'bg-orange-900/20 text-orange-500 border-orange-800',
-                                            'diproses'   => 'bg-blue-900/20 text-blue-500 border-blue-800',
-                                            'dikirim'    => 'bg-yellow-900/20 text-yellow-500 border-yellow-800',
-                                            'selesai'    => 'bg-emerald-900/20 text-emerald-500 border-emerald-800',
-                                            'dibatalkan' => 'bg-red-900/20 text-red-500 border-red-800',
-                                            default      => 'bg-zinc-800 text-zinc-400 border-zinc-700',
-                                        };
-                                    @endphp
-                                    <span class="px-2 py-1 rounded-full text-[9px] font-bold border inline-block {{ $pc }}">
-                                        {{ strtoupper($purchase->status) }}
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 text-right">
-                                    <a href="{{ route('toko.result', $purchase->id) }}" class="text-blue-400 hover:text-blue-300 font-bold transition text-[9px]">Lihat →</a>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="8" class="px-6 py-16 text-center text-gray-400 dark:text-zinc-600 italic">
-                                    Belum ada pesanan produk.
-                                </td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Modals for User -->
     @include('admin.users.create')

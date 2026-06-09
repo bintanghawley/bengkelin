@@ -27,7 +27,13 @@
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>
-                STATUS PESANAN
+                STATUS SERVIS
+            </button>
+            <button onclick="showSection('riwayat')" id="btn-riwayat" class="nav-link w-full flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 rounded-xl font-bold transition text-left">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.03 0 1.9.693 2.166 1.638m-7.377 2.24a.75.75 0 0 1 .75.75 1.5 1.5 0 0 0 1.5 1.5h1.5a1.5 1.5 0 0 0 1.5-1.5.75.75 0 0 1 .75-.75h.45m-8.356 0h.45" />
+                </svg>
+                RIWAYAT PESANAN
             </button>
             <button onclick="showSection('ecommerce')" id="btn-ecommerce" class="nav-link w-full flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 rounded-xl font-bold transition text-left">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
@@ -275,76 +281,207 @@
             </div>
         </div>
 
-        <!-- Tabel Riwayat Pembelian -->
-        <div class="bg-gray-50 dark:bg-zinc-900 rounded-3xl border border-gray-200 dark:border-zinc-800 overflow-hidden shadow-xl mt-8">
-            <div class="p-6 border-b border-gray-200 dark:border-zinc-800 flex justify-between items-center">
-                <h3 class="font-bengkel text-xl text-zinc-800 dark:text-white uppercase tracking-wider">Riwayat Pembelian</h3>
-            </div>
 
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs uppercase tracking-tighter">
-                    <thead class="bg-gray-100 dark:bg-zinc-950 text-zinc-500 border-b border-gray-200 dark:border-zinc-800">
-                        <tr>
-                            <th class="px-6 py-4 font-bold text-zinc-800 dark:text-white">Invoice</th>
-                            <th class="px-6 py-4 font-bold text-zinc-800 dark:text-white">Barang</th>
-                            <th class="px-6 py-4 font-bold text-center text-zinc-800 dark:text-white">Jumlah</th>
-                            <th class="px-6 py-4 font-bold text-center text-zinc-800 dark:text-white">Total Harga</th>
-                            <th class="px-6 py-4 font-bold text-center text-zinc-800 dark:text-white">Metode</th>
-                            <th class="px-6 py-4 font-bold text-center text-zinc-800 dark:text-white">Status</th>
-                            <th class="px-6 py-4 font-bold text-right text-zinc-800 dark:text-white">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200 dark:divide-zinc-800/50 text-zinc-600 dark:text-zinc-300">
-                        @if(isset($purchases) && $purchases->count() > 0)
-                            @foreach ($purchases as $purchase)
-                                <tr class="hover:bg-gray-100 dark:hover:bg-zinc-800/30 transition-colors group">
-                                    <td class="px-6 py-4">
-                                        <span class="block font-bold text-zinc-800 dark:text-white">#INV/{{ $purchase->created_at->format('Ymd') }}/{{ $purchase->id }}</span>
-                                        <span class="text-[9px] text-zinc-500 italic font-mono">{{ $purchase->created_at->format('d M Y H:i') }}</span>
-                                    </td>
-                                    <td class="px-6 py-4 font-medium">{{ $purchase->barang_nama }}</td>
-                                    <td class="px-6 py-4 text-center font-bold">{{ $purchase->jumlah ?? 1 }}</td>
-                                    <td class="px-6 py-4 text-center font-bold text-red-600">
-                                        Rp {{ number_format($purchase->total_harga ?: ($purchase->harga * ($purchase->jumlah ?? 1)), 0, ',', '.') }}
-                                    </td>
-                                    <td class="px-6 py-4 text-center font-medium">{{ $purchase->metode_pembayaran ?? 'COD' }}</td>
-                                    <td class="px-6 py-4 text-center">
-                                        @php
-                                            $statusColor = match($purchase->status) {
-                                                'pending' => 'bg-orange-100 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 border border-orange-200 dark:border-orange-900/60',
-                                                'diproses' => 'bg-yellow-100 dark:bg-yellow-950/40 text-yellow-600 dark:text-yellow-500 border border-yellow-200 dark:border-yellow-900/60',
-                                                'dikirim' => 'bg-blue-100 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-900/60',
-                                                'selesai' => 'bg-emerald-100 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/60',
-                                                'dibatalkan' => 'bg-red-100 dark:bg-red-950/40 text-red-600 dark:text-red-500 border border-red-200 dark:border-red-900/60',
-                                                default => 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700'
-                                            };
-                                        @endphp
-                                        <span class="px-3 py-1 rounded-full text-[9px] font-bold border inline-block {{ $statusColor }}">
-                                            {{ strtoupper($purchase->status ?? 'pending') }}
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        <a href="{{ route('toko.result', $purchase->id) }}" class="inline-block bg-zinc-800 hover:bg-zinc-700 text-white text-[9px] font-bold py-2 px-4 rounded-lg transition uppercase tracking-wider">
-                                            Lihat Invoice
-                                        </a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        @else
-                            <tr>
-                                <td colspan="7" class="px-6 py-12 text-center text-zinc-500 dark:text-zinc-600 italic tracking-widest bg-gray-50 dark:bg-zinc-900">
-                                    Belum ada transaksi pembelian barang.
-                                </td>
-                            </tr>
-                        @endif
-                    </tbody>
-                </table>
-            </div>
-        </div>
     </div>
 </section>
 
-          <section id="section-ecommerce" class="dashboard-section hidden italic">
+          
+<section id="section-riwayat" class="dashboard-section hidden italic">
+    <div class="space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <h3 class="text-3xl font-bengkel text-zinc-800 dark:text-white uppercase">Riwayat Pesanan</h3>
+                <p class="text-zinc-500 text-xs uppercase tracking-widest mt-1">Daftar transaksi pembelian produk e-commerce Anda.</p>
+            </div>
+        </div>
+
+        @php
+            // Group purchases by payment_id. If payment_id is null (COD), group by individual purchase so they are shown separately.
+            $groupedPurchases = $purchases->groupBy(function ($purchase) {
+                return $purchase->payment_id ? 'payment_' . $purchase->payment_id : 'purchase_' . $purchase->id;
+            });
+
+            $orderGroups = [];
+            foreach ($groupedPurchases as $groupKey => $items) {
+                $firstItem = $items->first();
+                $payment = $firstItem->payment;
+                
+                $status = 'pending';
+                $statusText = 'Pending';
+                
+                if ($payment) {
+                    if ($payment->status === 'expired') {
+                        $status = 'kedaluwarsa';
+                        $statusText = 'Kedaluwarsa';
+                    } elseif ($payment->status === 'pending') {
+                        $status = 'menunggu_pembayaran';
+                        $statusText = 'Menunggu Pembayaran';
+                    } elseif ($payment->status === 'paid') {
+                        $pStatus = $firstItem->status;
+                        if ($pStatus === 'dikirim') {
+                            $status = 'dikirimkan';
+                            $statusText = 'Dikirimkan';
+                        } else {
+                            $status = $pStatus; // diproses, selesai, dibatalkan
+                            $statusText = ucwords($pStatus);
+                        }
+                    }
+                } else {
+                    // COD
+                    $pStatus = $firstItem->status;
+                    if ($pStatus === 'dikirim') {
+                        $status = 'dikirimkan';
+                        $statusText = 'Dikirimkan';
+                    } else {
+                        $status = $pStatus; // diproses, selesai, dibatalkan
+                        $statusText = ucwords($pStatus);
+                    }
+                }
+                
+                // Build detail URL
+                if ($payment) {
+                    if ($payment->status === 'pending') {
+                        $detailUrl = route('pengguna.payments.show', $payment->id);
+                    } elseif ($payment->status === 'paid') {
+                        $detailUrl = route('pengguna.payments.success', $payment->id);
+                    } else {
+                        $detailUrl = route('pengguna.payments.expired', $payment->id);
+                    }
+                } else {
+                    $detailUrl = route('toko.result', $firstItem->id);
+                }
+                
+                $totalBelanja = $items->sum('total_harga');
+                
+                $orderGroups[] = [
+                    'key' => $groupKey,
+                    'items' => $items,
+                    'first_item' => $firstItem,
+                    'payment' => $payment,
+                    'status' => strtolower($status),
+                    'status_text' => $statusText,
+                    'detail_url' => $detailUrl,
+                    'total_belanja' => $totalBelanja,
+                    'date' => $firstItem->created_at->translatedFormat('d M Y'),
+                    'reference_code' => $firstItem->getReferenceCode()
+                ];
+            }
+        @endphp
+
+        <!-- Filter Status Tabs -->
+        <div class="flex flex-wrap gap-2 py-2 border-b border-gray-200 dark:border-zinc-800">
+            <span class="text-zinc-400 dark:text-zinc-500 text-[10px] font-bold uppercase tracking-widest w-full mb-1">Status Pesanan</span>
+            <button onclick="filterOrders('semua')" id="tab-semua" class="order-tab bg-blue-600 text-white px-5 py-2.5 rounded-full text-xs font-bold transition shadow-sm">
+                Semua
+            </button>
+            <button onclick="filterOrders('diproses')" id="tab-diproses" class="order-tab bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-650 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-850 px-5 py-2.5 rounded-full text-xs font-bold transition">
+                Diproses
+            </button>
+            <button onclick="filterOrders('dikirimkan')" id="tab-dikirimkan" class="order-tab bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-650 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-850 px-5 py-2.5 rounded-full text-xs font-bold transition">
+                Dikirimkan
+            </button>
+            <button onclick="filterOrders('menunggu_pembayaran')" id="tab-menunggu_pembayaran" class="order-tab bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-650 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-850 px-5 py-2.5 rounded-full text-xs font-bold transition">
+                Menunggu Pembayaran
+            </button>
+            <button onclick="filterOrders('dibatalkan')" id="tab-dibatalkan" class="order-tab bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-650 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-850 px-5 py-2.5 rounded-full text-xs font-bold transition">
+                Dibatalkan
+            </button>
+            <button onclick="filterOrders('selesai')" id="tab-selesai" class="order-tab bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-650 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-850 px-5 py-2.5 rounded-full text-xs font-bold transition">
+                Selesai
+            </button>
+            <button onclick="filterOrders('kedaluwarsa')" id="tab-kedaluwarsa" class="order-tab bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-650 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-850 px-5 py-2.5 rounded-full text-xs font-bold transition">
+                Kedaluwarsa
+            </button>
+        </div>
+
+        <!-- Orders List -->
+        <div class="space-y-4 mt-6">
+            @forelse($orderGroups as $group)
+                @php
+                    $firstItem = $group['first_item'];
+                    $items = $group['items'];
+                    $badgeClasses = match($group['status']) {
+                        'diproses' => 'bg-yellow-100 text-yellow-850 dark:bg-yellow-950/40 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-900/40',
+                        'dikirimkan' => 'bg-blue-100 text-blue-800 dark:bg-blue-950/40 dark:text-blue-400 border border-blue-200 dark:border-blue-900/40',
+                        'menunggu_pembayaran' => 'bg-orange-100 text-orange-850 dark:bg-orange-950/40 dark:text-orange-400 border border-orange-200 dark:border-orange-900/40',
+                        'dibatalkan' => 'bg-red-100 text-red-800 dark:bg-red-950/40 dark:text-red-400 border border-red-200 dark:border-red-900/40',
+                        'selesai' => 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/40',
+                        'kedaluwarsa' => 'bg-[#9a3412] text-white',
+                        default => 'bg-zinc-100 text-zinc-850 dark:bg-zinc-800 dark:text-zinc-350 border border-zinc-200 dark:border-zinc-700'
+                    };
+                @endphp
+                <div class="order-card bg-white dark:bg-zinc-900 p-6 rounded-3xl border border-gray-200 dark:border-zinc-800 shadow-sm relative overflow-hidden transition hover:shadow-md" data-status="{{ $group['status'] }}">
+                    <!-- Card Top Header -->
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-zinc-500 dark:text-zinc-400 text-xs font-semibold">{{ $group['date'] }}</span>
+                        <span class="px-3 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider {{ $badgeClasses }}">
+                            {{ $group['status_text'] }}
+                        </span>
+                    </div>
+
+                    <!-- Card Body -->
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                        <!-- Left Side: Product Info -->
+                        <div class="md:col-span-6 flex gap-4 items-center">
+                            <div class="h-20 w-20 bg-gray-100 dark:bg-zinc-950 rounded-2xl flex-shrink-0 overflow-hidden border border-zinc-200 dark:border-zinc-800 flex items-center justify-center">
+                                @if($firstItem->getImageUrl())
+                                    <img src="{{ $firstItem->getImageUrl() }}" alt="{{ $firstItem->barang_nama }}" class="w-full h-full object-cover">
+                                @else
+                                    <svg class="w-8 h-8 text-zinc-400 dark:text-zinc-650" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                @endif
+                            </div>
+                            <div>
+                                <h4 class="font-bengkel text-lg text-zinc-800 dark:text-white uppercase tracking-wider font-bold leading-tight">{{ $firstItem->barang_nama }}</h4>
+                                <p class="text-zinc-500 text-xs mt-1 font-semibold">Rp {{ number_format($firstItem->harga, 0, ',', '.') }} <span class="text-zinc-450">x {{ $firstItem->jumlah }} Barang</span></p>
+                                
+                                @if($items->count() > 1)
+                                    <p class="text-blue-600 dark:text-blue-400 font-bold text-xs mt-2 hover:underline cursor-pointer">+{{ $items->count() - 1 }} Produk Lainnya</p>
+                                @endif
+                            </div>
+                        </div>
+
+                        <!-- Mid-Right: Total Belanja -->
+                        <div class="md:col-span-3 text-left md:text-right flex flex-col md:justify-center">
+                            <span class="text-zinc-400 dark:text-zinc-500 text-[10px] uppercase font-bold tracking-widest">Total Belanja</span>
+                            <span class="text-zinc-800 dark:text-white font-extrabold text-lg mt-0.5">Rp {{ number_format($group['total_belanja'], 0, ',', '.') }}</span>
+                        </div>
+
+                        <!-- Right: Action Button -->
+                        <div class="md:col-span-3 flex justify-end">
+                            <a href="{{ $group['detail_url'] }}" class="w-full md:w-auto text-center border border-blue-600 text-blue-600 hover:bg-blue-50 dark:border-blue-500 dark:text-blue-400 dark:hover:bg-blue-950/20 font-bold px-6 py-2.5 rounded-full text-xs flex items-center justify-center gap-2 transition tracking-wider uppercase">
+                                Lihat Detail
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Card Footer -->
+                    <div class="mt-4 pt-4 border-t border-gray-100 dark:border-zinc-800/60 flex items-center justify-between text-[10px] font-mono text-zinc-400 dark:text-zinc-500">
+                        <span>No. Referensi: {{ $group['reference_code'] }}</span>
+                        @if($group['payment'])
+                            <span class="uppercase">Invoice: {{ $group['payment']->invoice_number }}</span>
+                        @else
+                            <span class="uppercase">Metode: COD</span>
+                        @endif
+                    </div>
+                </div>
+            @empty
+                <div class="text-center py-16 text-zinc-500 dark:text-zinc-650 bg-white dark:bg-zinc-900 rounded-3xl border border-gray-200 dark:border-zinc-800 shadow-sm italic">
+                    <svg class="w-12 h-12 text-zinc-400 mx-auto mb-3 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <p class="tracking-widest">Belum ada riwayat pesanan.</p>
+                </div>
+            @endforelse
+        </div>
+    </div>
+</section>
+        
+<section id="section-ecommerce" class="dashboard-section hidden italic">
     <div class="flex justify-between items-end mb-8">
         <h3 class="text-3xl font-bengkel text-red-600 uppercase">Original Parts</h3>
         <span class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest">Tersedia di Bengkel Sidoarjo</span>
@@ -391,9 +528,7 @@
 
         </div>
     </main>
-</div>
-
-<script>
+</div><script>
     function showSection(sectionId) {
         document.querySelectorAll('.dashboard-section').forEach(section => {
             section.classList.add('hidden');
@@ -402,16 +537,47 @@
         document.getElementById('section-' + sectionId).classList.remove('hidden');
 
         document.querySelectorAll('.nav-link').forEach(btn => {
-            btn.classList.remove('text-red-600', 'dark:text-red-500', 'bg-gray-100', 'dark:bg-zinc-800/50');
-            btn.classList.add('text-zinc-500', 'dark:text-zinc-400', 'hover:bg-gray-100', 'dark:hover:bg-zinc-800/50');
+            btn.classList.remove('text-red-650', 'text-red-600', 'dark:text-red-505', 'dark:text-red-500', 'bg-gray-100', 'dark:bg-zinc-800/50');
+            btn.classList.add('text-zinc-505', 'text-zinc-500', 'dark:text-zinc-400', 'hover:bg-gray-100', 'dark:hover:bg-zinc-800/50');
         });
 
         const activeBtn = document.getElementById('btn-' + sectionId);
-        activeBtn.classList.add('text-red-600', 'dark:text-red-500', 'bg-gray-100', 'dark:bg-zinc-800/50');
-        activeBtn.classList.remove('text-zinc-500', 'dark:text-zinc-400');
+        if (activeBtn) {
+            activeBtn.classList.add('text-red-600', 'dark:text-red-500', 'bg-gray-100', 'dark:bg-zinc-800/50');
+            activeBtn.classList.remove('text-zinc-500', 'dark:text-zinc-400', 'text-zinc-505');
+        }
     }
 
-    // Show default section
-    showSection('profil');
+    function filterOrders(status) {
+        // Update active tab style
+        document.querySelectorAll('.order-tab').forEach(tab => {
+            tab.className = "order-tab bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-650 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-850 px-5 py-2.5 rounded-full text-xs font-bold transition";
+        });
+
+        const activeTab = document.getElementById('tab-' + status);
+        if (activeTab) {
+            activeTab.className = "order-tab bg-blue-600 text-white px-5 py-2.5 rounded-full text-xs font-bold transition shadow-sm";
+        }
+
+        // Show/Hide order cards
+        document.querySelectorAll('.order-card').forEach(card => {
+            if (status === 'semua' || card.getAttribute('data-status') === status) {
+                card.classList.remove('hidden');
+            } else {
+                card.classList.add('hidden');
+            }
+        });
+    }
+
+    // Show default section based on query param
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const section = urlParams.get('section');
+        if (section && ['profil', 'booking', 'status', 'riwayat', 'ecommerce'].includes(section)) {
+            showSection(section);
+        } else {
+            showSection('profil');
+        }
+    });
 </script>
 @endsection

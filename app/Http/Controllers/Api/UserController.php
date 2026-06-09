@@ -8,8 +8,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
-class ControllerAPI extends Controller
+class UserController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
         $users = User::orderBy('id', 'desc')->get();
@@ -18,34 +21,18 @@ class ControllerAPI extends Controller
             'status' => true,
             'message' => 'Data users berhasil diambil',
             'data' => $users,
-        ]);
+        ], 200);
     }
 
-    public function show($id)
-    {
-        $user = User::find($id);
-
-        if (!$user) {
-            return response()->json([
-                'status' => false,
-                'message' => 'User tidak ditemukan',
-                'data' => null,
-            ], 404);
-        }
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Data user berhasil diambil',
-            'data' => $user,
-        ]);
-    }
-
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required',
-            'nomor_telepon' => ['required', 'regex:/^08[0-9]{8,11}$/', 'unique:users,nomor_telepon'],
-            'password' => 'required|min:6',
+            'name' => 'required|string|max:255',
+            'nomor_telepon' => ['required', 'string', 'regex:/^08[0-9]{8,11}$/', 'unique:users,nomor_telepon'],
+            'password' => 'required|string|min:6',
             'role' => 'required|in:admin,mekanik,pengguna',
         ]);
 
@@ -63,6 +50,31 @@ class ControllerAPI extends Controller
         ], 201);
     }
 
+    /**
+     * Display the specified resource.
+     */
+    public function show($id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'User tidak ditemukan',
+                'data' => null,
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Data user berhasil diambil',
+            'data' => $user,
+        ], 200);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
     public function update(Request $request, $id)
     {
         $user = User::find($id);
@@ -76,22 +88,29 @@ class ControllerAPI extends Controller
         }
 
         $validated = $request->validate([
-            'name' => 'required',
-            'nomor_telepon' => ['required', 'regex:/^08[0-9]{8,11}$/', Rule::unique('users', 'nomor_telepon')->ignore($user->id)],
-            'password' => 'nullable|min:6',
-            'role' => 'nullable|in:admin,mekanik,pengguna',
+            'name' => 'sometimes|required|string|max:255',
+            'nomor_telepon' => [
+                'sometimes',
+                'required',
+                'string',
+                'regex:/^08[0-9]{8,11}$/',
+                Rule::unique('users', 'nomor_telepon')->ignore($user->id)
+            ],
+            'password' => 'nullable|string|min:6',
+            'role' => 'sometimes|required|in:admin,mekanik,pengguna',
         ]);
 
-        $data = [
-            'name' => $validated['name'],
-            'nomor_telepon' => $validated['nomor_telepon'],
-        ];
-
+        $data = [];
+        if (isset($validated['name'])) {
+            $data['name'] = $validated['name'];
+        }
+        if (isset($validated['nomor_telepon'])) {
+            $data['nomor_telepon'] = $validated['nomor_telepon'];
+        }
         if (!empty($validated['password'])) {
             $data['password'] = Hash::make($validated['password']);
         }
-
-        if (!empty($validated['role'])) {
+        if (isset($validated['role'])) {
             $data['role'] = $validated['role'];
         }
 
@@ -101,9 +120,12 @@ class ControllerAPI extends Controller
             'status' => true,
             'message' => 'User berhasil diperbarui',
             'data' => $user,
-        ]);
+        ], 200);
     }
 
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy($id)
     {
         $user = User::find($id);
@@ -122,6 +144,6 @@ class ControllerAPI extends Controller
             'status' => true,
             'message' => 'User berhasil dihapus',
             'data' => null,
-        ]);
+        ], 200);
     }
 }
