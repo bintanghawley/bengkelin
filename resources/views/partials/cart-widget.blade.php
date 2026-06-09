@@ -6,65 +6,117 @@
 <div class="relative group" id="cart-widget-wrapper" style="padding-bottom: 4px; margin-bottom: -4px;">
 
     {{-- Cart button --}}
-    <button
-        id="cart-btn"
-        type="button"
-        onclick="openCartModal()"
-        class="relative inline-flex items-center justify-center h-10 w-10 rounded-full border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-zinc-700 dark:text-zinc-300 transition"
-        aria-label="Keranjang Belanja"
-    >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
-            <path d="M6 6h15l-1.5 9h-12z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M6 6l-2-3H2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="9" cy="20" r="1"/>
-            <circle cx="18" cy="20" r="1"/>
-        </svg>
-        {{-- Badge --}}
-        <span
-            id="cart-badge"
-            style="display:none; position:absolute; top:-4px; right:-4px; min-width:1.25rem; height:1.25rem; padding:0 4px; border-radius:9999px; background:#dc2626; color:#fff; font-size:10px; font-weight:700; align-items:center; justify-content:center; line-height:1; box-shadow:0 1px 4px rgba(0,0,0,.3);"
-        >0</span>
-    </button>
+    @auth
+        <button
+            id="cart-btn"
+            type="button"
+            onclick="openCartModal()"
+            class="relative inline-flex items-center justify-center h-10 w-10 rounded-full border border-zinc-300 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500 bg-white dark:bg-zinc-900/50 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-zinc-800 dark:text-zinc-200 hover:text-zinc-950 dark:hover:text-white transition shadow-sm"
+            aria-label="Keranjang Belanja"
+        >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
+                <path d="M6 6h15l-1.5 9h-12z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M6 6l-2-3H2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="9" cy="20" r="1"/>
+                <circle cx="18" cy="20" r="1"/>
+            </svg>
+            {{-- Badge --}}
+            <span
+                id="cart-badge"
+                style="display:none; position:absolute; top:-4px; right:-4px; min-width:1.25rem; height:1.25rem; padding:0 4px; border-radius:9999px; background:#dc2626; color:#fff; font-size:10px; font-weight:700; align-items:center; justify-content:center; line-height:1; box-shadow:0 1px 4px rgba(0,0,0,.3);"
+            >0</span>
+        </button>
+    @else
+        <button
+            id="cart-btn"
+            type="button"
+            onclick="window.location.href='{{ route('login') }}'"
+            class="relative inline-flex items-center justify-center h-10 w-10 rounded-full border border-zinc-300 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500 bg-white dark:bg-zinc-900/50 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-zinc-800 dark:text-zinc-200 hover:text-zinc-950 dark:hover:text-white transition shadow-sm"
+            aria-label="Keranjang Belanja (Silakan Login)"
+        >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
+                <path d="M6 6h15l-1.5 9h-12z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M6 6l-2-3H2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="9" cy="20" r="1"/>
+                <circle cx="18" cy="20" r="1"/>
+            </svg>
+        </button>
+    @endauth
 
     {{-- ── 2. Hover mini-dropdown ──────────────────────────────── --}}
-    {{-- NOTE: invisible padding-top acts as a "bridge" so mouse    --}}
-    {{-- doesn't leave hover area when moving from btn to dropdown  --}}
-    <div
-        id="cart-hover-dropdown"
-        class="absolute right-0 w-80 bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl z-[200] opacity-0 translate-y-1 pointer-events-none transition group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto"
-        style="top: calc(100% + 4px);"
-    >
-        {{-- Invisible top bridge: extends hover area upward to fill the gap between button and dropdown --}}
-        <div style="position:absolute; top:-12px; left:0; right:0; height:16px; background:transparent;"></div>
+    @auth
+        <div
+            id="cart-hover-dropdown"
+            class="absolute right-0 w-80 bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl z-[200] opacity-0 translate-y-1 pointer-events-none transition group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto"
+            style="top: calc(100% + 4px);"
+        >
+            {{-- Invisible top bridge: extends hover area upward to fill the gap between button and dropdown --}}
+            <div style="position:absolute; top:-12px; left:0; right:0; height:16px; background:transparent;"></div>
 
-        {{-- Header --}}
-        <div class="flex items-center justify-between px-5 pt-4 pb-3 border-b border-zinc-800">
-            <p class="font-bold text-sm text-white" id="cart-hover-title">Keranjang (0)</p>
-            <button onclick="openCartModal(); event.stopPropagation();" class="text-blue-400 text-xs font-semibold hover:underline">Lihat Semua</button>
+            {{-- Header --}}
+            <div class="flex items-center justify-between px-5 pt-4 pb-3 border-b border-zinc-800">
+                <p class="font-bold text-sm text-white" id="cart-hover-title">Keranjang (0)</p>
+                <button onclick="openCartModal(); event.stopPropagation();" class="text-blue-400 text-xs font-semibold hover:underline">Lihat Semua</button>
+            </div>
+
+            {{-- Items preview (max 3) --}}
+            <div id="cart-hover-items" class="divide-y divide-zinc-800 max-h-60 overflow-y-auto"></div>
+
+            {{-- Empty state --}}
+            <div id="cart-hover-empty" class="p-6 flex flex-col items-center text-center gap-2">
+                <svg class="w-10 h-10 text-zinc-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M6 6h15l-1.5 9h-12z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M6 6l-2-3H2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/>
+                </svg>
+                <p class="text-xs font-semibold text-zinc-400">Keranjang masih kosong</p>
+            </div>
+
+            {{-- "More items" hint --}}
+            <div id="cart-hover-more" class="hidden px-5 py-3 bg-zinc-950/50 border-t border-zinc-800">
+                <button onclick="openCartModal()" class="w-full text-xs text-zinc-400 font-semibold hover:text-white transition text-center">
+                    Tap cart untuk lihat semua →
+                </button>
+            </div>
         </div>
+    @else
+        {{-- Hover mini-dropdown for guest --}}
+        <div
+            id="cart-hover-dropdown"
+            class="absolute right-0 w-80 bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl z-[200] opacity-0 translate-y-1 pointer-events-none transition group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto"
+            style="top: calc(100% + 4px);"
+        >
+            {{-- Invisible top bridge --}}
+            <div style="position:absolute; top:-12px; left:0; right:0; height:16px; background:transparent;"></div>
 
-        {{-- Items preview (max 3) --}}
-        <div id="cart-hover-items" class="divide-y divide-zinc-800 max-h-60 overflow-y-auto"></div>
+            {{-- Header --}}
+            <div class="px-5 pt-4 pb-3 border-b border-zinc-800">
+                <p class="font-bold text-sm text-white">Keranjang Belanja</p>
+            </div>
 
-        {{-- Empty state --}}
-        <div id="cart-hover-empty" class="p-6 flex flex-col items-center text-center gap-2">
-            <svg class="w-10 h-10 text-zinc-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path d="M6 6h15l-1.5 9h-12z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M6 6l-2-3H2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/>
-            </svg>
-            <p class="text-xs font-semibold text-zinc-400">Keranjang masih kosong</p>
+            {{-- Content --}}
+            <div class="p-6 flex flex-col items-center text-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-zinc-800/80 flex items-center justify-center border border-zinc-700/50">
+                    <svg class="w-6 h-6 text-zinc-450" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="space-y-1">
+                    <p class="text-xs font-bold text-zinc-300">Belum Masuk Akun</p>
+                    <p class="text-[11px] text-zinc-500 leading-relaxed">Silakan login terlebih dahulu untuk mengakses keranjang belanja Anda.</p>
+                </div>
+                <a href="{{ route('login') }}" class="w-full bg-red-600 hover:bg-red-750 text-white text-xs font-bold py-2.5 px-4 rounded-xl transition text-center shadow-lg shadow-red-950/20">
+                    Login Sekarang
+                </a>
+                <p class="text-[10px] text-zinc-500">
+                    Belum punya akun? <a href="{{ route('register') }}" class="text-blue-400 hover:underline">Daftar</a>
+                </p>
+            </div>
         </div>
-
-        {{-- "More items" hint --}}
-        <div id="cart-hover-more" class="hidden px-5 py-3 bg-zinc-950/50 border-t border-zinc-800">
-            <button onclick="openCartModal()" class="w-full text-xs text-zinc-400 font-semibold hover:text-white transition text-center">
-                Tap cart untuk lihat semua →
-            </button>
-        </div>
-    </div>
+    @endauth
 </div>
 
+@auth
 {{-- ── 3. Full Cart Modal ──────────────────────────────────────── --}}
 <div id="cart-modal" style="display:none; position:fixed; inset:0; z-index:9999; overflow-y:auto;">
 
@@ -185,7 +237,7 @@
 {{-- ══════════════════════════════════════════════════════════════ --}}
 <style>
     .cart-modal-panel { animation: cartPanelIn 0.22s cubic-bezier(0.16,1,0.3,1) both; }
-    @@keyframes cartPanelIn {
+    @keyframes cartPanelIn {
         from { opacity:0; transform: scale(0.97) translateY(12px); }
         to   { opacity:1; transform: scale(1) translateY(0); }
     }
@@ -464,3 +516,16 @@
     window.addEventListener('storage', refreshAll);
 })();
 </script>
+@else
+<script>
+    // Clear cart storage if logged out
+    localStorage.removeItem('bengkelin_cart');
+    
+    window.addToCart = function() {
+        window.location.href = '{{ route("login") }}';
+    };
+    window.openCartModal = function() {
+        window.location.href = '{{ route("login") }}';
+    };
+</script>
+@endauth

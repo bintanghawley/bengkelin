@@ -37,26 +37,6 @@
 
         <div class="p-10 flex flex-col justify-center border-t md:border-t-0 md:border-l border-zinc-200 dark:border-zinc-800">
             
-            {{-- ALERT BERHASIL DAFTAR (DARI REGISTER) --}}
-            @if(session('success'))
-                <div class="fixed top-6 right-6 z-[60] max-w-md p-4 bg-emerald-500/10 border border-emerald-500/50 rounded-xl text-emerald-500 text-xs font-bold flex items-center gap-3 shadow-xl backdrop-blur-md animate-toast">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 shrink-0">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clip-rule="evenodd" />
-                    </svg>
-                    <span>{{ session('success') }}</span>
-                </div>
-            @endif
-
-            {{-- ALERT GAGAL LOGIN (NOMOR TELEPON/PASS SALAH) --}}
-            @if(session('error'))
-                <div class="fixed top-6 right-6 z-[60] max-w-md p-4 bg-red-500/10 border border-red-500/50 rounded-xl text-red-500 text-xs font-bold flex items-center gap-3 shadow-xl backdrop-blur-md animate-toast">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 shrink-0">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16ZM8.28 7.22a.75.75 0 0 0-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 1 0 1.06 1.06L10 11.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L11.06 10l1.72-1.72a.75.75 0 0 0-1.06-1.06L10 8.94 8.28 7.22Z" clip-rule="evenodd" />
-                    </svg>
-                    <span>{{ session('error') }}</span>
-                </div>
-            @endif
-
             <form action="{{ route('login') }}" method="POST" class="space-y-5">
                 @csrf
                 <div>

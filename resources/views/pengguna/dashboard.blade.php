@@ -44,8 +44,13 @@
         </nav>
 
         <div class="p-4 border-t border-gray-200 dark:border-zinc-800 space-y-2">
-            <a href="{{ route('home') }}" class="block w-full text-center text-[10px] text-zinc-500 hover:text-zinc-800 dark:hover:text-white uppercase tracking-widest border border-gray-200 dark:border-zinc-800 py-2 rounded-lg">Kembali ke Beranda</a>
-            <form action="{{ route('logout') }}" method="POST">
+            <a href="{{ route('home') }}" class="group relative flex items-center justify-center gap-2 w-full text-center text-[10px] font-bold text-zinc-500 dark:text-zinc-400 hover:text-white uppercase tracking-widest border border-zinc-300 dark:border-zinc-800 hover:border-red-600 bg-white dark:bg-zinc-900/50 hover:bg-red-600/10 py-2.5 rounded-xl transition-all duration-300 overflow-hidden shadow-sm hover:shadow-red-650/10">
+                <svg class="w-3.5 h-3.5 transform transition-transform duration-300 group-hover:-translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Kembali ke Beranda</span>
+            </a>
+            <form action="{{ route('logout') }}" method="POST" onsubmit="localStorage.removeItem('bengkelin_cart'); return confirm('Yakin ingin logout?')">
                 @csrf
                 <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-500/10 rounded-xl transition font-bold uppercase tracking-widest text-[10px]">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
@@ -212,11 +217,6 @@
         <div class="bg-gray-50 dark:bg-zinc-900 rounded-3xl border border-gray-200 dark:border-zinc-800 overflow-hidden shadow-xl">
             <div class="p-6 border-b border-gray-200 dark:border-zinc-800 flex justify-between items-center">
                 <h3 class="font-bengkel text-xl text-zinc-800 dark:text-white uppercase tracking-wider">Riwayat Booking</h3>
-                @if (session('success'))
-                    <span class="text-[10px] bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 px-3 py-1 rounded-full border border-emerald-200 dark:border-emerald-800 animate-pulse">
-                        {{ session('success') }}
-                    </span>
-                @endif
             </div>
 
             <div class="overflow-x-auto">

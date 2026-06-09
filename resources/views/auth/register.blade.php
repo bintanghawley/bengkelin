@@ -37,17 +37,6 @@
         </div>
 
         <div class="p-10 bg-white dark:bg-zinc-900 flex flex-col justify-center transition-colors duration-300">
-            {{-- Tampilkan Error Validasi Jika Ada --}}
-            @if ($errors->any())
-                <div class="fixed top-6 right-6 z-[60] max-w-md p-4 bg-red-500/10 border border-red-500/50 rounded-xl text-red-500 text-[10px] font-bold uppercase tracking-widest shadow-xl backdrop-blur-md animate-toast">
-                    <ul class="space-y-1">
-                        @foreach ($errors->all() as $error)
-                            <li>• {{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
             <form action="{{ route('register') }}" method="POST" class="space-y-4">
                 @csrf
                 <div>

@@ -81,7 +81,7 @@
         <div class="flex items-center gap-3">
             @include('partials.cart-widget')
 
-            <button type="button" id="sidebar-open" class="inline-flex items-center justify-center h-10 w-10 rounded-full border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-zinc-700 dark:text-zinc-300 transition" aria-label="Menu" aria-controls="sidebar" aria-expanded="false">
+            <button type="button" id="sidebar-open" class="inline-flex items-center justify-center h-10 w-10 rounded-full border border-zinc-300 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500 bg-white dark:bg-zinc-900/50 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-zinc-800 dark:text-zinc-200 hover:text-zinc-955 dark:hover:text-white transition shadow-sm" aria-label="Menu" aria-controls="sidebar" aria-expanded="false">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
                     <path d="M4 6h16M4 12h16M4 18h10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
@@ -130,7 +130,7 @@
                                 @endif
                                 <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">{{ Auth::user()->nomor_telepon ? implode('-', str_split(Auth::user()->nomor_telepon, 4)) : '-' }}</p>
                             </div>
-                            <form action="{{ route('logout') }}" method="POST" onsubmit="return confirm('Yakin ingin logout?')">
+                            <form action="{{ route('logout') }}" method="POST" onsubmit="localStorage.removeItem('bengkelin_cart'); return confirm('Yakin ingin logout?')">
                                 @csrf
                                 <button type="submit" class="inline-flex items-center gap-1 text-sm font-semibold text-red-600 hover:text-red-700 transition">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">

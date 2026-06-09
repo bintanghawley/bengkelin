@@ -108,5 +108,6 @@
         window.addEventListener('pageshow', bindPhoneInputs);
         window.addEventListener('load', () => setTimeout(bindPhoneInputs, 50));
     </script>
+    @include('partials.toast')
 </body>
 </html>

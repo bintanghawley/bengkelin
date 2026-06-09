@@ -9,13 +9,24 @@
             <span class="text-3xl font-bengkel tracking-wider">MEKANIK<span class="text-red-600">PANEL</span></span>
         </div>
 
+        {{-- Profile section in sidebar --}}
+        <div class="p-5 border-b border-zinc-800 flex items-center gap-3 bg-zinc-950/20">
+            <div class="h-10 w-10 bg-red-600 rounded-full flex items-center justify-center font-bold text-white shadow-lg uppercase shrink-0">
+                {{ substr(Auth::user()->name, 0, 1) }}
+            </div>
+            <div class="flex flex-col min-w-0 text-left">
+                <span class="text-zinc-200 text-sm font-bold truncate leading-none mb-1.5">{{ Auth::user()->name }}</span>
+                <span class="text-zinc-500 text-[10px] uppercase tracking-widest font-semibold leading-none">Mekanik Bengkelin</span>
+            </div>
+        </div>
+
         <nav class="flex-1 px-4 space-y-2 mt-6">
             <a href="{{ route('mekanik.dashboard') }}" class="w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-red-400 rounded-xl font-bold transition">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                 DASHBOARD
             </a>
             <a href="{{ route('mekanik.bookings.index') }}" class="w-full flex items-center gap-3 px-4 py-3 text-red-500 bg-red-900/20 rounded-xl font-bold transition relative">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                 BOOKING MASUK
                 @if($pendingBookings->count() > 0)
                     <span class="absolute right-3 bg-red-600 text-white text-[9px] font-bold rounded-full w-5 h-5 flex items-center justify-center">{{ $pendingBookings->count() }}</span>
@@ -24,8 +35,13 @@
         </nav>
 
         <div class="p-4 border-t border-zinc-800 space-y-2">
-            <a href="{{ route('home') }}" class="block text-center text-[10px] text-zinc-500 hover:text-white uppercase tracking-widest border border-zinc-800 py-2 rounded-lg transition">Kembali ke Beranda</a>
-            <form action="{{ route('logout') }}" method="POST">
+            <a href="{{ route('home') }}" class="group relative flex items-center justify-center gap-2 w-full text-center text-[10px] font-bold text-zinc-500 dark:text-zinc-400 hover:text-white uppercase tracking-widest border border-zinc-300 dark:border-zinc-800 hover:border-red-600 bg-white dark:bg-zinc-900/50 hover:bg-red-600/10 py-2.5 rounded-xl transition-all duration-300 overflow-hidden shadow-sm hover:shadow-red-650/10">
+                <svg class="w-3.5 h-3.5 transform transition-transform duration-300 group-hover:-translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Kembali ke Beranda</span>
+            </a>
+            <form action="{{ route('logout') }}" method="POST" onsubmit="localStorage.removeItem('bengkelin_cart'); return confirm('Yakin ingin logout?')">
                 @csrf
                 <button type="submit" class="w-full text-[10px] text-red-500 hover:bg-red-900/20 py-2 rounded-lg transition font-bold uppercase tracking-widest">Sign Out</button>
             </form>
@@ -39,16 +55,7 @@
             <p class="text-zinc-500 text-xs mt-1 uppercase tracking-widest">Terima atau tolak permintaan servis dari pelanggan</p>
         </div>
 
-        @if(session('success'))
-            <div class="mb-6 bg-emerald-900/30 border border-emerald-700 text-emerald-400 px-6 py-4 rounded-2xl text-sm font-semibold">
-                ✓ {{ session('success') }}
-            </div>
-        @endif
-        @if(session('error'))
-            <div class="mb-6 bg-red-900/30 border border-red-700 text-red-400 px-6 py-4 rounded-2xl text-sm font-semibold">
-                ✗ {{ session('error') }}
-            </div>
-        @endif
+
 
         {{-- ══ SECTION 1: Pending Bookings (can accept/reject) ══ --}}
         <div class="bg-zinc-900 rounded-3xl border border-zinc-800 overflow-hidden shadow-2xl mb-8">
