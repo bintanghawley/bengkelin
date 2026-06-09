@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller
@@ -29,12 +30,22 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'nomor_telepon' => ['required', 'string', 'regex:/^08[0-9]{8,11}$/', 'unique:users,nomor_telepon'],
             'password' => 'required|string|min:6',
             'role' => 'required|in:admin,mekanik,pengguna',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $validated = $validator->validated();
 
         $user = User::create([
             'name' => $validated['name'],
@@ -87,7 +98,7 @@ class UserController extends Controller
             ], 404);
         }
 
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'sometimes|required|string|max:255',
             'nomor_telepon' => [
                 'sometimes',
@@ -99,6 +110,16 @@ class UserController extends Controller
             'password' => 'nullable|string|min:6',
             'role' => 'sometimes|required|in:admin,mekanik,pengguna',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $validated = $validator->validated();
 
         $data = [];
         if (isset($validated['name'])) {

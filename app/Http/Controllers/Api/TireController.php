@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Tire;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class TireController extends Controller
 {
@@ -28,7 +29,7 @@ class TireController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'nama'       => 'required|string|max:255',
             'harga'      => 'required|numeric|min:0',
             'stok'       => 'required|integer|min:0',
@@ -43,6 +44,14 @@ class TireController extends Controller
             'deskripsi'  => 'nullable|string',
             'fitur'      => 'nullable|string',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
 
         $data = $request->only([
             'nama', 'harga', 'stok', 'jenis_ban', 'merek', 
@@ -100,7 +109,7 @@ class TireController extends Controller
             ], 404);
         }
 
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'nama'       => 'sometimes|required|string|max:255',
             'harga'      => 'sometimes|required|numeric|min:0',
             'stok'       => 'sometimes|required|integer|min:0',
@@ -115,6 +124,14 @@ class TireController extends Controller
             'deskripsi'  => 'nullable|string',
             'fitur'      => 'nullable|string',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
 
         $data = $request->only([
             'nama', 'harga', 'stok', 'jenis_ban', 'merek', 

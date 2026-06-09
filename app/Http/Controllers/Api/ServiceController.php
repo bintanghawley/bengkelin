@@ -8,6 +8,7 @@ use App\Models\ServiceItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class ServiceController extends Controller
@@ -31,7 +32,7 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'nama'           => 'required|string|max:255',
             'deskripsi'      => 'required|string',
             'harga_mulai'    => 'required|integer|min:0',
@@ -40,6 +41,16 @@ class ServiceController extends Controller
             'items'          => 'nullable|array',
             'items.*'        => 'required|string|max:255',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $validated = $validator->validated();
 
         $service = DB::transaction(function () use ($validated, $request) {
             $slug = Str::slug($validated['nama']);
@@ -123,7 +134,7 @@ class ServiceController extends Controller
             ], 404);
         }
 
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'nama'           => 'sometimes|required|string|max:255',
             'deskripsi'      => 'sometimes|required|string',
             'harga_mulai'    => 'sometimes|required|integer|min:0',
@@ -132,6 +143,16 @@ class ServiceController extends Controller
             'items'          => 'nullable|array',
             'items.*'        => 'required|string|max:255',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $validated = $validator->validated();
 
         $service = DB::transaction(function () use ($validated, $request, $service) {
             $data = [];
