@@ -62,10 +62,10 @@
                     <div class="absolute -top-6 -left-6 h-24 w-24 bg-white/15 rounded-full blur-2xl"></div>
                     <div class="absolute -bottom-10 -right-12 h-32 w-32 bg-black/20 rounded-full blur-2xl"></div>
                     <div class="relative rounded-[2rem] bg-[#b90b24] p-4 shadow-[0_30px_80px_rgba(0,0,0,0.35)]">
-                        <img src="{{ asset('img/servis/bengkel.jpg') }}" alt="Workshop Bengkelin" class="w-full h-full object-cover rounded-[1.5rem] aspect-[4/3]">
+                        <img src="{{ asset('img/servis/bengkel.jpg') }}" alt="Workshop Bengkelin" class="w-full h-full object-cover rounded-[1.5rem] aspect-[4/3]" decoding="async">
                     </div>
-                    <img src="{{ asset('img/servis/bengkel-2.jpg') }}" alt="Motor" class="hidden md:block absolute -bottom-10 -left-4 w-52 drop-shadow-[0_25px_35px_rgba(0,0,0,0.45)] float-soft">
-                    <img src="{{ asset('img/servis/bengkel-2.jpg') }}" alt="Motor" class="md:hidden mt-6 w-52 mx-auto drop-shadow-[0_20px_30px_rgba(0,0,0,0.35)]">
+                    <img src="{{ asset('img/servis/bengkel-2.jpg') }}" alt="Motor" class="hidden md:block absolute -bottom-10 -left-4 w-52 drop-shadow-[0_25px_35px_rgba(0,0,0,0.45)] float-soft" decoding="async">
+                    <img src="{{ asset('img/servis/bengkel-2.jpg') }}" alt="Motor" class="md:hidden mt-6 w-52 mx-auto drop-shadow-[0_20px_30px_rgba(0,0,0,0.35)]" decoding="async">
                 </div>
             </div>
 
@@ -91,7 +91,7 @@
                 <div class="group relative bg-zinc-900 border border-zinc-800 rounded-[2rem] overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
                     <a href="{{ route('servis.detail', $service->slug) }}" class="flex-1 flex flex-col">
                         <div class="aspect-video bg-zinc-800/30 flex items-center justify-center relative overflow-hidden">
-                            <img src="{{ $service->gambar_url }}" alt="{{ $service->nama }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <img src="{{ $service->gambar_url }}" alt="{{ $service->nama }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async">
                             <div class="absolute top-4 left-4">
                                 <span class="inline-block bg-red-600 text-white text-[9px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full">{{ $service->estimasi_waktu }}</span>
                             </div>

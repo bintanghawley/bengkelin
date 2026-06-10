@@ -105,8 +105,8 @@ class TireController extends Controller
 
         $request->validate([
             'jumlah' => 'required|integer|min:1|max:' . $tire->stok,
-            'alamat' => 'required|string|max:500',
-            'telepon' => 'required|string|max:20',
+            'alamat' => 'required_if:metode_pembayaran,COD|nullable|string|max:500',
+            'telepon' => 'required_if:metode_pembayaran,COD|nullable|string|max:20',
             'metode_pembayaran' => 'required|in:COD,Transfer Bank',
             'catatan' => 'nullable|string|max:1000',
         ]);

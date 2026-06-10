@@ -176,9 +176,19 @@
                         </div>
                         <p class="font-bold text-zinc-300">Keranjangmu masih kosong</p>
                         <p class="text-sm text-zinc-400">Tambahkan produk dari halaman toko dan mulai belanja!</p>
-                        <button onclick="closeCartModal()" class="mt-1 px-6 py-2.5 bg-blue-600 text-white text-sm font-bold rounded-full hover:bg-blue-700 transition">
+                        @php
+                            $belanjaRoute = route('toko.index');
+                            if (request()->routeIs('toko.banmotor') || request()->is('*ban*')) {
+                                $belanjaRoute = route('toko.banmotor');
+                            } elseif (request()->routeIs('toko.oli') || request()->is('*oli*')) {
+                                $belanjaRoute = route('toko.oli');
+                            } elseif (request()->routeIs('toko.sparepart') || request()->is('*sparepart*')) {
+                                $belanjaRoute = route('toko.sparepart');
+                            }
+                        @endphp
+                        <a href="{{ $belanjaRoute }}" onclick="closeCartModal()" class="mt-1 px-6 py-2.5 bg-blue-600 text-white text-sm font-bold rounded-full hover:bg-blue-700 transition inline-block">
                             Belanja Sekarang
-                        </button>
+                        </a>
                     </div>
 
                     {{-- Items list --}}

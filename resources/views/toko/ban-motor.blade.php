@@ -92,7 +92,7 @@
                     <div class="absolute -top-6 -left-6 h-24 w-24 bg-white/15 rounded-full blur-2xl"></div>
                     <div class="absolute -bottom-10 -right-12 h-32 w-32 bg-black/25 rounded-full blur-2xl"></div>
                     <div class="relative rounded-[2rem] bg-[#0a2f86] p-4 shadow-[0_30px_80px_rgba(0,0,0,0.35)]">
-                        <img src="{{ asset('img/ban-motor/ban-motor.webp') }}" alt="Ban Motor" class="w-full h-full object-cover rounded-[1.5rem] aspect-[4/3]">
+                        <img src="{{ asset('img/ban-motor/ban-motor.webp') }}" alt="Ban Motor" class="w-full h-full object-cover rounded-[1.5rem] aspect-[4/3]" decoding="async">
                     </div>
                 </div>
             </div>
@@ -302,7 +302,7 @@
                                         <a href="{{ route('toko.banmotor.show', $tire->id) }}" class="flex-1 flex flex-col">
                                             <div class="aspect-square bg-zinc-100 dark:bg-zinc-800/30 flex items-center justify-center relative overflow-hidden">
                                                 @if($tire->gambar)
-                                                    <img src="{{ str_starts_with($tire->gambar, 'img/') || str_starts_with($tire->gambar, 'http') ? asset($tire->gambar) : asset('storage/' . $tire->gambar) }}" alt="{{ $tire->nama }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                                    <img src="{{ str_starts_with($tire->gambar, 'img/') || str_starts_with($tire->gambar, 'http') ? asset($tire->gambar) : asset('storage/' . $tire->gambar) }}" alt="{{ $tire->nama }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy" decoding="async">
                                                 @else
                                                     <div class="absolute inset-0 p-6">
                                                         <div class="w-full h-full border border-dashed border-zinc-300 dark:border-zinc-700/60 rounded-2xl flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-500 gap-2">

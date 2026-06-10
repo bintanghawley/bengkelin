@@ -68,7 +68,7 @@
     <nav class="sticky top-4 z-30 flex items-center justify-between px-8 py-4 max-w-7xl mx-auto bg-zinc-950/80 backdrop-blur-md rounded-2xl border border-zinc-800 shadow-xl">
        <div class="flex items-center gap-2">
             <div>
-                <img src="{{ asset('img/home/logo.png') }}" alt="" class="w-20 h-20 object-contain">
+                <img src="{{ asset('img/home/logo.png') }}" alt="" class="w-20 h-20 object-contain" decoding="async">
             </div>
             <span class="text-2xl font-bengkel tracking-wider text-zinc-900 dark:text-white">Bengkel<span class="text-red-600">in</span></span>
         </div>
@@ -94,7 +94,7 @@
         <div class="h-full flex flex-col">
             <div class="flex items-center justify-between p-5 border-b border-zinc-200 dark:border-zinc-800">
                 <a href="{{ route('home') }}" class="flex items-center gap-2">
-                    <img src="{{ asset('img/home/logo.png') }}" alt="" class="w-12 h-12 object-contain">
+                    <img src="{{ asset('img/home/logo.png') }}" alt="" class="w-12 h-12 object-contain" decoding="async">
                     <span class="text-xl font-bengkel tracking-wider text-zinc-900 dark:text-white">Bengkel<span class="text-red-600">in</span></span>
                 </a>
                 <button type="button" id="sidebar-close" class="inline-flex items-center justify-center h-9 w-9 rounded-full border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition text-zinc-700 dark:text-zinc-300" aria-label="Tutup menu">
@@ -196,7 +196,7 @@
                 <div class="order-1 lg:order-2 relative scroll-reveal-right">
                     <div class="absolute -inset-1 bg-red-600 rounded-3xl blur opacity-10"></div>
                     <div class="relative bg-zinc-100 dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 overflow-hidden aspect-video lg:aspect-square flex items-center justify-center group transition-colors duration-300">
-                        <img src="{{ asset ('img/home/bengkel.jpg') }}" alt="Gambar" class="w-full h-full object-cover">
+                        <img src="{{ asset ('img/home/bengkel.jpg') }}" alt="Gambar" class="w-full h-full object-cover" decoding="async">
                         <div class="absolute bottom-8 right-8 text-right">
                             <p class="text-red-600 text-6xl font-bengkel opacity-100 uppercase leading-none">Bengkelin<br>Sidoarjo</p>
                         </div>
@@ -260,7 +260,7 @@
                 <div class="relative group scroll-reveal-right">
                     <div class="absolute -inset-1 bg-gradient-to-r from-red-600 to-zinc-300 dark:to-zinc-800 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
                     <div class="relative bg-zinc-100 dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 p-2 overflow-hidden transition-colors duration-300">
-                        <img src="{{ asset("img/home/bengkel-samping.jpg") }}" alt="Workshop" class="rounded-2xl grayscale hover:grayscale-0 transition duration-700 w-full object-cover aspect-video lg:aspect-auto">
+                        <img src="{{ asset("img/home/bengkel-samping.jpg") }}" alt="Workshop" class="rounded-2xl grayscale hover:grayscale-0 transition duration-700 w-full object-cover aspect-video lg:aspect-auto" loading="lazy" decoding="async">
                     </div>
                 </div>
             </div>

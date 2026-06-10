@@ -157,9 +157,9 @@
                 @if($payment->status === 'pending')
                     <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 md:p-8 space-y-6">
                         <div>
-                            <h3 class="text-sm font-bold uppercase tracking-wider text-zinc-400 border-b border-zinc-800 pb-3">Simulasi Callback Gateway</h3>
+                            <h3 class="text-sm font-bold uppercase tracking-wider text-zinc-400 border-b border-zinc-800 pb-3">Konfirmasi Transaksi Gateway</h3>
                             <p class="text-zinc-500 text-xs mt-2 leading-relaxed">
-                                Karena ini adalah Payment Gateway Dummy (lokal), Anda dapat mensimulasikan respons pembayaran sukses atau gagal dari sistem gateway secara manual.
+                                Silakan konfirmasikan respons pembayaran dari sistem Payment Gateway untuk memproses status transaksi ini secara manual.
                             </p>
                         </div>
                         <div class="flex flex-col sm:flex-row gap-4 pt-2">
@@ -167,14 +167,14 @@
                                 @csrf
                                 <input type="hidden" name="action" value="success">
                                 <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold uppercase text-xs tracking-wider rounded-xl transition shadow-lg shadow-emerald-950/20">
-                                    Simulasikan Berhasil
+                                    Konfirmasi Sukses
                                 </button>
                             </form>
                             <form action="{{ route('admin.payments.simulate', $payment->id) }}" method="POST" class="flex-1">
                                 @csrf
                                 <input type="hidden" name="action" value="failed">
                                 <button type="submit" class="w-full py-3 bg-red-600 hover:bg-red-700 text-white font-bold uppercase text-xs tracking-wider rounded-xl transition shadow-lg shadow-red-950/20">
-                                    Simulasikan Gagal
+                                    Konfirmasi Gagal
                                 </button>
                             </form>
                         </div>

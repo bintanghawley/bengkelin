@@ -229,5 +229,47 @@
         subtotalVal.innerText = formatRupiah(total);
         totalVal.innerText = formatRupiah(total);
     }
+
+    // Toggle Shipping Info based on Payment Method
+    const codRadio = document.querySelector('input[name="metode_pembayaran"][value="COD"]');
+    const transferRadio = document.querySelector('input[name="metode_pembayaran"][value="Transfer Bank"]');
+    const teleponInput = document.getElementById('telepon');
+    const alamatInput = document.getElementById('alamat');
+    const catatanInput = document.getElementById('catatan');
+    const teleponReq = document.querySelector('label[for="telepon"] .text-red-600');
+    const alamatReq = document.querySelector('label[for="alamat"] .text-red-600');
+
+    if (teleponInput) teleponInput.dataset.initialVal = teleponInput.value;
+    if (alamatInput) alamatInput.dataset.initialVal = alamatInput.value;
+    if (catatanInput) catatanInput.dataset.initialVal = catatanInput.value;
+
+    function toggleShippingInfo() {
+        const isTransfer = transferRadio && transferRadio.checked;
+        
+        [teleponInput, alamatInput, catatanInput].forEach(input => {
+            if (input) {
+                input.disabled = isTransfer;
+                if (isTransfer) {
+                    input.required = false;
+                    input.value = '';
+                    input.classList.add('opacity-50', 'cursor-not-allowed', 'bg-zinc-100', 'dark:bg-zinc-800/20');
+                } else {
+                    if (input !== catatanInput) input.required = true;
+                    input.value = input.dataset.initialVal || '';
+                    input.classList.remove('opacity-50', 'cursor-not-allowed', 'bg-zinc-100', 'dark:bg-zinc-800/20');
+                }
+            }
+        });
+
+        if (teleponReq) teleponReq.style.display = isTransfer ? 'none' : 'inline';
+        if (alamatReq) alamatReq.style.display = isTransfer ? 'none' : 'inline';
+    }
+
+    if (codRadio && transferRadio) {
+        document.querySelectorAll('input[name="metode_pembayaran"]').forEach(radio => {
+            radio.addEventListener('change', toggleShippingInfo);
+        });
+        toggleShippingInfo();
+    }
 </script>
 @endsection

@@ -30,8 +30,8 @@ class CartController extends Controller
     {
         $request->validate([
             'items'             => 'required|string',  // JSON string of cart items
-            'alamat'            => 'required|string|max:500',
-            'telepon'           => 'required|string|max:20',
+            'alamat'            => 'required_if:metode_pembayaran,COD|nullable|string|max:500',
+            'telepon'           => 'required_if:metode_pembayaran,COD|nullable|string|max:20',
             'metode_pembayaran' => 'required|in:COD,Transfer Bank',
             'catatan'           => 'nullable|string|max:1000',
         ]);
