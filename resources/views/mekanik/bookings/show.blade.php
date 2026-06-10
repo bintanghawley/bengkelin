@@ -24,11 +24,11 @@
             <a href="{{ route('mekanik.dashboard') }}?section=profil" class="w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-red-500 rounded-xl font-bold transition">
                 PROFIL
             </a>
-            <a href="{{ route('mekanik.dashboard') }}?section=dashboard" class="w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-red-500 rounded-xl font-bold transition">
-                DASHBOARD
-            </a>
             <a href="{{ route('mekanik.bookings.index') }}" class="w-full flex items-center gap-3 px-4 py-3 text-red-500 bg-red-900/20 rounded-xl font-bold transition">
                 BOOKING MASUK
+            </a>
+            <a href="{{ route('mekanik.dashboard') }}?section=dashboard" class="w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-red-500 rounded-xl font-bold transition">
+                RIWAYAT
             </a>
         </nav>
 
@@ -41,7 +41,12 @@
             </a>
             <form action="{{ route('logout') }}" method="POST" onsubmit="localStorage.removeItem('bengkelin_cart'); return confirm('Yakin ingin logout?')">
                 @csrf
-                <button type="submit" class="w-full text-[10px] text-red-500 hover:bg-red-900/20 py-2 rounded-lg transition font-bold uppercase tracking-widest">Sign Out</button>
+                <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-500/10 rounded-xl transition font-bold uppercase tracking-widest text-[10px]">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
+                    </svg>
+                    Sign Out Account
+                </button>
             </form>
         </div>
     </aside>
@@ -141,32 +146,39 @@
                     <h3 class="text-xs text-zinc-500 uppercase tracking-widest font-bold border-b border-zinc-800 pb-3">Aksi Pekerjaan</h3>
 
                     @if($booking->status === 'pending')
-                        {{-- Any mekanik can accept or reject --}}
-                        <p class="text-zinc-400 text-xs normal-case">Booking ini belum ditangani. Anda dapat menerima atau menolaknya.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch pt-2">
+                            {{-- Terima Card --}}
+                            <div class="bg-zinc-950/40 p-6 rounded-2xl border border-zinc-800 flex flex-col justify-between">
+                                <div class="space-y-2">
+                                    <span class="text-[10px] text-emerald-500 font-bold uppercase tracking-widest block">Terima Pekerjaan</span>
+                                    <p class="text-zinc-400 text-xs normal-case leading-relaxed">Terima booking ini untuk mulai melakukan persiapan dan proses pengerjaan servis kendaraan.</p>
+                                </div>
+                                <form action="{{ route('mekanik.bookings.update', $booking->id) }}" method="POST" class="mt-6">
+                                    @csrf @method('PUT')
+                                    <input type="hidden" name="action" value="accept">
+                                    <button type="submit"
+                                        onclick="return confirm('Terima booking ini dan mulai persiapan?')"
+                                        class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl uppercase text-[10px] tracking-widest transition shadow-lg shadow-emerald-950/20 flex items-center justify-center gap-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                        Terima Booking
+                                    </button>
+                                </form>
+                            </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {{-- ACCEPT --}}
-                            <form action="{{ route('mekanik.bookings.update', $booking->id) }}" method="POST">
-                                @csrf @method('PUT')
-                                <input type="hidden" name="action" value="accept">
-                                <button type="submit"
-                                    onclick="return confirm('Terima booking ini dan mulai persiapan?')"
-                                    class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl uppercase text-[10px] tracking-widest transition shadow-lg shadow-emerald-900/40 flex items-center justify-center gap-2">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                    Terima Booking
-                                </button>
-                            </form>
-
-                            {{-- REJECT --}}
-                            <div>
-                                <form action="{{ route('mekanik.bookings.update', $booking->id) }}" method="POST" class="space-y-3" id="reject-form">
+                            {{-- Tolak Card --}}
+                            <div class="bg-zinc-950/40 p-6 rounded-2xl border border-zinc-800 flex flex-col justify-between">
+                                <div class="space-y-2 mb-4">
+                                    <span class="text-[10px] text-red-500 font-bold uppercase tracking-widest block">Tolak Pekerjaan</span>
+                                    <p class="text-zinc-400 text-xs normal-case leading-relaxed">Tolak booking jika slot pengerjaan penuh atau terdapat kendala teknis lainnya.</p>
+                                </div>
+                                <form action="{{ route('mekanik.bookings.update', $booking->id) }}" method="POST" class="space-y-4" id="reject-form">
                                     @csrf @method('PUT')
                                     <input type="hidden" name="action" value="reject">
-                                    <textarea name="catatan_mekanik" rows="3" placeholder="Alasan penolakan (opsional)..."
-                                        class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-500 outline-none transition resize-none normal-case"></textarea>
+                                    <textarea name="catatan_mekanik" rows="2" placeholder="Alasan penolakan (opsional)..."
+                                        class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-xs text-white focus:border-red-500 outline-none transition resize-none normal-case"></textarea>
                                     <button type="submit"
                                         onclick="return confirm('Tolak booking ini?')"
-                                        class="w-full bg-red-700 hover:bg-red-600 text-white font-bold py-4 rounded-xl uppercase text-[10px] tracking-widest transition shadow-lg shadow-red-900/40 flex items-center justify-center gap-2">
+                                        class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-4 rounded-xl uppercase text-[10px] tracking-widest transition shadow-lg shadow-red-950/20 flex items-center justify-center gap-2">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
                                         Tolak Booking
                                     </button>

@@ -17,12 +17,6 @@
                 </svg>
                 PROFIL
             </button>
-            <button onclick="showSection('booking')" id="btn-booking" class="nav-link w-full flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 rounded-xl font-bold transition text-left">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
-                </svg>
-                BOOKING
-            </button>
             <button onclick="showSection('status')" id="btn-status" class="nav-link w-full flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 rounded-xl font-bold transition text-left">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -258,11 +252,81 @@
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        <a href="{{ route('pengguna.bookings.show', $booking->id) }}" class="inline-block bg-zinc-800 hover:bg-zinc-700 text-white text-[9px] font-bold py-2 px-4 rounded-lg transition uppercase tracking-wider">
+                                        <button type="button" onclick="toggleBookingDetailModal({{ $booking->id }}, true)" class="inline-block bg-zinc-850 hover:bg-zinc-800 text-white text-[9px] font-bold py-2 px-4 rounded-lg transition uppercase tracking-wider border border-zinc-700">
                                             Lihat Detail
-                                        </a>
+                                        </button>
                                     </td>
                                 </tr>
+                                
+                                {{-- Modal Detail Booking --}}
+                                <div id="modal-booking-detail-{{ $booking->id }}" class="fixed inset-0 z-[99] hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm text-white">
+                                    <div class="relative bg-zinc-900 w-full max-w-2xl rounded-3xl border border-zinc-800 shadow-2xl overflow-hidden p-8 text-left">
+                                        <div class="flex justify-between items-center mb-6">
+                                            <div>
+                                                <h3 class="font-bengkel text-xl text-red-600 uppercase tracking-widest">Detail Booking</h3>
+                                                <p class="text-[10px] text-zinc-500 uppercase tracking-widest mt-1">ID Booking: #{{ $booking->id }}</p>
+                                            </div>
+                                            <button type="button" onclick="toggleBookingDetailModal({{ $booking->id }}, false)" class="text-zinc-500 hover:text-white transition text-2xl">&times;</button>
+                                        </div>
+                                        
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            <div class="space-y-4 bg-zinc-950/40 p-5 rounded-2xl border border-zinc-800/80">
+                                                <div>
+                                                    <span class="text-[9px] text-zinc-500 uppercase font-bold tracking-widest block mb-0.5">Layanan</span>
+                                                    <span class="text-sm font-bold text-white uppercase">{{ $booking->service->nama ?? 'Custom Service' }}</span>
+                                                </div>
+                                                <div>
+                                                    <span class="text-[9px] text-zinc-500 uppercase font-bold tracking-widest block mb-0.5">Mekanik</span>
+                                                    <span class="text-sm font-semibold text-white">{{ $booking->mechanic ? $booking->mechanic->name : 'Belum Ditugaskan' }}</span>
+                                                </div>
+                                                <div>
+                                                    <span class="text-[9px] text-zinc-500 uppercase font-bold tracking-widest block mb-0.5">Waktu Servis</span>
+                                                    <span class="text-sm font-semibold text-white">
+                                                        {{ $booking->tanggal_booking ? $booking->tanggal_booking->format('d/m/Y') : '-' }} @ {{ \Carbon\Carbon::parse($booking->jam_booking)->format('H:i') }} WIB
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <span class="text-[9px] text-zinc-500 uppercase font-bold tracking-widest block mb-0.5">Kendaraan</span>
+                                                    <span class="text-sm font-bold text-white uppercase">{{ $booking->nama_kendaraan }}</span>
+                                                    <span class="text-xs text-zinc-400 font-mono block mt-0.5">{{ $booking->plat_nomor }}</span>
+                                                </div>
+                                                <div>
+                                                    <span class="text-[9px] text-zinc-500 uppercase font-bold tracking-widest block mb-0.5">Status</span>
+                                                    <span class="px-2.5 py-0.5 rounded-full text-[9px] font-bold border uppercase tracking-wider inline-block {{ $statusColor }}">
+                                                        {{ strtoupper($booking->status) }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="space-y-4">
+                                                <div>
+                                                    <span class="text-[9px] text-zinc-500 uppercase font-bold tracking-widest block mb-1">Keluhan Pelanggan</span>
+                                                    <div class="text-xs text-zinc-300 bg-zinc-950 p-3.5 rounded-xl border border-zinc-800 leading-relaxed max-h-[100px] overflow-y-auto">
+                                                        {{ $booking->keluhan ?: 'Tidak ada keluhan tertulis.' }}
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <span class="text-[9px] text-zinc-500 uppercase font-bold tracking-widest block mb-1">Catatan Admin</span>
+                                                    <div class="text-xs text-zinc-300 bg-zinc-950 p-3.5 rounded-xl border border-zinc-800 leading-relaxed max-h-[80px] overflow-y-auto">
+                                                        {{ $booking->catatan_admin ?: 'Belum ada catatan dari admin.' }}
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <span class="text-[9px] text-zinc-550 uppercase font-bold tracking-widest block mb-1">Catatan Mekanik</span>
+                                                    <div class="text-xs text-zinc-300 bg-zinc-950 p-3.5 rounded-xl border border-zinc-800 leading-relaxed max-h-[80px] overflow-y-auto">
+                                                        {{ $booking->catatan_mekanik ?: 'Belum ada catatan dari mekanik.' }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mt-6 pt-4 border-t border-zinc-800 flex justify-end">
+                                            <button type="button" onclick="toggleBookingDetailModal({{ $booking->id }}, false)" class="bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-2.5 px-6 rounded-xl uppercase text-[10px] tracking-widest transition">
+                                                Tutup
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             @endforeach
                         @else
                             <tr>
@@ -551,6 +615,19 @@
         } else {
             modal.classList.add('hidden');
             modal.classList.remove('flex');
+        }
+    }
+
+    function toggleBookingDetailModal(id, show) {
+        const modal = document.getElementById('modal-booking-detail-' + id);
+        if (modal) {
+            if (show) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            } else {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
         }
     }
 </script>

@@ -24,14 +24,14 @@
             <a href="{{ route('mekanik.dashboard') }}?section=profil" class="w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-red-500 rounded-xl font-bold transition">
                 PROFIL
             </a>
-            <a href="{{ route('mekanik.dashboard') }}?section=dashboard" class="w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-red-500 rounded-xl font-bold transition">
-                DASHBOARD
-            </a>
             <a href="{{ route('mekanik.bookings.index') }}" class="w-full flex items-center gap-3 px-4 py-3 text-red-500 bg-red-900/20 rounded-xl font-bold transition relative">
                 BOOKING MASUK
                 @if($pendingBookings->count() > 0)
                     <span class="absolute right-3 bg-red-600 text-white text-[9px] font-bold rounded-full w-5 h-5 flex items-center justify-center">{{ $pendingBookings->count() }}</span>
                 @endif
+            </a>
+            <a href="{{ route('mekanik.dashboard') }}?section=dashboard" class="w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-red-500 rounded-xl font-bold transition">
+                RIWAYAT
             </a>
         </nav>
 
@@ -44,7 +44,12 @@
             </a>
             <form action="{{ route('logout') }}" method="POST" onsubmit="localStorage.removeItem('bengkelin_cart'); return confirm('Yakin ingin logout?')">
                 @csrf
-                <button type="submit" class="w-full text-[10px] text-red-500 hover:bg-red-900/20 py-2 rounded-lg transition font-bold uppercase tracking-widest">Sign Out</button>
+                <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-500/10 rounded-xl transition font-bold uppercase tracking-widest text-[10px]">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
+                    </svg>
+                    Sign Out Account
+                </button>
             </form>
         </div>
     </aside>
@@ -94,7 +99,6 @@
                             <th class="px-6 py-4">Jadwal</th>
                             <th class="px-6 py-4">Keluhan</th>
                             <th class="px-6 py-4 text-center">Aksi Cepat</th>
-                            <th class="px-6 py-4 text-right">Detail</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-zinc-800/50 text-zinc-300">
@@ -117,34 +121,16 @@
                                 <p class="text-zinc-400 line-clamp-2 text-[10px] normal-case">{{ $booking->keluhan ?: 'Tidak ada keluhan.' }}</p>
                             </td>
                             <td class="px-6 py-4 text-center">
-                                <div class="flex items-center justify-center gap-2">
-                                    {{-- Quick Accept --}}
-                                    <form action="{{ route('mekanik.bookings.update', $booking->id) }}" method="POST">
-                                        @csrf @method('PUT')
-                                        <input type="hidden" name="action" value="accept">
-                                        <button type="submit"
-                                            onclick="return confirm('Terima booking dari {{ addslashes($booking->user->name ?? 'pelanggan') }}?')"
-                                            class="bg-emerald-600 hover:bg-emerald-500 text-white text-[9px] font-bold py-2 px-3 rounded-lg transition uppercase tracking-wider">
-                                            ✓ Terima
-                                        </button>
-                                    </form>
-                                    {{-- Quick Reject --}}
-                                    <a href="{{ route('mekanik.bookings.show', $booking->id) }}"
-                                       class="bg-zinc-700 hover:bg-zinc-600 text-white text-[9px] font-bold py-2 px-3 rounded-lg transition uppercase tracking-wider">
-                                        Tolak / Detail
-                                    </a>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 text-right">
-                                <a href="{{ route('mekanik.bookings.show', $booking->id) }}"
-                                   class="inline-block border border-zinc-700 hover:border-zinc-500 text-zinc-300 hover:text-white text-[9px] font-bold py-2 px-4 rounded-lg transition">
-                                    →
-                                </a>
+                                <button type="button"
+                                    onclick="toggleBookingModal({{ $booking->id }}, true)"
+                                    class="bg-zinc-700 hover:bg-zinc-600 text-white text-[9px] font-bold py-2 px-4 rounded-lg transition uppercase tracking-wider">
+                                    Lihat Detail
+                                </button>
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="6" class="px-6 py-16 text-center text-zinc-600 italic">
+                            <td colspan="5" class="px-6 py-16 text-center text-zinc-600 italic">
                                 Tidak ada booking baru yang menunggu. Semua sudah tertangani! 🎉
                             </td>
                         </tr>
@@ -201,10 +187,11 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-right">
-                                <a href="{{ route('mekanik.bookings.show', $booking->id) }}"
-                                   class="inline-block bg-zinc-800 hover:bg-zinc-700 text-white text-[9px] font-bold py-2 px-4 rounded-lg transition">
+                                <button type="button"
+                                    onclick="toggleBookingModal({{ $booking->id }}, true)"
+                                    class="inline-block bg-zinc-800 hover:bg-zinc-700 text-white text-[9px] font-bold py-2 px-4 rounded-lg transition">
                                     Detail & Update
-                                </a>
+                                </button>
                             </td>
                         </tr>
                         @empty
@@ -223,6 +210,31 @@
             </div>
             @endif
         </div>
+
+        {{-- Booking Modals --}}
+        @foreach ($pendingBookings as $booking)
+            @include('mekanik.bookings.modal', ['booking' => $booking])
+        @endforeach
+
+        @foreach ($myBookings as $booking)
+            @include('mekanik.bookings.modal', ['booking' => $booking])
+        @endforeach
+
     </main>
 </div>
+
+<script>
+    function toggleBookingModal(id, show) {
+        const modal = document.getElementById('booking-modal-' + id);
+        if (modal) {
+            if (show) {
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            } else {
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        }
+    }
+</script>
 @endsection

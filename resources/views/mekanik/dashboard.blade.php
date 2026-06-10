@@ -23,15 +23,15 @@
             <button onclick="showMekanikSection('profil')" id="btn-profil" class="mekanik-nav w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-red-500 rounded-xl font-bold transition">
                 PROFIL
             </button>
-            <button onclick="showMekanikSection('dashboard')" id="btn-dashboard" class="mekanik-nav w-full flex items-center gap-3 px-4 py-3 text-red-500 bg-red-900/20 rounded-xl font-bold transition">
-                DASHBOARD
-            </button>
             <a href="{{ route('mekanik.bookings.index') }}" class="w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-red-400 rounded-xl font-bold transition relative">
                 BOOKING MASUK
                 @if($pendingCount > 0)
                     <span class="absolute right-3 bg-red-600 text-white text-[9px] font-bold rounded-full w-5 h-5 flex items-center justify-center">{{ $pendingCount }}</span>
                 @endif
             </a>
+            <button onclick="showMekanikSection('dashboard')" id="btn-dashboard" class="mekanik-nav w-full flex items-center gap-3 px-4 py-3 text-red-500 bg-red-900/20 rounded-xl font-bold transition">
+                RIWAYAT
+            </button>
         </nav>
 
         <div class="p-4 border-t border-zinc-800 space-y-2">
@@ -43,7 +43,12 @@
             </a>
             <form action="{{ route('logout') }}" method="POST" onsubmit="localStorage.removeItem('bengkelin_cart'); return confirm('Yakin ingin logout?')">
                 @csrf
-                <button type="submit" class="w-full text-[10px] text-red-500 hover:bg-red-900/20 py-2 rounded-lg transition font-bold uppercase tracking-widest">Sign Out</button>
+                <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-500/10 rounded-xl transition font-bold uppercase tracking-widest text-[10px]">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
+                    </svg>
+                    Sign Out Account
+                </button>
             </form>
         </div>
     </aside>

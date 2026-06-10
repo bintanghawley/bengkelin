@@ -182,6 +182,14 @@
                     <div class="text-xs text-zinc-400 space-y-2 leading-relaxed">
                         <span class="text-[10px] uppercase text-zinc-550 tracking-wider font-bold block mb-1">Petunjuk Pembayaran:</span>
                         
+                        {{-- QRIS Instructions --}}
+                        <div id="instructions-qris" class="{{ $isQris ? '' : 'hidden' }} space-y-2">
+                            <p>1. Unduh atau simpan/screenshot kode QRIS di atas.</p>
+                            <p>2. Buka aplikasi e-wallet (DANA, OVO, GoPay, ShopeePay) atau M-Banking pilihan Anda.</p>
+                            <p>3. Pilih fitur Scan QR / Bayar, lalu unggah/pindai gambar kode QRIS tersebut.</p>
+                            <p>4. Konfirmasi nama merchant (BENGKELIN) dan selesaikan transaksi.</p>
+                        </div>
+
                         {{-- Bank Instructions --}}
                         <div id="instructions-bank" class="{{ $isBank ? '' : 'hidden' }} space-y-2">
                             <p>1. Salin kode Virtual Account di atas.</p>
@@ -393,10 +401,12 @@
         }
 
         // Update instructions visibility
+        const instQris = document.getElementById('instructions-qris');
         const instBank = document.getElementById('instructions-bank');
         const instEwallet = document.getElementById('instructions-ewallet');
         const instStore = document.getElementById('instructions-store');
 
+        if (instQris) instQris.classList.toggle('hidden', !isQris);
         if (instBank) instBank.classList.toggle('hidden', !isBank);
         if (instEwallet) instEwallet.classList.toggle('hidden', !isEwallet);
         if (instStore) instStore.classList.toggle('hidden', !isStore);

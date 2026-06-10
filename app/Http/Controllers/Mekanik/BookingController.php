@@ -119,7 +119,7 @@ class BookingController extends Controller
             'complete' => 'Servis telah diselesaikan.',
         };
 
-        return redirect()->route('mekanik.bookings.show', $booking->id)
+        return redirect()->route('mekanik.bookings.index')
             ->with('success', $message);
     }
 }
