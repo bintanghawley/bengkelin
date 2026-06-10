@@ -31,6 +31,7 @@
                 border: 2px solid #ffffff;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
                 cursor: pointer;
+                margin-top: -5px; /* centers it vertically on webkit */
             }
             .range-input::-moz-range-thumb {
                 height: 18px;
@@ -40,6 +41,41 @@
                 border: 2px solid #ffffff;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
                 cursor: pointer;
+            }
+            /* Custom checkbox styling */
+            .custom-checkbox {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 16px;
+                height: 16px;
+                border: 2px solid #d1d5db; /* border-gray-300 */
+                border-radius: 4px;
+                outline: none;
+                transition: all 0.2s ease-in-out;
+                cursor: pointer;
+                position: relative;
+                background-color: #ffffff;
+                display: inline-block;
+                vertical-align: middle;
+            }
+            .dark .custom-checkbox {
+                border-color: #3f3f46; /* border-zinc-700 */
+                background-color: #18181b; /* bg-zinc-900 */
+            }
+            .custom-checkbox:checked {
+                background-color: #2563eb; /* blue-600 */
+                border-color: #2563eb;
+            }
+            .custom-checkbox:checked::after {
+                content: '';
+                position: absolute;
+                left: 4px;
+                top: 1px;
+                width: 4px;
+                height: 8px;
+                border: solid white;
+                border-width: 0 2px 2px 0;
+                transform: rotate(45deg);
             }
         </style>
 
@@ -132,7 +168,7 @@
                             <div class="space-y-6">
                                 <div>
                                     <p class="text-sm font-semibold mb-4">Kategori</p>
-                                    <details open class="group">
+                                    <details class="group">
                                         <summary class="flex items-center justify-between text-sm font-semibold cursor-pointer">
                                             <span class="text-zinc-900 dark:text-white">Oli</span>
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500 transition-transform group-open:rotate-180">
@@ -141,15 +177,15 @@
                                         </summary>
                                         <div class="mt-3 space-y-2 text-sm text-zinc-650 dark:text-zinc-400 pl-2">
                                             <label class="flex items-center gap-2 cursor-pointer hover:text-zinc-800 dark:hover:text-zinc-300 transition">
-                                                <input type="checkbox" name="jenis_oli[]" value="oli motor matic" {{ in_array('oli motor matic', request('jenis_oli', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">
+                                                <input type="checkbox" name="jenis_oli[]" value="oli motor matic" {{ in_array('oli motor matic', request('jenis_oli', [])) ? 'checked' : '' }} class="custom-checkbox">
                                                 Oli Motor Matic
                                             </label>
                                             <label class="flex items-center gap-2 cursor-pointer hover:text-zinc-800 dark:hover:text-zinc-300 transition">
-                                                <input type="checkbox" name="jenis_oli[]" value="oli motor bebek" {{ in_array('oli motor bebek', request('jenis_oli', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">
+                                                <input type="checkbox" name="jenis_oli[]" value="oli motor bebek" {{ in_array('oli motor bebek', request('jenis_oli', [])) ? 'checked' : '' }} class="custom-checkbox">
                                                 Oli Motor Bebek
                                             </label>
                                             <label class="flex items-center gap-2 cursor-pointer hover:text-zinc-800 dark:hover:text-zinc-300 transition">
-                                                <input type="checkbox" name="jenis_oli[]" value="oli motor sport" {{ in_array('oli motor sport', request('jenis_oli', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">
+                                                <input type="checkbox" name="jenis_oli[]" value="oli motor sport" {{ in_array('oli motor sport', request('jenis_oli', [])) ? 'checked' : '' }} class="custom-checkbox">
                                                 Oli Motor Sport
                                             </label>
                                         </div>
@@ -159,38 +195,38 @@
                                 <div class="space-y-4">
                                     <div class="flex items-center justify-between text-sm">
                                         <span class="font-semibold">Harga</span>
-                                        <span class="text-zinc-500">Rp <span id="harga-min-label">{{ number_format(request('harga_min', 0), 0, ',', '.') }}</span> - Rp <span id="harga-max-label">{{ number_format(request('harga_max', 500000), 0, ',', '.') }}</span></span>
+                                        <span class="text-zinc-500">Rp <span id="harga-min-label">{{ number_format(request('harga_min', $minDbHarga), 0, ',', '.') }}</span> - Rp <span id="harga-max-label">{{ number_format(request('harga_max', $maxDbHarga), 0, ',', '.') }}</span></span>
                                     </div>
                                     <div class="relative h-2">
                                         <div class="absolute inset-0 bg-zinc-200 dark:bg-zinc-800 rounded-full"></div>
                                         <div id="harga-track" class="absolute h-2 bg-blue-600 rounded-full"></div>
-                                        <input id="harga-min" name="harga_min" type="range" min="0" max="500000" step="5000" value="{{ request('harga_min', 0) }}" class="range-input absolute inset-0 w-full h-2 bg-transparent appearance-none z-20">
-                                        <input id="harga-max" name="harga_max" type="range" min="0" max="500000" step="5000" value="{{ request('harga_max', 500000) }}" class="range-input absolute inset-0 w-full h-2 bg-transparent appearance-none z-30">
+                                        <input id="harga-min" name="harga_min" type="range" min="{{ $minDbHarga }}" max="{{ $maxDbHarga }}" step="1000" value="{{ request('harga_min', $minDbHarga) }}" class="range-input absolute inset-0 w-full h-2 bg-transparent appearance-none z-20">
+                                        <input id="harga-max" name="harga_max" type="range" min="{{ $minDbHarga }}" max="{{ $maxDbHarga }}" step="1000" value="{{ request('harga_max', $maxDbHarga) }}" class="range-input absolute inset-0 w-full h-2 bg-transparent appearance-none z-30">
                                     </div>
                                     <div class="grid grid-cols-2 gap-3">
-                                        <input id="harga-min-input" type="text" value="Rp {{ number_format(request('harga_min', 0), 0, ',', '.') }}" readonly class="w-full border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-sm text-zinc-600 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-950 transition">
-                                        <input id="harga-max-input" type="text" value="Rp {{ number_format(request('harga_max', 500000), 0, ',', '.') }}" readonly class="w-full border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-sm text-zinc-600 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-950 transition">
+                                        <input id="harga-min-input" type="text" value="Rp {{ number_format(request('harga_min', $minDbHarga), 0, ',', '.') }}" readonly class="w-full border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-sm text-zinc-600 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-950 transition">
+                                        <input id="harga-max-input" type="text" value="Rp {{ number_format(request('harga_max', $maxDbHarga), 0, ',', '.') }}" readonly class="w-full border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-sm text-zinc-600 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-950 transition">
                                     </div>
                                 </div>
 
-                                <details open class="group border-t border-zinc-200 dark:border-zinc-800 pt-6">
+                                <details class="group border-t border-zinc-200 dark:border-zinc-800 pt-6">
                                     <summary class="flex items-center justify-between text-sm font-semibold cursor-pointer mb-4">
                                         <span class="text-zinc-900 dark:text-white">Kekentalan</span>
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500 transition-transform group-open:rotate-180">
                                             <path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                         </svg>
                                     </summary>
-                                    <div class="mt-3 space-y-2 text-sm text-zinc-650 dark:text-zinc-400">
+                                    <div class="mt-3 space-y-2 text-sm text-zinc-655 dark:text-zinc-400">
                                         @foreach(['10W30', '10W40', '20W50'] as $kk)
                                             <label class="flex items-center gap-2 cursor-pointer">
-                                                <input type="checkbox" name="kekentalan[]" value="{{ $kk }}" {{ in_array($kk, request('kekentalan', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">
+                                                <input type="checkbox" name="kekentalan[]" value="{{ $kk }}" {{ in_array($kk, request('kekentalan', [])) ? 'checked' : '' }} class="custom-checkbox">
                                                 {{ $kk }}
                                             </label>
                                         @endforeach
                                     </div>
                                 </details>
 
-                                <details open class="group border-t border-zinc-200 dark:border-zinc-800 pt-6">
+                                <details class="group border-t border-zinc-200 dark:border-zinc-800 pt-6">
                                     <summary class="flex items-center justify-between text-sm font-semibold cursor-pointer mb-4">
                                         <span class="text-zinc-900 dark:text-white">Ukuran</span>
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500 transition-transform group-open:rotate-180">
@@ -200,14 +236,14 @@
                                     <div class="mt-3 space-y-2 text-sm text-zinc-655 dark:text-zinc-400">
                                         @foreach(['1 L', '30ML', '40ML', '120ML', '200 ml', '200ML', '500ML', '800 mL', '800 ml', '900 ml', '900 mL'] as $uk)
                                             <label class="flex items-center gap-2 cursor-pointer">
-                                                <input type="checkbox" name="ukuran[]" value="{{ $uk }}" {{ in_array($uk, request('ukuran', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">
+                                                <input type="checkbox" name="ukuran[]" value="{{ $uk }}" {{ in_array($uk, request('ukuran', [])) ? 'checked' : '' }} class="custom-checkbox">
                                                 {{ $uk }}
                                             </label>
                                         @endforeach
                                     </div>
                                 </details>
 
-                                <details open class="group border-t border-zinc-200 dark:border-zinc-800 pt-6">
+                                <details class="group border-t border-zinc-200 dark:border-zinc-800 pt-6">
                                     <summary class="flex items-center justify-between text-sm font-semibold cursor-pointer mb-4">
                                         <span class="text-zinc-900 dark:text-white">Tipe Oli</span>
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500 transition-transform group-open:rotate-180">
@@ -217,7 +253,7 @@
                                     <div class="mt-3 space-y-2 text-sm text-zinc-650 dark:text-zinc-400">
                                         @foreach(['Oli Double Ester', 'Oli Ester', 'Oli Gear', 'Oli Semi Sintetik'] as $to)
                                             <label class="flex items-center gap-2 cursor-pointer">
-                                                <input type="checkbox" name="tipe_oli[]" value="{{ $to }}" {{ in_array($to, request('tipe_oli', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">
+                                                <input type="checkbox" name="tipe_oli[]" value="{{ $to }}" {{ in_array($to, request('tipe_oli', [])) ? 'checked' : '' }} class="custom-checkbox">
                                                 {{ $to }}
                                             </label>
                                         @endforeach
@@ -342,8 +378,9 @@
         const minInput = document.getElementById('harga-min-input');
         const maxInput = document.getElementById('harga-max-input');
         const track = document.getElementById('harga-track');
-        const maxValue = 500000;
-        const gap = 5000;
+        const minValue = {{ $minDbHarga }};
+        const maxValue = {{ $maxDbHarga }};
+        const gap = 1000;
 
         const formatRupiah = (value) => {
             return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -368,15 +405,25 @@
             maxLabel.textContent = formatRupiah(maxVal);
             minInput.value = `Rp ${formatRupiah(minVal)}`;
             maxInput.value = `Rp ${formatRupiah(maxVal)}`;
-            const minPercent = (minVal / maxValue) * 100;
-            const maxPercent = (maxVal / maxValue) * 100;
+            
+            const rangeDiff = maxValue - minValue;
+            const minPercent = rangeDiff > 0 ? ((minVal - minValue) / rangeDiff) * 100 : 0;
+            const maxPercent = rangeDiff > 0 ? ((maxVal - minValue) / rangeDiff) * 100 : 100;
             track.style.left = `${minPercent}%`;
             track.style.right = `${100 - maxPercent}%`;
         };
 
         if (minRange && maxRange) {
-            minRange.addEventListener('input', (event) => updateRange(event.target));
-            maxRange.addEventListener('input', (event) => updateRange(event.target));
+            minRange.addEventListener('input', (event) => {
+                minRange.style.zIndex = '30';
+                maxRange.style.zIndex = '20';
+                updateRange(event.target);
+            });
+            maxRange.addEventListener('input', (event) => {
+                maxRange.style.zIndex = '30';
+                minRange.style.zIndex = '20';
+                updateRange(event.target);
+            });
             updateRange();
         }
     </script>

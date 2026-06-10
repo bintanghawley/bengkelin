@@ -104,7 +104,7 @@
                             id: "oil-{{ $oil->id }}",
                             nama: {{ json_encode($oil->nama) }},
                             harga: {{ $oil->harga }},
-                            gambar: "{{ $oil->gambar ? asset("storage/".$oil->gambar) : "" }}",
+                            gambar: "{{ $oil->gambar ? (str_starts_with($oil->gambar, 'img/') || str_starts_with($oil->gambar, 'http') ? asset($oil->gambar) : asset('storage/'.$oil->gambar)) : '' }}",
                             kategori: "Oli Motor"
                         })'
                         class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3.5 px-8 rounded-full transition flex items-center justify-center gap-2 text-sm uppercase tracking-wider">

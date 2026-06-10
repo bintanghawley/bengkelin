@@ -52,7 +52,7 @@ class BookingController extends Controller
             ]);
         });
 
-        return redirect()->route('pengguna.bookings.index')
+        return redirect()->route('pengguna.dashboard', ['section' => 'status'])
             ->with('success', 'Booking servis berhasil diajukan.');
     }
 

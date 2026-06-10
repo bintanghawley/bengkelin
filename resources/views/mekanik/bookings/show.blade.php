@@ -21,7 +21,10 @@
         </div>
 
         <nav class="flex-1 px-4 space-y-2 mt-6">
-            <a href="{{ route('mekanik.dashboard') }}" class="w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-red-400 rounded-xl font-bold transition">
+            <a href="{{ route('mekanik.dashboard') }}?section=profil" class="w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-red-500 rounded-xl font-bold transition">
+                PROFIL
+            </a>
+            <a href="{{ route('mekanik.dashboard') }}?section=dashboard" class="w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-red-500 rounded-xl font-bold transition">
                 DASHBOARD
             </a>
             <a href="{{ route('mekanik.bookings.index') }}" class="w-full flex items-center gap-3 px-4 py-3 text-red-500 bg-red-900/20 rounded-xl font-bold transition">
@@ -45,6 +48,23 @@
 
     <!-- Main Content -->
     <main class="flex-1 ml-64 p-10 min-h-screen">
+        {{-- Header / Navbar --}}
+        <header class="flex justify-between items-center mb-10">
+            <div>
+                <h2 class="text-4xl font-bengkel tracking-wider text-white">MEKANIK <span class="text-red-600">DASHBOARD</span></h2>
+                <p class="text-zinc-500 text-xs uppercase tracking-[0.2em] mt-1 italic">Sidoarjo High Performance Garage</p>
+            </div>
+            <div class="flex items-center gap-4 bg-zinc-900 border border-zinc-800 p-2 pr-6 rounded-full shadow-lg">
+                <div class="h-10 w-10 bg-red-650 rounded-full flex items-center justify-center font-bold text-white shadow-lg uppercase">
+                    {{ substr(Auth::user()->name, 0, 1) }}
+                </div>
+                <div class="flex flex-col text-left">
+                    <span class="text-white text-sm font-bold leading-none">{{ Auth::user()->name }}</span>
+                    <span class="text-zinc-500 text-[10px] uppercase mt-1 tracking-widest">Mekanik Bengkelin</span>
+                </div>
+            </div>
+        </header>
+
         <div class="mb-8 flex items-center justify-between">
             <div>
                 <a href="{{ route('mekanik.bookings.index') }}" class="text-xs text-red-500 hover:text-red-400 transition uppercase font-bold tracking-widest">← Kembali ke Booking</a>

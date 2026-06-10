@@ -31,6 +31,7 @@
                 border: 2px solid #ffffff;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
                 cursor: pointer;
+                margin-top: -5px; /* centers it vertically on webkit */
             }
             .range-input::-moz-range-thumb {
                 height: 18px;
@@ -40,6 +41,41 @@
                 border: 2px solid #ffffff;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
                 cursor: pointer;
+            }
+            /* Custom checkbox styling */
+            .custom-checkbox {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 16px;
+                height: 16px;
+                border: 2px solid #d1d5db; /* border-gray-300 */
+                border-radius: 4px;
+                outline: none;
+                transition: all 0.2s ease-in-out;
+                cursor: pointer;
+                position: relative;
+                background-color: #ffffff;
+                display: inline-block;
+                vertical-align: middle;
+            }
+            .dark .custom-checkbox {
+                border-color: #3f3f46; /* border-zinc-700 */
+                background-color: #18181b; /* bg-zinc-900 */
+            }
+            .custom-checkbox:checked {
+                background-color: #ef4444; /* red-500 */
+                border-color: #ef4444;
+            }
+            .custom-checkbox:checked::after {
+                content: '';
+                position: absolute;
+                left: 4px;
+                top: 1px;
+                width: 4px;
+                height: 8px;
+                border: solid white;
+                border-width: 0 2px 2px 0;
+                transform: rotate(45deg);
             }
         </style>
 
@@ -114,7 +150,7 @@
                             <div class="space-y-6">
                                 <div>
                                     <p class="text-sm font-semibold mb-4">Kategori</p>
-                                    <details open class="group">
+                                    <details class="group">
                                         <summary class="flex items-center justify-between text-sm font-semibold cursor-pointer">
                                             <span class="text-zinc-900 dark:text-white">Ban</span>
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500 transition-transform group-open:rotate-180">
@@ -123,19 +159,19 @@
                                         </summary>
                                         <div class="mt-3 space-y-2 text-sm text-zinc-655 dark:text-zinc-400 pl-2">
                                             <label class="flex items-center gap-2 cursor-pointer hover:text-zinc-800 dark:hover:text-zinc-300 transition">
-                                                <input type="checkbox" name="jenis_ban[]" value="ban motor matic" {{ in_array('ban motor matic', request('jenis_ban', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">
+                                                <input type="checkbox" name="jenis_ban[]" value="ban motor matic" {{ in_array('ban motor matic', request('jenis_ban', [])) ? 'checked' : '' }} class="custom-checkbox">
                                                 Ban Motor Matic
                                             </label>
                                             <label class="flex items-center gap-2 cursor-pointer hover:text-zinc-800 dark:hover:text-zinc-300 transition">
-                                                <input type="checkbox" name="jenis_ban[]" value="ban motor bebek" {{ in_array('ban motor bebek', request('jenis_ban', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">
+                                                <input type="checkbox" name="jenis_ban[]" value="ban motor bebek" {{ in_array('ban motor bebek', request('jenis_ban', [])) ? 'checked' : '' }} class="custom-checkbox">
                                                 Ban Motor Bebek
                                             </label>
                                             <label class="flex items-center gap-2 cursor-pointer hover:text-zinc-800 dark:hover:text-zinc-300 transition">
-                                                <input type="checkbox" name="jenis_ban[]" value="ban motor sport" {{ in_array('ban motor sport', request('jenis_ban', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">
+                                                <input type="checkbox" name="jenis_ban[]" value="ban motor sport" {{ in_array('ban motor sport', request('jenis_ban', [])) ? 'checked' : '' }} class="custom-checkbox">
                                                 Ban Motor Sport
                                             </label>
                                             <label class="flex items-center gap-2 cursor-pointer hover:text-zinc-800 dark:hover:text-zinc-300 transition">
-                                                <input type="checkbox" name="jenis_ban[]" value="ban motor big matic" {{ in_array('ban motor big matic', request('jenis_ban', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">
+                                                <input type="checkbox" name="jenis_ban[]" value="ban motor big matic" {{ in_array('ban motor big matic', request('jenis_ban', [])) ? 'checked' : '' }} class="custom-checkbox">
                                                 Ban Motor Big Matic
                                             </label>
                                         </div>
@@ -145,21 +181,21 @@
                                 <div class="space-y-4">
                                     <div class="flex items-center justify-between text-sm">
                                         <span class="font-semibold">Harga</span>
-                                        <span class="text-zinc-500">Rp <span id="harga-min-label">{{ number_format(request('harga_min', 0), 0, ',', '.') }}</span> - Rp <span id="harga-max-label">{{ number_format(request('harga_max', 2000000), 0, ',', '.') }}</span></span>
+                                        <span class="text-zinc-500">Rp <span id="harga-min-label">{{ number_format(request('harga_min', $minDbHarga), 0, ',', '.') }}</span> - Rp <span id="harga-max-label">{{ number_format(request('harga_max', $maxDbHarga), 0, ',', '.') }}</span></span>
                                     </div>
                                     <div class="relative h-2">
                                         <div class="absolute inset-0 bg-zinc-200 dark:bg-zinc-800 rounded-full"></div>
                                         <div id="harga-track" class="absolute h-2 bg-red-600 rounded-full"></div>
-                                        <input id="harga-min" name="harga_min" type="range" min="0" max="2000000" step="10000" value="{{ request('harga_min', 0) }}" class="range-input absolute inset-0 w-full h-2 bg-transparent appearance-none z-20">
-                                        <input id="harga-max" name="harga_max" type="range" min="0" max="2000000" step="10000" value="{{ request('harga_max', 2000000) }}" class="range-input absolute inset-0 w-full h-2 bg-transparent appearance-none z-30">
+                                        <input id="harga-min" name="harga_min" type="range" min="{{ $minDbHarga }}" max="{{ $maxDbHarga }}" step="1000" value="{{ request('harga_min', $minDbHarga) }}" class="range-input absolute inset-0 w-full h-2 bg-transparent appearance-none z-20">
+                                        <input id="harga-max" name="harga_max" type="range" min="{{ $minDbHarga }}" max="{{ $maxDbHarga }}" step="1000" value="{{ request('harga_max', $maxDbHarga) }}" class="range-input absolute inset-0 w-full h-2 bg-transparent appearance-none z-30">
                                     </div>
                                     <div class="grid grid-cols-2 gap-3">
-                                        <input id="harga-min-input" type="text" value="Rp {{ number_format(request('harga_min', 0), 0, ',', '.') }}" readonly class="w-full border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-sm text-zinc-600 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-950 transition">
-                                        <input id="harga-max-input" type="text" value="Rp {{ number_format(request('harga_max', 2000000), 0, ',', '.') }}" readonly class="w-full border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-sm text-zinc-600 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-950 transition">
+                                        <input id="harga-min-input" type="text" value="Rp {{ number_format(request('harga_min', $minDbHarga), 0, ',', '.') }}" readonly class="w-full border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-sm text-zinc-600 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-950 transition">
+                                        <input id="harga-max-input" type="text" value="Rp {{ number_format(request('harga_max', $maxDbHarga), 0, ',', '.') }}" readonly class="w-full border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-sm text-zinc-600 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-950 transition">
                                     </div>
                                 </div>
 
-                                <details open class="group border-t border-zinc-200 dark:border-zinc-800 pt-6">
+                                <details class="group border-t border-zinc-200 dark:border-zinc-800 pt-6">
                                     <summary class="flex items-center justify-between text-sm font-semibold cursor-pointer mb-4">
                                         <span class="text-zinc-900 dark:text-white">Merek</span>
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-500 transition-transform group-open:rotate-180">
@@ -167,17 +203,17 @@
                                         </svg>
                                     </summary>
                                     <div class="mt-3 space-y-2 text-sm text-zinc-655 dark:text-zinc-400">
-                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="merek[]" value="aspira" {{ in_array('aspira', request('merek', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">Aspira</label>
-                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="merek[]" value="planeto" {{ in_array('planeto', request('merek', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">Planeto</label>
-                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="merek[]" value="Michelin" {{ in_array('Michelin', request('merek', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">Michelin</label>
-                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="merek[]" value="irc" {{ in_array('irc', request('merek', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">IRC</label>
-                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="merek[]" value="Pirelli" {{ in_array('Pirelli', request('merek', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">Pirelli</label>
-                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="merek[]" value="ecostreet" {{ in_array('ecostreet', request('merek', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">EcoStreet</label>
-                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="merek[]" value="presa" {{ in_array('presa', request('merek', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">Presa</label>
-                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="merek[]" value="swallow" {{ in_array('swallow', request('merek', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">Swallow</label>
-                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="merek[]" value="Dunlop" {{ in_array('Dunlop', request('merek', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">Dunlop</label>
-                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="merek[]" value="kenda" {{ in_array('kenda', request('merek', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">Kenda</label>
-                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="merek[]" value="fdr" {{ in_array('fdr', request('merek', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">FDR</label>
+                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="merek[]" value="aspira" {{ in_array('aspira', request('merek', [])) ? 'checked' : '' }} class="custom-checkbox">Aspira</label>
+                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="merek[]" value="planeto" {{ in_array('planeto', request('merek', [])) ? 'checked' : '' }} class="custom-checkbox">Planeto</label>
+                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="merek[]" value="Michelin" {{ in_array('Michelin', request('merek', [])) ? 'checked' : '' }} class="custom-checkbox">Michelin</label>
+                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="merek[]" value="irc" {{ in_array('irc', request('merek', [])) ? 'checked' : '' }} class="custom-checkbox">IRC</label>
+                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="merek[]" value="Pirelli" {{ in_array('Pirelli', request('merek', [])) ? 'checked' : '' }} class="custom-checkbox">Pirelli</label>
+                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="merek[]" value="ecostreet" {{ in_array('ecostreet', request('merek', [])) ? 'checked' : '' }} class="custom-checkbox">EcoStreet</label>
+                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="merek[]" value="presa" {{ in_array('presa', request('merek', [])) ? 'checked' : '' }} class="custom-checkbox">Presa</label>
+                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="merek[]" value="swallow" {{ in_array('swallow', request('merek', [])) ? 'checked' : '' }} class="custom-checkbox">Swallow</label>
+                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="merek[]" value="Dunlop" {{ in_array('Dunlop', request('merek', [])) ? 'checked' : '' }} class="custom-checkbox">Dunlop</label>
+                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="merek[]" value="kenda" {{ in_array('kenda', request('merek', [])) ? 'checked' : '' }} class="custom-checkbox">Kenda</label>
+                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="merek[]" value="fdr" {{ in_array('fdr', request('merek', [])) ? 'checked' : '' }} class="custom-checkbox">FDR</label>
                                     </div>
                                 </details>
 
@@ -191,7 +227,7 @@
                                     <div class="mt-3 space-y-2 text-sm text-zinc-650 dark:text-zinc-400">
                                         @foreach(['70/90', '80/80', '80/90', '90/80', '90/90', '100/80', '100/90', '110/70', '110/80', '110/90', '120/70', '120/80', '130/70', '130/80', '140/70', '150/60', '150/70', '160/60'] as $sz)
                                             <label class="flex items-center gap-2 cursor-pointer">
-                                                <input type="checkbox" name="ukuran_ban[]" value="{{ $sz }}" {{ in_array($sz, request('ukuran_ban', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">
+                                                <input type="checkbox" name="ukuran_ban[]" value="{{ $sz }}" {{ in_array($sz, request('ukuran_ban', [])) ? 'checked' : '' }} class="custom-checkbox">
                                                 {{ $sz }}
                                             </label>
                                         @endforeach
@@ -206,9 +242,9 @@
                                         </svg>
                                     </summary>
                                     <div class="mt-3 space-y-2 text-sm text-zinc-650 dark:text-zinc-400">
-                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="posisi_ban[]" value="belakang" {{ in_array('belakang', request('posisi_ban', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">Belakang</label>
-                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="posisi_ban[]" value="depan" {{ in_array('depan', request('posisi_ban', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">Depan</label>
-                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="posisi_ban[]" value="depan/belakang" {{ in_array('depan/belakang', request('posisi_ban', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">Depan/Belakang</label>
+                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="posisi_ban[]" value="belakang" {{ in_array('belakang', request('posisi_ban', [])) ? 'checked' : '' }} class="custom-checkbox">Belakang</label>
+                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="posisi_ban[]" value="depan" {{ in_array('depan', request('posisi_ban', [])) ? 'checked' : '' }} class="custom-checkbox">Depan</label>
+                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="posisi_ban[]" value="depan/belakang" {{ in_array('depan/belakang', request('posisi_ban', [])) ? 'checked' : '' }} class="custom-checkbox">Depan/Belakang</label>
                                     </div>
                                 </details>
 
@@ -220,7 +256,7 @@
                                         </svg>
                                     </summary>
                                     <div class="mt-3 space-y-2 text-sm text-zinc-650 dark:text-zinc-400">
-                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="material[]" value="medium compound" {{ in_array('medium compound', request('material', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">Medium Compound</label>
+                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="material[]" value="medium compound" {{ in_array('medium compound', request('material', [])) ? 'checked' : '' }} class="custom-checkbox">Medium Compound</label>
                                     </div>
                                 </details>
 
@@ -234,7 +270,7 @@
                                     <div class="mt-3 space-y-2 text-sm text-zinc-655 dark:text-zinc-400">
                                         @foreach(['Ring 10', 'Ring 11', 'Ring 12', 'Ring 13', 'Ring 14', 'Ring 17'] as $dm)
                                             <label class="flex items-center gap-2 cursor-pointer">
-                                                <input type="checkbox" name="diameter[]" value="{{ $dm }}" {{ in_array($dm, request('diameter', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">
+                                                <input type="checkbox" name="diameter[]" value="{{ $dm }}" {{ in_array($dm, request('diameter', [])) ? 'checked' : '' }} class="custom-checkbox">
                                                 {{ $dm }}
                                             </label>
                                         @endforeach
@@ -249,8 +285,8 @@
                                         </svg>
                                     </summary>
                                     <div class="mt-3 space-y-2 text-sm text-zinc-655 dark:text-zinc-400">
-                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="tipe[]" value="tubeless" {{ in_array('tubeless', request('tipe', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">Tubeless</label>
-                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="tipe[]" value="tubetype" {{ in_array('tubetype', request('tipe', [])) ? 'checked' : '' }} class="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">Tubetype</label>
+                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="tipe[]" value="tubeless" {{ in_array('tubeless', request('tipe', [])) ? 'checked' : '' }} class="custom-checkbox">Tubeless</label>
+                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="tipe[]" value="tubetype" {{ in_array('tubetype', request('tipe', [])) ? 'checked' : '' }} class="custom-checkbox">Tubetype</label>
                                     </div>
                                 </details>
 
@@ -372,8 +408,9 @@
         const minInput = document.getElementById('harga-min-input');
         const maxInput = document.getElementById('harga-max-input');
         const track = document.getElementById('harga-track');
-        const maxValue = 2000000;
-        const gap = 10000;
+        const minValue = {{ $minDbHarga }};
+        const maxValue = {{ $maxDbHarga }};
+        const gap = 1000;
 
         const formatRupiah = (value) => {
             return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -398,15 +435,25 @@
             maxLabel.textContent = formatRupiah(maxVal);
             minInput.value = `Rp ${formatRupiah(minVal)}`;
             maxInput.value = `Rp ${formatRupiah(maxVal)}`;
-            const minPercent = (minVal / maxValue) * 100;
-            const maxPercent = (maxVal / maxValue) * 100;
+            
+            const rangeDiff = maxValue - minValue;
+            const minPercent = rangeDiff > 0 ? ((minVal - minValue) / rangeDiff) * 100 : 0;
+            const maxPercent = rangeDiff > 0 ? ((maxVal - minValue) / rangeDiff) * 100 : 100;
             track.style.left = `${minPercent}%`;
             track.style.right = `${100 - maxPercent}%`;
         };
 
         if (minRange && maxRange) {
-            minRange.addEventListener('input', (event) => updateRange(event.target));
-            maxRange.addEventListener('input', (event) => updateRange(event.target));
+            minRange.addEventListener('input', (event) => {
+                minRange.style.zIndex = '30';
+                maxRange.style.zIndex = '20';
+                updateRange(event.target);
+            });
+            maxRange.addEventListener('input', (event) => {
+                maxRange.style.zIndex = '30';
+                minRange.style.zIndex = '20';
+                updateRange(event.target);
+            });
             updateRange();
         }
     </script>

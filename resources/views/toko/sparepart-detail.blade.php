@@ -102,7 +102,7 @@
                             id: "sp-{{ $sparepart->id }}",
                             nama: {{ json_encode($sparepart->nama) }},
                             harga: {{ $sparepart->harga }},
-                            gambar: "{{ $sparepart->gambar ? asset("storage/".$sparepart->gambar) : "" }}",
+                            gambar: "{{ $sparepart->gambar ? (str_starts_with($sparepart->gambar, 'img/') || str_starts_with($sparepart->gambar, 'http') ? asset($sparepart->gambar) : asset('storage/'.$sparepart->gambar)) : '' }}",
                             kategori: "Sparepart"
                         })'
                         class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3.5 px-8 rounded-full transition flex items-center justify-center gap-2 text-sm uppercase tracking-wider">

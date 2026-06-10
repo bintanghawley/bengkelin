@@ -35,12 +35,7 @@
                 </svg>
                 RIWAYAT PESANAN
             </button>
-            <button onclick="showSection('ecommerce')" id="btn-ecommerce" class="nav-link w-full flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 rounded-xl font-bold transition text-left">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-                </svg>
-                SPARE PARTS
-            </button>
+
         </nav>
 
         <div class="p-4 border-t border-gray-200 dark:border-zinc-800 space-y-2">
@@ -481,50 +476,7 @@
     </div>
 </section>
         
-<section id="section-ecommerce" class="dashboard-section hidden italic">
-    <div class="flex justify-between items-end mb-8">
-        <h3 class="text-3xl font-bengkel text-red-600 uppercase">Original Parts</h3>
-        <span class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest">Tersedia di Bengkel Sidoarjo</span>
-    </div>
-    
-    <div class="mb-6">
-        <a href="{{ route('toko.index') }}" class="inline-block bg-red-600 hover:bg-red-700 text-white text-[10px] font-bold py-2 px-4 rounded-lg uppercase tracking-widest transition duration-300">
-            Lihat Semua Barang
-        </a>
-    </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-        @foreach($products as $product)
-            <div class="bg-gray-50 dark:bg-zinc-900 p-5 rounded-[2rem] border border-gray-200 dark:border-zinc-800 group hover:border-red-600 transition duration-500 flex flex-col justify-between">
-                <div>
-                    <div class="aspect-square bg-gray-100 dark:bg-zinc-950 rounded-2xl mb-5 flex items-center justify-center relative overflow-hidden">
-                        @if($product->gambar)
-                            <img src="{{ asset('storage/' . $product->gambar) }}" alt="{{ $product->nama }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                        @else
-                            <svg class="w-16 h-16 text-gray-300 dark:text-zinc-800 group-hover:text-red-600/20 transition duration-500" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71L12 2z"/>
-                            </svg>
-                        @endif
-                        
-                       
-                    </div>
-                    
-                    <h4 class="font-bengkel text-xl text-zinc-800 dark:text-white tracking-widest uppercase truncate" title="{{ $product->nama }}">
-                        {{ $product->nama }}
-                    </h4>
-                    
-                    <p class="text-zinc-500 text-xs mt-1">Stok: {{ $product->stok }} pcs</p>
-                </div>
-                
-                <div class="mt-4">
-                    <p class="text-red-600 font-bold text-lg tracking-tighter">
-                        Rp {{ number_format($product->harga, 0, ',', '.') }}
-                    </p>
-                </div>
-            </div>
-        @endforeach
-    </div>
- </section>
 
         </div>
     </main>
@@ -573,11 +525,83 @@
     document.addEventListener('DOMContentLoaded', () => {
         const urlParams = new URLSearchParams(window.location.search);
         const section = urlParams.get('section');
-        if (section && ['profil', 'booking', 'status', 'riwayat', 'ecommerce'].includes(section)) {
+        if (section && ['profil', 'booking', 'status', 'riwayat'].includes(section)) {
             showSection(section);
         } else {
             showSection('profil');
         }
     });
+
+    function toggleModalUpdateProfile(show) {
+        const modal = document.getElementById('modal-update-profile');
+        if (show) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        } else {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+    }
+
+    function toggleModalChangePassword(show) {
+        const modal = document.getElementById('modal-change-password');
+        if (show) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        } else {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+    }
 </script>
+
+{{-- Modals --}}
+<div id="modal-update-profile" class="fixed inset-0 z-[99] hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+    <div class="relative bg-zinc-900 w-full max-w-md rounded-3xl border border-zinc-800 shadow-2xl overflow-hidden p-8 text-left">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="font-bengkel text-xl text-red-600 uppercase tracking-widest">Update Profil</h3>
+            <button type="button" onclick="toggleModalUpdateProfile(false)" class="text-zinc-500 hover:text-white transition text-2xl">&times;</button>
+        </div>
+        <form action="{{ route('profile.update') }}" method="POST" class="space-y-4">
+            @csrf
+            @method('PUT')
+            <div class="space-y-1">
+                <label class="text-[10px] uppercase text-zinc-500 font-bold block">Nama Lengkap</label>
+                <input type="text" name="name" value="{{ Auth::user()->name }}" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-600 outline-none transition">
+            </div>
+            <div class="space-y-1">
+                <label class="text-[10px] uppercase text-zinc-500 font-bold block">Nomor Telepon</label>
+                <input type="text" name="nomor_telepon" value="{{ Auth::user()->nomor_telepon }}" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-600 outline-none transition">
+            </div>
+            <div class="pt-4 flex gap-3">
+                <button type="button" onclick="toggleModalUpdateProfile(false)" class="flex-1 bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-3 rounded-xl uppercase text-[10px] transition">Batal</button>
+                <button type="submit" class="flex-[2] bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl uppercase text-[10px] tracking-widest transition">Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="modal-change-password" class="fixed inset-0 z-[99] hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+    <div class="relative bg-zinc-900 w-full max-w-md rounded-3xl border border-zinc-800 shadow-2xl overflow-hidden p-8 text-left">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="font-bengkel text-xl text-red-600 uppercase tracking-widest">Ganti Password</h3>
+            <button type="button" onclick="toggleModalChangePassword(false)" class="text-zinc-500 hover:text-white transition text-2xl">&times;</button>
+        </div>
+        <form action="{{ route('profile.update') }}" method="POST" class="space-y-4">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="name" value="{{ Auth::user()->name }}">
+            <input type="hidden" name="nomor_telepon" value="{{ Auth::user()->nomor_telepon }}">
+            
+            <div class="space-y-1">
+                <label class="text-[10px] uppercase text-zinc-500 font-bold block">Password Baru</label>
+                <input type="password" name="password" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-600 outline-none transition">
+            </div>
+            <div class="pt-4 flex gap-3">
+                <button type="button" onclick="toggleModalChangePassword(false)" class="flex-1 bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-3 rounded-xl uppercase text-[10px] transition">Batal</button>
+                <button type="submit" class="flex-[2] bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl uppercase text-[10px] tracking-widest transition">Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
 @endsection

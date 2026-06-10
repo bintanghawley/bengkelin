@@ -4,6 +4,16 @@
 <div class="min-h-screen bg-zinc-950 text-white">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
+        {{-- Back Button --}}
+        <div class="mb-8">
+            <a href="javascript:history.back()" class="inline-flex items-center gap-2 text-xs font-semibold text-zinc-400 hover:text-red-500 uppercase tracking-widest transition group">
+                <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>
+                Kembali
+            </a>
+        </div>
+
         {{-- Countdown Header --}}
         <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row justify-between items-center gap-6 mb-8">
             <div class="space-y-1 text-center md:text-left">

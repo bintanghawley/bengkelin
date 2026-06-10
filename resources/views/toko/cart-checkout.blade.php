@@ -4,11 +4,14 @@
 <div class="min-h-screen bg-zinc-950 text-white">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
-        {{-- Header --}}
-        <div class="flex items-center gap-2 text-xs text-zinc-500 uppercase tracking-widest mb-8">
-            <a href="{{ route('toko.index') }}" class="hover:text-red-500 transition">Toko</a>
-            <span>/</span>
-            <span class="text-zinc-300 font-bold">Checkout Keranjang</span>
+        {{-- Back Button --}}
+        <div class="mb-8">
+            <a href="javascript:history.back()" class="inline-flex items-center gap-2 text-xs font-semibold text-zinc-400 hover:text-red-500 uppercase tracking-widest transition group">
+                <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>
+                Kembali
+            </a>
         </div>
 
         <h1 class="text-3xl font-bengkel tracking-wider uppercase mb-2">
@@ -182,6 +185,15 @@
     function esc(s) {
         return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     }
+    function sanitizeImgUrl(url) {
+        if (!url) return '';
+        if (url.includes('/storage/img/')) {
+            url = url.replace('/storage/img/', '/img/');
+        } else if (url.includes('storage/img/')) {
+            url = url.replace('storage/img/', 'img/');
+        }
+        return url;
+    }
 
     function loadCart() {
         try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch { return []; }
@@ -221,7 +233,7 @@
             totalQty += (item.qty || 1);
             return `<div class="flex items-center gap-4 p-3 bg-zinc-800/50 rounded-xl">
                 <div class="w-12 h-12 flex-shrink-0 rounded-lg border border-zinc-700 bg-zinc-800 overflow-hidden flex items-center justify-center">
-                    ${item.gambar ? `<img src="${item.gambar}" class="w-full h-full object-cover">` : '<svg class="w-6 h-6 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'}
+                    ${item.gambar ? `<img src="${sanitizeImgUrl(item.gambar)}" class="w-full h-full object-cover">` : '<svg class="w-6 h-6 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'}
                 </div>
                 <div class="flex-1 min-w-0">
                     <span class="text-[9px] bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded font-bold uppercase">${esc(item.kategori || '')}</span>

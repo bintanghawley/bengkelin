@@ -1,7 +1,7 @@
 <nav class="w-full border-b border-zinc-200/50 dark:border-zinc-900/60 bg-white/90 dark:bg-zinc-950/90 backdrop-blur relative z-30 text-zinc-900 dark:text-white transition-colors duration-300">
     <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
         <a href="{{ route('home') }}" class="flex items-center gap-2">
-            <img src="{{ asset('img/image-removebg-preview (3).png') }}" alt="" class="w-10 h-10 object-contain">
+            <img src="{{ asset('img/home/logo.png') }}" alt="" class="w-10 h-10 object-contain">
             <span class="text-xl font-bengkel tracking-wider text-zinc-900 dark:text-white">Bengkel<span class="text-red-600">in</span></span>
         </a>
         <div class="hidden lg:flex items-center gap-10 text-xs font-semibold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">

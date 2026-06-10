@@ -30,10 +30,9 @@ class PenggunaController extends Controller
             ->where('user_id', $user->id)
             ->orderBy('id', 'desc')
             ->get();
-        $products = Product::all();
         $services = Service::withCount('items')->orderBy('nama', 'asc')->get();
         $purchases = \App\Models\Purchase::where('user_id', $user->id)->orderBy('id', 'desc')->get();
-        return view('pengguna.dashboard', compact('user', 'products', 'bookings', 'services', 'purchases'));
+        return view('pengguna.dashboard', compact('user', 'bookings', 'services', 'purchases'));
     }
 }
 

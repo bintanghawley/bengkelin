@@ -55,6 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/cart/result', [CartController::class, 'result'])->name('cart.result');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
+    Route::put('/profile/update', [UserController::class, 'updateProfile'])->name('profile.update');
 
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');

@@ -65,7 +65,7 @@ class ServiceBookingTest extends TestCase
                 'keluhan' => 'Ganti oli',
             ]);
 
-        $response->assertRedirect(route('pengguna.bookings.index'));
+        $response->assertRedirect(route('pengguna.dashboard', ['section' => 'status']));
         $this->assertDatabaseHas('service_bookings', [
             'user_id' => $this->user->id,
             'service_id' => $this->service->id,

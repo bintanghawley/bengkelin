@@ -4,15 +4,14 @@
 <div class="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-white transition-colors duration-300">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
-        {{-- Breadcrumb --}}
-        <div class="flex items-center gap-2 text-xs text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-8">
-            <a href="{{ route('toko.index') }}" class="hover:text-red-600 transition">Toko</a>
-            <span>/</span>
-            <a href="{{ route('toko.index', ['kategori' => $product->kategori]) }}" class="hover:text-red-600 transition">{{ $product->kategori }}</a>
-            <span>/</span>
-            <a href="{{ route('toko.show', $product->id) }}" class="hover:text-red-600 transition">{{ $product->nama }}</a>
-            <span>/</span>
-            <span class="text-zinc-700 dark:text-zinc-300 font-bold">Checkout</span>
+        {{-- Back Button --}}
+        <div class="mb-8">
+            <a href="javascript:history.back()" class="inline-flex items-center gap-2 text-xs font-semibold text-zinc-400 hover:text-red-500 uppercase tracking-widest transition group">
+                <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>
+                Kembali
+            </a>
         </div>
 
         <h1 class="text-3xl font-bengkel text-zinc-900 dark:text-white tracking-wider uppercase mb-8">

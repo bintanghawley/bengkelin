@@ -322,7 +322,7 @@
         itemsEl.innerHTML = cart.slice(0, 3).map(function(item) {
             return '<div style="display:flex; align-items:center; gap:0.75rem; padding:0.75rem 1.25rem;">'
                 + '<div style="width:48px; height:48px; flex-shrink:0; border-radius:0.75rem; border:1px solid #27272a; background:#18181b; overflow:hidden; display:flex; align-items:center; justify-content:center;">'
-                + (item.gambar ? '<img src="' + item.gambar + '" style="width:100%;height:100%;object-fit:cover;">' : '<svg style="width:24px;height:24px;color:#52525b;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>')
+                + (item.gambar ? '<img src="' + sanitizeImgUrl(item.gambar) + '" style="width:100%;height:100%;object-fit:cover;">' : '<svg style="width:24px;height:24px;color:#52525b;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>')
                 + '</div>'
                 + '<div style="flex:1; min-width:0;">'
                 + '<p style="font-size:0.7rem; font-weight:700; color:inherit; text-transform:uppercase; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;">' + esc(item.nama) + '</p>'
@@ -381,7 +381,7 @@
         itemsEl.innerHTML = cart.map(function(item, idx) {
             var checked = item.checked !== false ? 'checked' : '';
             var imgHtml = item.gambar
-                ? '<img src="' + item.gambar + '" style="width:100%;height:100%;object-fit:cover;" alt="">'
+                ? '<img src="' + sanitizeImgUrl(item.gambar) + '" style="width:100%;height:100%;object-fit:cover;" alt="">'
                 : '<svg style="width:2rem;height:2rem;color:#52525b;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
             return '<div style="display:flex;align-items:center;gap:1rem;padding:1rem 1.5rem;border-bottom:1px solid #27272a;" class="hover:bg-zinc-800/30 transition">'
                 + '<input type="checkbox" ' + checked + ' class="w-4 h-4 accent-blue-600 cursor-pointer shrink-0" onchange="toggleItemCheck(' + idx + ',this.checked)">'
@@ -447,15 +447,17 @@
         refreshCartModal(cart);
     };
     window.deleteSelectedItems = function() {
-        if (!confirm('Hapus semua item yang dipilih?')) return;
-        var cart = cartLoad().filter(function(i) { return i.checked === false; });
-        cartSave(cart);
-        refreshAll();
+        window.showConfirm('HAPUS ITEM', 'Hapus semua item yang dipilih?').then(function(confirmed) {
+            if (!confirmed) return;
+            var cart = cartLoad().filter(function(i) { return i.checked === false; });
+            cartSave(cart);
+            refreshAll();
+        });
     };
     window.cartCheckout = function() {
         var checkedItems = cartLoad().filter(function(i) { return i.checked !== false; });
         if (checkedItems.length === 0) {
-            alert('Pilih minimal satu produk terlebih dahulu!');
+            window.showAlert('PERINGATAN', 'Pilih minimal satu produk terlebih dahulu!');
             return;
         }
         // Redirect to checkout page (auth required — server will redirect to login if not authenticated)
@@ -509,6 +511,15 @@
     }
     function esc(s) {
         return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+    function sanitizeImgUrl(url) {
+        if (!url) return '';
+        if (url.includes('/storage/img/')) {
+            url = url.replace('/storage/img/', '/img/');
+        } else if (url.includes('storage/img/')) {
+            url = url.replace('storage/img/', 'img/');
+        }
+        return url;
     }
 
     // ── Init ───────────────────────────────────────────────────────

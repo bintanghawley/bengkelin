@@ -42,7 +42,7 @@
 
         {{-- Actions --}}
         <div>
-            <a href="{{ route('pengguna.dashboard') }}" class="block w-full py-4 bg-zinc-850 hover:bg-zinc-800 text-zinc-300 hover:text-white text-xs font-bold uppercase tracking-widest rounded-xl border border-zinc-800 transition duration-200 text-center shadow-md">
+            <a href="{{ route('pengguna.dashboard') }}?section=riwayat" class="block w-full py-4 bg-zinc-850 hover:bg-zinc-800 text-zinc-300 hover:text-white text-xs font-bold uppercase tracking-widest rounded-xl border border-zinc-800 transition duration-200 text-center shadow-md">
                 Kembali ke Pesanan
             </a>
         </div>

@@ -99,7 +99,7 @@
                             id: "tire-{{ $tire->id }}",
                             nama: {{ json_encode($tire->nama) }},
                             harga: {{ $tire->harga }},
-                            gambar: "{{ $tire->gambar ? asset("storage/".$tire->gambar) : "" }}",
+                            gambar: "{{ $tire->gambar ? (str_starts_with($tire->gambar, 'img/') || str_starts_with($tire->gambar, 'http') ? asset($tire->gambar) : asset('storage/'.$tire->gambar)) : '' }}",
                             kategori: "Ban Motor"
                         })'
                         class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3.5 px-8 rounded-full transition flex items-center justify-center gap-2 text-sm uppercase tracking-wider">

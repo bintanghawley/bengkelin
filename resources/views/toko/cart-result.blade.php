@@ -73,7 +73,7 @@
 
         {{-- Actions --}}
         <div class="flex flex-col sm:flex-row gap-3">
-            <a href="{{ route('pengguna.dashboard') }}?section=status"
+            <a href="{{ route('pengguna.dashboard') }}?section=riwayat"
                id="go-dashboard"
                class="flex-1 py-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-2xl uppercase text-sm tracking-widest transition text-center shadow-xl shadow-red-900/20 flex items-center justify-center gap-2">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
@@ -84,7 +84,6 @@
                 Belanja Lagi
             </a>
         </div>
-    @include('partials.footer')
 </div>
 
 <script>

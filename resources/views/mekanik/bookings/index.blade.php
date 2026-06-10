@@ -21,12 +21,13 @@
         </div>
 
         <nav class="flex-1 px-4 space-y-2 mt-6">
-            <a href="{{ route('mekanik.dashboard') }}" class="w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-red-400 rounded-xl font-bold transition">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+            <a href="{{ route('mekanik.dashboard') }}?section=profil" class="w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-red-500 rounded-xl font-bold transition">
+                PROFIL
+            </a>
+            <a href="{{ route('mekanik.dashboard') }}?section=dashboard" class="w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-red-500 rounded-xl font-bold transition">
                 DASHBOARD
             </a>
             <a href="{{ route('mekanik.bookings.index') }}" class="w-full flex items-center gap-3 px-4 py-3 text-red-500 bg-red-900/20 rounded-xl font-bold transition relative">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                 BOOKING MASUK
                 @if($pendingBookings->count() > 0)
                     <span class="absolute right-3 bg-red-600 text-white text-[9px] font-bold rounded-full w-5 h-5 flex items-center justify-center">{{ $pendingBookings->count() }}</span>
@@ -50,6 +51,23 @@
 
     <!-- Main Content -->
     <main class="flex-1 ml-64 p-10 min-h-screen">
+        {{-- Header / Navbar --}}
+        <header class="flex justify-between items-center mb-10">
+            <div>
+                <h2 class="text-4xl font-bengkel tracking-wider text-white">MEKANIK <span class="text-red-600">DASHBOARD</span></h2>
+                <p class="text-zinc-500 text-xs uppercase tracking-[0.2em] mt-1 italic">Sidoarjo High Performance Garage</p>
+            </div>
+            <div class="flex items-center gap-4 bg-zinc-900 border border-zinc-800 p-2 pr-6 rounded-full shadow-lg">
+                <div class="h-10 w-10 bg-red-650 rounded-full flex items-center justify-center font-bold text-white shadow-lg uppercase">
+                    {{ substr(Auth::user()->name, 0, 1) }}
+                </div>
+                <div class="flex flex-col text-left">
+                    <span class="text-white text-sm font-bold leading-none">{{ Auth::user()->name }}</span>
+                    <span class="text-zinc-500 text-[10px] uppercase mt-1 tracking-widest">Mekanik Bengkelin</span>
+                </div>
+            </div>
+        </header>
+
         <div class="mb-8">
             <h1 class="text-3xl font-bengkel uppercase tracking-widest">BOOKING <span class="text-red-600">MASUK</span></h1>
             <p class="text-zinc-500 text-xs mt-1 uppercase tracking-widest">Terima atau tolak permintaan servis dari pelanggan</p>

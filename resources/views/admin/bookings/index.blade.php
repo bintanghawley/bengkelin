@@ -21,11 +21,29 @@
         </div>
 
         <nav class="flex-1 px-4 space-y-2 mt-6">
-            <a href="{{ route('admin.dashboard') }}" class="w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 rounded-xl font-bold transition">
-                DASHBOARD
+            <a href="{{ route('admin.dashboard') }}?section=profile" class="w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 rounded-xl font-bold transition">
+                PROFIL
             </a>
-            <a href="{{ route('admin.bookings.index') }}" class="w-full flex items-center gap-3 px-4 py-3 text-red-600 bg-red-50 dark:bg-red-900/20 rounded-xl font-bold transition">
-                BOOKING MASUK
+            <a href="{{ route('admin.dashboard') }}?section=stats" class="w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 rounded-xl font-bold transition">
+                STATISTIK
+            </a>
+            <a href="{{ route('admin.dashboard') }}?section=users" class="w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 rounded-xl font-bold transition">
+                KELOLA USER
+            </a>
+            <a href="{{ route('admin.dashboard') }}?section=services" class="w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 rounded-xl font-bold transition">
+                KELOLA SERVIS
+            </a>
+            <a href="{{ route('admin.dashboard') }}?section=tires" class="w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 rounded-xl font-bold transition">
+                KELOLA BAN MOTOR
+            </a>
+            <a href="{{ route('admin.dashboard') }}?section=oils" class="w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 rounded-xl font-bold transition">
+                KELOLA OLI MOTOR
+            </a>
+            <a href="{{ route('admin.dashboard') }}?section=spareparts" class="w-full flex items-center gap-3 px-4 py-3 text-gray-500 dark:text-zinc-400 hover:text-red-800 rounded-xl font-bold transition">
+                KELOLA SPAREPART
+            </a>
+            <a href="{{ route('admin.payments.index') }}" class="w-full flex items-center gap-3 px-4 py-3 {{ request()->routeIs('admin.payments.*') ? 'text-red-600 bg-red-50 dark:bg-red-900/20' : 'text-gray-500 dark:text-zinc-400 hover:text-red-800' }} rounded-xl font-bold transition">
+                 RIWAYAT PEMBAYARAN
             </a>
         </nav>
 
@@ -50,6 +68,23 @@
 
     <!-- Main Content -->
     <main class="flex-1 ml-64 p-10 bg-gray-50 dark:bg-zinc-950 min-h-screen text-gray-900 dark:text-white">
+        {{-- Header / Navbar --}}
+        <header class="flex justify-between items-center mb-10">
+            <div>
+                <h2 class="text-4xl font-bengkel tracking-wider text-zinc-800 dark:text-white">ADMIN <span class="text-red-600">DASHBOARD</span></h2>
+                <p class="text-zinc-500 text-xs uppercase tracking-[0.2em] mt-1 italic">Sidoarjo High Performance Garage</p>
+            </div>
+            <div class="flex items-center gap-4 bg-gray-50 dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 p-2 pr-6 rounded-full shadow-lg">
+                <div class="h-10 w-10 bg-red-650 rounded-full flex items-center justify-center font-bold text-white shadow-lg uppercase">
+                    {{ substr(Auth::user()->name, 0, 1) }}
+                </div>
+                <div class="flex flex-col text-left">
+                    <span class="text-zinc-800 dark:text-white text-sm font-bold leading-none">{{ Auth::user()->name }}</span>
+                    <span class="text-zinc-500 text-[10px] uppercase mt-1 tracking-widest">Admin Bengkelin</span>
+                </div>
+            </div>
+        </header>
+
         <div class="mb-8">
             <h1 class="text-2xl font-bengkel uppercase tracking-widest text-gray-900 dark:text-white">Semua Booking Servis</h1>
             <p class="text-gray-400 dark:text-zinc-500 text-xs mt-1 uppercase tracking-widest">Total: {{ $bookings->total() }} booking terdaftar</p>

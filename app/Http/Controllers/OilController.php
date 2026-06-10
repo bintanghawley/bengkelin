@@ -39,8 +39,11 @@ class OilController extends Controller
         }
 
         // 6. Filter Range Harga
-        $hargaMin = $request->input('harga_min', 0);
-        $hargaMax = $request->input('harga_max', 500000); // support up to 500k
+        $minDbHarga = Oil::min('harga') ?? 0;
+        $maxDbHarga = Oil::max('harga') ?? 500000;
+
+        $hargaMin = $request->input('harga_min', $minDbHarga);
+        $hargaMax = $request->input('harga_max', $maxDbHarga);
         $query->whereBetween('harga', [$hargaMin, $hargaMax]);
 
         // 7. Sorting
@@ -56,7 +59,7 @@ class OilController extends Controller
         // Paginate max 24 items
         $oils = $query->paginate(24)->appends($request->all());
 
-        return view('toko.oli-motor', compact('oils'));
+        return view('toko.oli-motor', compact('oils', 'minDbHarga', 'maxDbHarga'));
     }
 
     public function show($id)

@@ -20,7 +20,7 @@
             
             {{-- Column Left: Image --}}
             <div class="lg:col-span-6">
-                <div class="relative bg-zinc-900 border border-zinc-800 rounded-[2.5rem] aspect-square flex items-center justify-center overflow-hidden group shadow-sm">
+                <div class="relative bg-zinc-900 border border-zinc-800 rounded-[2.5rem] aspect-video flex items-center justify-center overflow-hidden group shadow-sm">
                     <img src="{{ $service->gambar_url }}" alt="{{ $service->nama }}" class="w-full h-full object-cover">
                 </div>
             </div>
@@ -67,13 +67,9 @@
                 </div>
 
                 {{-- Action buttons --}}
-                <div class="flex flex-col sm:flex-row gap-4">
-                    <a href="{{ route('booking.create', $service->slug) }}" class="flex-1 text-center bg-red-650 hover:bg-red-750 text-white font-semibold py-3.5 px-8 rounded-full transition text-sm uppercase tracking-wider shadow-lg shadow-red-950/20">
-                        🔧 Booking Servis
-                    </a>
-                    
-                    <a href="{{ route('servis') }}" class="flex-1 text-center border border-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-900/50 font-semibold py-3.5 px-8 rounded-full transition text-sm uppercase tracking-wider">
-                        Kembali ke Daftar
+                <div class="flex">
+                    <a href="{{ route('booking.create', $service->slug) }}" class="w-full text-center bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-8 rounded-full transition text-sm uppercase tracking-wider shadow-lg shadow-red-600/20">
+                        Booking Servis
                     </a>
                 </div>
 

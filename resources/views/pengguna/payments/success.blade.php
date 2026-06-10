@@ -48,7 +48,7 @@
 
         {{-- Actions --}}
         <div class="space-y-3">
-            <a href="{{ route('pengguna.dashboard') }}" class="block w-full py-3.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-widest rounded-xl transition duration-200 text-center shadow-lg shadow-red-900/30">
+            <a href="{{ route('pengguna.dashboard') }}?section=riwayat" class="block w-full py-3.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-widest rounded-xl transition duration-200 text-center shadow-lg shadow-red-900/30">
                 Lihat Pesanan
             </a>
             <a href="{{ route('toko.index') }}" class="block w-full py-3.5 bg-zinc-850 hover:bg-zinc-800 text-zinc-300 hover:text-white text-xs font-bold uppercase tracking-widest rounded-xl border border-zinc-800 transition duration-200 text-center">

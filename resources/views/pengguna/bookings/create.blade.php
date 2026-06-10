@@ -2,18 +2,7 @@
 
 @section('content')
 <div class="bg-zinc-950 text-white min-h-screen">
-    {{-- Header / Navbar --}}
-    <nav class="w-full border-b border-zinc-900/60 bg-zinc-950/90 backdrop-blur sticky top-0 z-30">
-        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-            <a href="{{ route('home') }}" class="flex items-center gap-2">
-                <img src="{{ asset('img/image-removebg-preview (3).png') }}" alt="" class="w-10 h-10 object-contain">
-                <span class="text-xl font-bengkel tracking-wider">Bengkel<span class="text-red-600">in</span></span>
-            </a>
-            <div class="flex items-center gap-3">
-                <a href="{{ route('pengguna.bookings.index') }}" class="text-xs font-semibold text-zinc-400 hover:text-white transition uppercase tracking-widest">Daftar Booking</a>
-            </div>
-        </div>
-    </nav>
+
 
     <div class="max-w-4xl mx-auto px-6 py-10">
         <div class="mb-8">

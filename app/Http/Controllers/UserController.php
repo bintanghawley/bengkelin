@@ -117,4 +117,28 @@ class UserController extends Controller
 
         return redirect()->route('admin.dashboard')->with('success', 'User berhasil dihapus');
     }
+
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user();
+
+        $validated = $request->validate([
+            'name' => 'required',
+            'nomor_telepon' => ['required', 'regex:/^08[0-9]{8,11}$/', 'unique:users,nomor_telepon,' . $user->id],
+            'password' => 'nullable|min:6',
+        ]);
+
+        $data = [
+            'name' => $validated['name'],
+            'nomor_telepon' => $validated['nomor_telepon'],
+        ];
+
+        if (!empty($validated['password'])) {
+            $data['password'] = Hash::make($validated['password']);
+        }
+
+        $user->update($data);
+
+        return back()->with('success', 'Profil Anda berhasil diperbarui');
+    }
 }
