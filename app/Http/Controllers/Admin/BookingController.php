@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ServiceBooking;
-use App\Models\Purchase;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -34,6 +32,8 @@ class BookingController extends Controller
         $validated = $request->validate([
             'action' => 'required|in:cancel',
         ]);
+
+        abort_unless(in_array($booking->status, ['pending', 'diterima', 'diproses'], true), 422, 'Booking tidak dapat dibatalkan pada status ini.');
 
         DB::transaction(function () use ($validated, $booking) {
             if ($validated['action'] === 'cancel') {

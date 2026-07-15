@@ -64,7 +64,8 @@
                             <td class="px-6 py-4 text-center">
                                 <span class="px-3 py-1 rounded-full text-[9px] font-bold border inline-block
                                     {{ $booking->status === 'pending' ? 'bg-orange-950/40 text-orange-400 border-orange-900/60' : '' }}
-                                    {{ $booking->status === 'ditugaskan' ? 'bg-blue-950/40 text-blue-400 border-blue-900/60' : '' }}
+                                    {{ $booking->status === 'diterima' ? 'bg-blue-950/40 text-blue-400 border-blue-900/60' : '' }}
+                                    {{ $booking->status === 'ditolak' ? 'bg-red-950/40 text-red-400 border-red-900/60' : '' }}
                                     {{ $booking->status === 'diproses' ? 'bg-yellow-950/40 text-yellow-500 border-yellow-900/60' : '' }}
                                     {{ $booking->status === 'selesai' ? 'bg-emerald-950/40 text-emerald-400 border-emerald-900/60' : '' }}
                                     {{ $booking->status === 'dibatalkan' ? 'bg-red-950/40 text-red-500 border-red-900/60' : '' }}

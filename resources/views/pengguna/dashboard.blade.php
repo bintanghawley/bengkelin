@@ -11,6 +11,12 @@
         </div>
 
         <nav class="flex-1 px-4 space-y-2 mt-6" id="sidebar-nav">
+            <button onclick="showSection('booking')" id="btn-booking" class="nav-link w-full flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 rounded-xl font-bold transition text-left">
+                <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17 17.25 21l2.75-2.75-5.83-5.83m-2.75 2.75 2.75-2.75m-2.75 2.75L8 18.59l-4.59-4.59L6.83 10.6m7.34 1.82 3.42-3.42a4 4 0 0 0-5.66-5.66L8.51 6.76"/>
+                </svg>
+                BOOKING SERVIS
+            </button>
             <button onclick="showSection('profil')" id="btn-profil" class="nav-link w-full flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 rounded-xl font-bold transition">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
@@ -39,7 +45,7 @@
                 </svg>
                 <span>Kembali ke Beranda</span>
             </a>
-            <form action="{{ route('logout') }}" method="POST" onsubmit="localStorage.removeItem('bengkelin_cart'); return confirm('Yakin ingin logout?')">
+            <form action="{{ route('logout') }}" method="POST" onsubmit="return confirm('Yakin ingin logout?')">
                 @csrf
                 <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-500/10 rounded-xl transition font-bold uppercase tracking-widest text-[10px]">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
@@ -562,6 +568,10 @@
             activeBtn.classList.add('text-red-600', 'dark:text-red-500', 'bg-gray-100', 'dark:bg-zinc-800/50');
             activeBtn.classList.remove('text-zinc-500', 'dark:text-zinc-400', 'text-zinc-505');
         }
+
+        const url = new URL(window.location.href);
+        url.searchParams.set('section', sectionId);
+        window.history.replaceState({}, '', url);
     }
 
     function filterOrders(status) {

@@ -47,6 +47,8 @@ class PaymentController extends Controller
      */
     public function selectMethod(Request $request, Payment $payment)
     {
+        $this->authorizePayment($payment);
+
         $request->validate([
             'payment_method' => 'required|string',
         ]);
@@ -55,9 +57,10 @@ class PaymentController extends Controller
             if ($request->wantsJson() || $request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'error' => 'Pembayaran tidak aktif atau sudah kadaluarsa.'
+                    'error' => 'Pembayaran tidak aktif atau sudah kadaluarsa.',
                 ], 422);
             }
+
             return back()->with('error', 'Pembayaran tidak aktif atau sudah kadaluarsa.');
         }
 
@@ -67,18 +70,18 @@ class PaymentController extends Controller
         // Generate dummy codes depending on method
         if (str_contains($method, 'Virtual Account')) {
             // 88 + 14 random digits
-            $code = '88' . str_pad((string) mt_rand(1, 99999999999999), 14, '0', STR_PAD_LEFT);
+            $code = '88'.str_pad((string) mt_rand(1, 99999999999999), 14, '0', STR_PAD_LEFT);
         } elseif (in_array($method, ['DANA', 'OVO', 'GoPay', 'ShopeePay'])) {
             // E-wallet phone number format
-            $code = '08' . str_pad((string) mt_rand(1, 9999999999), 10, '0', STR_PAD_LEFT);
+            $code = '08'.str_pad((string) mt_rand(1, 9999999999), 10, '0', STR_PAD_LEFT);
         } elseif (in_array($method, ['Alfamart', 'Indomaret'])) {
             // Convenience store payment code
-            $code = 'ALFA' . mt_rand(100000, 999999);
+            $code = 'ALFA'.mt_rand(100000, 999999);
             if ($method === 'Indomaret') {
-                $code = 'INDO' . mt_rand(100000, 999999);
+                $code = 'INDO'.mt_rand(100000, 999999);
             }
         } elseif ($method === 'QRIS') {
-            $code = 'PAY-' . $payment->invoice_number;
+            $code = 'PAY-'.$payment->invoice_number;
         }
 
         $payment->update([
@@ -102,6 +105,8 @@ class PaymentController extends Controller
      */
     public function pay(Payment $payment)
     {
+        $this->authorizePayment($payment);
+
         if ($payment->status !== 'pending' || now()->greaterThan($payment->expired_at)) {
             return back()->with('error', 'Pembayaran tidak dapat diproses.');
         }
@@ -127,11 +132,14 @@ class PaymentController extends Controller
      */
     public function success(Payment $payment)
     {
+        $this->authorizePayment($payment);
+
         if ($payment->status !== 'paid') {
             return redirect()->route('pengguna.payments.show', $payment->id);
         }
 
         $purchases = $payment->purchases;
+
         return view('pengguna.payments.success', compact('payment', 'purchases'));
     }
 
@@ -140,10 +148,17 @@ class PaymentController extends Controller
      */
     public function expired(Payment $payment)
     {
+        $this->authorizePayment($payment);
+
         if ($payment->status !== 'expired') {
             return redirect()->route('pengguna.payments.show', $payment->id);
         }
 
         return view('pengguna.payments.expired', compact('payment'));
+    }
+
+    private function authorizePayment(Payment $payment): void
+    {
+        abort_unless($payment->purchases()->where('user_id', auth()->id())->exists(), 403, 'Akses tidak sah.');
     }
 }

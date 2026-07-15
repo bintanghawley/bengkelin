@@ -78,6 +78,17 @@
                     </p>
                 </div>
 
+                @php $activeAssistanceForUser = $booking->activeAssistanceRequest()->with(['targetMechanic'])->first(); @endphp
+                @if($activeAssistanceForUser)
+                <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+                    <h3 class="text-xs text-zinc-500 uppercase tracking-widest font-bold border-b border-zinc-800 pb-3 mb-4">Informasi Teknisi Tambahan</h3>
+                    <div class="bg-zinc-950/60 border border-yellow-900 rounded-2xl p-5 space-y-2">
+                        <span class="text-[10px] font-bold uppercase tracking-widest {{ $activeAssistanceForUser->status === 'accepted' ? 'text-emerald-400' : 'text-yellow-400' }}">{{ $activeAssistanceForUser::statusLabel($activeAssistanceForUser->status) }}</span>
+                        <p class="text-sm mt-2">Teknisi <span class="font-bold">{{ $activeAssistanceForUser->targetMechanic->name }}</span> sedang dalam perjalanan membantu pengerjaan kendaraan Anda.</p>
+                    </div>
+                </div>
+                @endif
+
                 <!-- Catatan Admin & Mekanik -->
                 <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 space-y-6">
                     <h3 class="text-xs text-zinc-500 uppercase tracking-widest font-bold border-b border-zinc-800 pb-3">Catatan Workshop</h3>
