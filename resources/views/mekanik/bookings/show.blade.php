@@ -3,53 +3,7 @@
 @section('content')
 <div class="flex min-h-screen font-sans bg-zinc-950 text-white">
     
-    <!-- Sidebar -->
-    <aside class="w-64 bg-zinc-900 border-r border-zinc-800 flex flex-col fixed h-full z-50">
-        <div class="p-6 flex items-center gap-3 border-b border-zinc-800/50">
-            <span class="text-3xl font-bengkel tracking-wider">MEKANIK<span class="text-red-600">PANEL</span></span>
-        </div>
-
-        {{-- Profile section in sidebar --}}
-        <div class="p-5 border-b border-zinc-800 flex items-center gap-3 bg-zinc-950/20">
-            <div class="h-10 w-10 bg-red-600 rounded-full flex items-center justify-center font-bold text-white shadow-lg uppercase shrink-0">
-                {{ substr(Auth::user()->name, 0, 1) }}
-            </div>
-            <div class="flex flex-col min-w-0 text-left">
-                <span class="text-zinc-200 text-sm font-bold truncate leading-none mb-1.5">{{ Auth::user()->name }}</span>
-                <span class="text-zinc-500 text-[10px] uppercase tracking-widest font-semibold leading-none">Mekanik Bengkelin</span>
-            </div>
-        </div>
-
-        <nav class="flex-1 px-4 space-y-2 mt-6">
-            <a href="{{ route('mekanik.dashboard') }}?section=profil" class="w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-red-500 rounded-xl font-bold transition">
-                PROFIL
-            </a>
-            <a href="{{ route('mekanik.bookings.index') }}" class="w-full flex items-center gap-3 px-4 py-3 text-red-500 bg-red-900/20 rounded-xl font-bold transition">
-                BOOKING MASUK
-            </a>
-            <a href="{{ route('mekanik.dashboard') }}?section=dashboard" class="w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-red-500 rounded-xl font-bold transition">
-                RIWAYAT
-            </a>
-        </nav>
-
-        <div class="p-4 border-t border-zinc-800 space-y-2">
-            <a href="{{ route('home') }}" class="group relative flex items-center justify-center gap-2 w-full text-center text-[10px] font-bold text-zinc-500 dark:text-zinc-400 hover:text-white uppercase tracking-widest border border-zinc-300 dark:border-zinc-800 hover:border-red-600 bg-white dark:bg-zinc-900/50 hover:bg-red-600/10 py-2.5 rounded-xl transition-all duration-300 overflow-hidden shadow-sm hover:shadow-red-650/10">
-                <svg class="w-3.5 h-3.5 transform transition-transform duration-300 group-hover:-translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span>Kembali ke Beranda</span>
-            </a>
-            <form action="{{ route('logout') }}" method="POST" onsubmit="localStorage.removeItem('bengkelin_cart'); return confirm('Yakin ingin logout?')">
-                @csrf
-                <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-500/10 rounded-xl transition font-bold uppercase tracking-widest text-[10px]">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
-                    </svg>
-                    Sign Out Account
-                </button>
-            </form>
-        </div>
-    </aside>
+    @include('mekanik.partials.sidebar')
 
     <!-- Main Content -->
     <main class="flex-1 ml-64 p-10 min-h-screen">
@@ -153,11 +107,10 @@
                                     <span class="text-[10px] text-emerald-500 font-bold uppercase tracking-widest block">Terima Pekerjaan</span>
                                     <p class="text-zinc-400 text-xs normal-case leading-relaxed">Terima booking ini untuk mulai melakukan persiapan dan proses pengerjaan servis kendaraan.</p>
                                 </div>
-                                <form action="{{ route('mekanik.bookings.update', $booking->id) }}" method="POST" class="mt-6">
+                                <form action="{{ route('mekanik.bookings.update', $booking->id) }}" method="POST" class="mt-6" onsubmit="return confirm('Terima booking ini dan mulai persiapan?')">
                                     @csrf @method('PUT')
                                     <input type="hidden" name="action" value="accept">
                                     <button type="submit"
-                                        onclick="return confirm('Terima booking ini dan mulai persiapan?')"
                                         class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl uppercase text-[10px] tracking-widest transition shadow-lg shadow-emerald-950/20 flex items-center justify-center gap-2">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
                                         Terima Booking
@@ -171,13 +124,12 @@
                                     <span class="text-[10px] text-red-500 font-bold uppercase tracking-widest block">Tolak Pekerjaan</span>
                                     <p class="text-zinc-400 text-xs normal-case leading-relaxed">Tolak booking jika slot pengerjaan penuh atau terdapat kendala teknis lainnya.</p>
                                 </div>
-                                <form action="{{ route('mekanik.bookings.update', $booking->id) }}" method="POST" class="space-y-4" id="reject-form">
+                                <form action="{{ route('mekanik.bookings.update', $booking->id) }}" method="POST" class="space-y-4" id="reject-form" onsubmit="return confirm('Tolak booking ini?')">
                                     @csrf @method('PUT')
                                     <input type="hidden" name="action" value="reject">
                                     <textarea name="catatan_mekanik" rows="2" placeholder="Alasan penolakan (opsional)..."
                                         class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-xs text-white focus:border-red-500 outline-none transition resize-none normal-case"></textarea>
                                     <button type="submit"
-                                        onclick="return confirm('Tolak booking ini?')"
                                         class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-4 rounded-xl uppercase text-[10px] tracking-widest transition shadow-lg shadow-red-950/20 flex items-center justify-center gap-2">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
                                         Tolak Booking
@@ -202,7 +154,7 @@
                     @elseif($booking->status === 'diproses' && $booking->mechanic_id === auth()->id())
                         {{-- Complete work --}}
                         <p class="text-yellow-400 text-xs normal-case">Sedang dikerjakan. Isi catatan pekerjaan dan klik selesai bila sudah rampung.</p>
-                        <form action="{{ route('mekanik.bookings.update', $booking->id) }}" method="POST" class="space-y-4">
+                        <form action="{{ route('mekanik.bookings.update', $booking->id) }}" method="POST" class="space-y-4" onsubmit="return confirm('Tandai servis ini sebagai selesai?')">
                             @csrf @method('PUT')
                             <input type="hidden" name="action" value="complete">
                             <div class="space-y-2">
@@ -212,7 +164,6 @@
                                     class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3.5 text-sm text-white focus:border-emerald-600 outline-none transition normal-case">{{ $booking->catatan_mekanik }}</textarea>
                             </div>
                             <button type="submit"
-                                onclick="return confirm('Tandai servis ini sebagai selesai?')"
                                 class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl uppercase text-[10px] tracking-widest transition shadow-lg shadow-emerald-900/40 flex items-center justify-center gap-2">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
                                 Selesaikan Servis
@@ -239,6 +190,37 @@
                         <p class="text-zinc-500 text-xs normal-case italic">Tidak ada aksi yang tersedia untuk status ini.</p>
                     @endif
                 </div>
+
+                @if(in_array($booking->status, ['diterima', 'diproses']) && $booking->mechanic_id === auth()->id())
+                <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 shadow-2xl space-y-4">
+                    <h3 class="text-xs text-zinc-500 uppercase tracking-widest font-bold border-b border-zinc-800 pb-3">Bantuan Teknisi</h3>
+                    @php $activeAssistance = $booking->assistanceRequests()->whereIn('status', ['pending', 'accepted'])->latest()->first(); @endphp
+                    @if($activeAssistance)
+                        <div class="bg-zinc-950/60 border {{ $activeAssistance->status === 'accepted' ? 'border-emerald-900' : 'border-yellow-900' }} rounded-2xl p-5 space-y-3">
+                            <span class="text-[10px] font-bold uppercase tracking-widest {{ $activeAssistance->status === 'accepted' ? 'text-emerald-400' : 'text-yellow-400' }}">{{ $activeAssistance::statusLabel($activeAssistance->status) }}</span>
+                            <p class="text-sm font-bold">{{ $activeAssistance->targetMechanic->name }}</p>
+                            <p class="text-sm text-zinc-300">{{ $activeAssistance->needed_item }}</p>
+                            <p class="text-xs text-zinc-400">{{ $activeAssistance->location_detail }}</p>
+                            <a href="{{ route('mekanik.assistance-requests.show', $activeAssistance) }}" class="inline-block text-xs text-blue-400 hover:underline font-bold">Lihat Detail →</a>
+                        </div>
+                    @else
+                        <form action="{{ route('mekanik.assistance-requests.store', $booking) }}" method="POST" class="space-y-4" onsubmit="return confirm('Kirim permintaan bantuan?')">
+                            @csrf
+                            <select name="target_mechanic_id" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-500 outline-none">
+                                <option value="">Pilih Teknisi Tujuan</option>
+                                @foreach($mechanics as $m)
+                                    <option value="{{ $m->id }}">{{ $m->name }} — {{ $m->nomor_telepon }}</option>
+                                @endforeach
+                            </select>
+                            <input type="text" name="needed_item" required maxlength="255" placeholder="Barang/alat yang dibutuhkan" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-500 outline-none">
+                            <textarea name="reason" rows="2" maxlength="2000" placeholder="Alasan meminta bantuan (opsional)" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-500 outline-none resize-none"></textarea>
+                            <input type="text" name="location_detail" required maxlength="500" placeholder="Detail lokasi/patokan" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-500 outline-none">
+                            <input type="url" name="maps_url" maxlength="1000" placeholder="Link Google Maps (opsional)" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-500 outline-none">
+                            <button type="submit" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-4 rounded-xl uppercase text-[10px] tracking-widest transition">Minta Bantuan Teknisi</button>
+                        </form>
+                    @endif
+                </div>
+                @endif
             </div>
         </div>
     </main>

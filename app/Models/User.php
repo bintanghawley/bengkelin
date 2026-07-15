@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -39,8 +39,18 @@ class User extends Authenticatable
         return $this->hasMany(ServiceBooking::class, 'user_id');
     }
 
-    public function mechanicBookings()
+    public function mechanicBookings(): HasMany
     {
         return $this->hasMany(ServiceBooking::class, 'mechanic_id');
+    }
+
+    public function sentAssistanceRequests(): HasMany
+    {
+        return $this->hasMany(MechanicAssistanceRequest::class, 'requester_mechanic_id');
+    }
+
+    public function receivedAssistanceRequests(): HasMany
+    {
+        return $this->hasMany(MechanicAssistanceRequest::class, 'target_mechanic_id');
     }
 }

@@ -3,56 +3,7 @@
 @section('content')
 <div class="flex min-h-screen font-sans bg-zinc-950 text-white">
     
-    <!-- Sidebar -->
-    <aside class="w-64 bg-zinc-900 border-r border-zinc-800 flex flex-col fixed h-full z-50">
-        <div class="p-6 flex items-center gap-3 border-b border-zinc-800/50">
-            <span class="text-3xl font-bengkel tracking-wider">MEKANIK<span class="text-red-600">PANEL</span></span>
-        </div>
-
-        {{-- Profile section in sidebar --}}
-        <div class="p-5 border-b border-zinc-800 flex items-center gap-3 bg-zinc-950/20">
-            <div class="h-10 w-10 bg-red-600 rounded-full flex items-center justify-center font-bold text-white shadow-lg uppercase shrink-0">
-                {{ substr(Auth::user()->name, 0, 1) }}
-            </div>
-            <div class="flex flex-col min-w-0 text-left">
-                <span class="text-zinc-200 text-sm font-bold truncate leading-none mb-1.5">{{ Auth::user()->name }}</span>
-                <span class="text-zinc-500 text-[10px] uppercase tracking-widest font-semibold leading-none">Mekanik Bengkelin</span>
-            </div>
-        </div>
-
-        <nav class="flex-1 px-4 space-y-2 mt-6">
-            <a href="{{ route('mekanik.dashboard') }}?section=profil" class="w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-red-500 rounded-xl font-bold transition">
-                PROFIL
-            </a>
-            <a href="{{ route('mekanik.bookings.index') }}" class="w-full flex items-center gap-3 px-4 py-3 text-red-500 bg-red-900/20 rounded-xl font-bold transition relative">
-                BOOKING MASUK
-                @if($pendingBookings->count() > 0)
-                    <span class="absolute right-3 bg-red-600 text-white text-[9px] font-bold rounded-full w-5 h-5 flex items-center justify-center">{{ $pendingBookings->count() }}</span>
-                @endif
-            </a>
-            <a href="{{ route('mekanik.dashboard') }}?section=dashboard" class="w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-red-500 rounded-xl font-bold transition">
-                RIWAYAT
-            </a>
-        </nav>
-
-        <div class="p-4 border-t border-zinc-800 space-y-2">
-            <a href="{{ route('home') }}" class="group relative flex items-center justify-center gap-2 w-full text-center text-[10px] font-bold text-zinc-500 dark:text-zinc-400 hover:text-white uppercase tracking-widest border border-zinc-300 dark:border-zinc-800 hover:border-red-600 bg-white dark:bg-zinc-900/50 hover:bg-red-600/10 py-2.5 rounded-xl transition-all duration-300 overflow-hidden shadow-sm hover:shadow-red-650/10">
-                <svg class="w-3.5 h-3.5 transform transition-transform duration-300 group-hover:-translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span>Kembali ke Beranda</span>
-            </a>
-            <form action="{{ route('logout') }}" method="POST" onsubmit="localStorage.removeItem('bengkelin_cart'); return confirm('Yakin ingin logout?')">
-                @csrf
-                <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-500/10 rounded-xl transition font-bold uppercase tracking-widest text-[10px]">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
-                    </svg>
-                    Sign Out Account
-                </button>
-            </form>
-        </div>
-    </aside>
+    @include('mekanik.partials.sidebar')
 
     <!-- Main Content -->
     <main class="flex-1 ml-64 p-10 min-h-screen">
@@ -121,11 +72,10 @@
                                 <p class="text-zinc-400 line-clamp-2 text-[10px] normal-case">{{ $booking->keluhan ?: 'Tidak ada keluhan.' }}</p>
                             </td>
                             <td class="px-6 py-4 text-center">
-                                <button type="button"
-                                    onclick="toggleBookingModal({{ $booking->id }}, true)"
-                                    class="bg-zinc-700 hover:bg-zinc-600 text-white text-[9px] font-bold py-2 px-4 rounded-lg transition uppercase tracking-wider">
+                                <a href="{{ route('mekanik.bookings.show', $booking) }}"
+                                    class="inline-block bg-zinc-700 hover:bg-zinc-600 text-white text-[9px] font-bold py-2 px-4 rounded-lg transition uppercase tracking-wider">
                                     Lihat Detail
-                                </button>
+                                </a>
                             </td>
                         </tr>
                         @empty
@@ -187,11 +137,10 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-right">
-                                <button type="button"
-                                    onclick="toggleBookingModal({{ $booking->id }}, true)"
+                                <a href="{{ route('mekanik.bookings.show', $booking) }}"
                                     class="inline-block bg-zinc-800 hover:bg-zinc-700 text-white text-[9px] font-bold py-2 px-4 rounded-lg transition">
                                     Detail & Update
-                                </button>
+                                </a>
                             </td>
                         </tr>
                         @empty
@@ -211,30 +160,6 @@
             @endif
         </div>
 
-        {{-- Booking Modals --}}
-        @foreach ($pendingBookings as $booking)
-            @include('mekanik.bookings.modal', ['booking' => $booking])
-        @endforeach
-
-        @foreach ($myBookings as $booking)
-            @include('mekanik.bookings.modal', ['booking' => $booking])
-        @endforeach
-
     </main>
 </div>
-
-<script>
-    function toggleBookingModal(id, show) {
-        const modal = document.getElementById('booking-modal-' + id);
-        if (modal) {
-            if (show) {
-                modal.classList.remove('hidden');
-                document.body.style.overflow = 'hidden';
-            } else {
-                modal.classList.add('hidden');
-                document.body.style.overflow = '';
-            }
-        }
-    }
-</script>
 @endsection

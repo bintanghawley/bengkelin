@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Mekanik;
 
 use App\Http\Controllers\Controller;
 use App\Models\ServiceBooking;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -39,14 +40,19 @@ class BookingController extends Controller
      */
     public function show($id)
     {
-        $booking = ServiceBooking::with(['user', 'service'])
+        $booking = ServiceBooking::with(['user', 'service', 'mechanic', 'assistanceRequests.targetMechanic'])
             ->where(function ($q) {
                 $q->where('status', 'pending')
-                  ->orWhere('mechanic_id', Auth::id());
+                    ->orWhere('mechanic_id', Auth::id());
             })
             ->findOrFail($id);
 
-        return view('mekanik.bookings.show', compact('booking'));
+        $mechanics = User::where('role', 'mekanik')
+            ->whereKeyNot(Auth::id())
+            ->orderBy('name')
+            ->get();
+
+        return view('mekanik.bookings.show', compact('booking', 'mechanics'));
     }
 
     /**
@@ -58,15 +64,17 @@ class BookingController extends Controller
     {
         $booking = ServiceBooking::where(function ($q) {
             $q->where('status', 'pending')
-              ->orWhere('mechanic_id', Auth::id());
+                ->orWhere('mechanic_id', Auth::id());
         })->findOrFail($id);
 
         $validated = $request->validate([
-            'action'          => 'required|in:accept,reject,start,complete',
+            'action' => 'required|in:accept,reject,start,complete',
             'catatan_mekanik' => 'nullable|string|max:2000',
         ]);
 
         DB::transaction(function () use ($validated, $booking) {
+            $booking = ServiceBooking::lockForUpdate()->findOrFail($booking->id);
+
             switch ($validated['action']) {
                 case 'accept':
                     // Any mekanik can accept a pending booking
@@ -74,7 +82,7 @@ class BookingController extends Controller
                         abort(422, 'Booking tidak dalam status pending.');
                     }
                     $booking->update([
-                        'status'      => 'diterima',
+                        'status' => 'diterima',
                         'mechanic_id' => Auth::id(),
                     ]);
                     break;
@@ -85,8 +93,8 @@ class BookingController extends Controller
                         abort(422, 'Booking tidak dalam status pending.');
                     }
                     $booking->update([
-                        'status'          => 'ditolak',
-                        'mechanic_id'     => Auth::id(),
+                        'status' => 'ditolak',
+                        'mechanic_id' => Auth::id(),
                         'catatan_mekanik' => $validated['catatan_mekanik'],
                     ]);
                     break;
@@ -105,7 +113,7 @@ class BookingController extends Controller
                         abort(422, 'Aksi tidak diizinkan.');
                     }
                     $booking->update([
-                        'status'          => 'selesai',
+                        'status' => 'selesai',
                         'catatan_mekanik' => $validated['catatan_mekanik'],
                     ]);
                     break;
@@ -113,9 +121,9 @@ class BookingController extends Controller
         });
 
         $message = match ($validated['action']) {
-            'accept'   => 'Booking berhasil diterima! Silakan mulai pengerjaan.',
-            'reject'   => 'Booking telah ditolak.',
-            'start'    => 'Pengerjaan servis dimulai.',
+            'accept' => 'Booking berhasil diterima! Silakan mulai pengerjaan.',
+            'reject' => 'Booking telah ditolak.',
+            'start' => 'Pengerjaan servis dimulai.',
             'complete' => 'Servis telah diselesaikan.',
         };
 
