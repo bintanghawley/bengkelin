@@ -10,10 +10,15 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    public function showLogin()
+    public function showLogin(Request $request)
     {
         if (Auth::check()) {
             return $this->redirectByRole(Auth::user()->role);
+        }
+
+        $redirect = $request->query('redirect');
+        if (is_string($redirect) && $this->isSafeRedirect($redirect)) {
+            $request->session()->put('url.intended', $redirect);
         }
 
         return view('auth.login');
@@ -37,21 +42,25 @@ class AuthController extends Controller
                     'errors' => $validator->errors()->toArray(),
                 ], 422);
             }
+
             return back()->withErrors($validator)->withInput($request->only('nomor_telepon'));
         }
 
-        if (!Auth::attempt($validator->validated())) {
+        if (! Auth::attempt($validator->validated())) {
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Nomor telepon atau password salah',
                 ], 401);
             }
+
             return back()->withInput($request->only('nomor_telepon'))->with('error', 'Nomor telepon atau password salah');
         }
 
         $request->session()->regenerate();
-        $redirectUrl = $this->getRedirectUrl(Auth::user()->role);
+        $redirectUrl = Auth::user()->role === 'pengguna'
+            ? redirect()->intended($this->getRedirectUrl('pengguna'))->getTargetUrl()
+            : $this->getRedirectUrl(Auth::user()->role);
 
         if ($request->expectsJson()) {
             return response()->json([
@@ -95,6 +104,7 @@ class AuthController extends Controller
                     'errors' => $validator->errors()->toArray(),
                 ], 422);
             }
+
             return back()->withErrors($validator)->withInput($request->only('name', 'nomor_telepon'));
         }
 
@@ -132,6 +142,15 @@ class AuthController extends Controller
         return redirect()->route('home')->with('success', 'Logout berhasil');
     }
 
+    private function isSafeRedirect(string $redirect): bool
+    {
+        if (str_starts_with($redirect, '/')) {
+            return ! str_starts_with($redirect, '//');
+        }
+
+        return str_starts_with($redirect, url('/').'/');
+    }
+
     private function redirectByRole(string $role)
     {
         return redirect($this->getRedirectUrl($role));
@@ -145,6 +164,7 @@ class AuthController extends Controller
         if ($role === 'mekanik') {
             return route('mekanik.dashboard', ['section' => 'profil']);
         }
+
         return route('pengguna.dashboard', ['section' => 'profil']);
     }
 }
