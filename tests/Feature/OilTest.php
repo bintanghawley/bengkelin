@@ -3,8 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\Oil;
-use App\Models\User;
 use App\Models\Purchase;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
@@ -14,7 +14,9 @@ class OilTest extends TestCase
     use RefreshDatabase;
 
     private User $user;
+
     private User $admin;
+
     private Oil $oil;
 
     protected function setUp(): void
@@ -88,7 +90,7 @@ class OilTest extends TestCase
         $this->assertNotNull($purchase);
 
         $response->assertRedirect(route('toko.result', $purchase->id));
-        
+
         // Assert stock decrement
         $this->assertEquals(12, $this->oil->fresh()->stok);
 
@@ -99,7 +101,7 @@ class OilTest extends TestCase
             'jumlah' => 3,
             'total_harga' => 255000,
             'alamat' => 'Jl. Oli Raya No. 12, Bandung',
-            'status' => 'pending',
+            'status' => 'diproses',
         ]);
     }
 
@@ -129,7 +131,7 @@ class OilTest extends TestCase
 
         // 2. Update oil (update)
         $response = $this->actingAs($this->admin)
-            ->put('/admin/oils/' . $newOil->id, [
+            ->put('/admin/oils/'.$newOil->id, [
                 'nama' => 'Yamalube Power Matic Gold',
                 'harga' => 55000,
                 'stok' => 25,
@@ -150,7 +152,7 @@ class OilTest extends TestCase
 
         // 3. Delete oil (destroy)
         $response = $this->actingAs($this->admin)
-            ->delete('/admin/oils/' . $newOil->id);
+            ->delete('/admin/oils/'.$newOil->id);
 
         $response->assertStatus(302);
         $this->assertDatabaseMissing('oils', [
@@ -171,6 +173,6 @@ class OilTest extends TestCase
             ->post('/admin/oils', [
                 'nama' => 'Shell Advance AX5',
             ]);
-        $response->assertStatus(302); // Akses ditolak
+        $response->assertForbidden();
     }
 }

@@ -152,11 +152,11 @@ class SparepartSeeder extends Seeder
                 'merek' => 'X-Guard',
                 'fitur' => 'Kapasitas 6Ah ekstra daya kelistrikan, Sangat cocok untuk motor matic besar (NMAX/AEROX), Anti getaran ekstrem',
                 'deskripsi' => 'Aki kering katup tertutup tipe YTZ7V dari X-Guard yang memberikan performa kelistrikan handal untuk lampu LED dan aksesoris kelistrikan motor Anda.',
-            ]
+            ],
         ];
 
         foreach ($spareparts as $sp) {
-            Sparepart::create($sp);
+            Sparepart::updateOrCreate(['nama' => $sp['nama']], $sp);
         }
     }
 }

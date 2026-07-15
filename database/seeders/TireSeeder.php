@@ -402,11 +402,11 @@ class TireSeeder extends Seeder
                 'tipe' => 'tubeless',
                 'fitur' => 'Kembangan Sporty, Grip Tangguh, Tahan Lama',
                 'deskripsi' => 'Ban Planeto tipe sport dengan cengkeraman maksimal untuk motor matic berukuran sedang hingga besar.',
-            ]
+            ],
         ];
 
         foreach ($tires as $tire) {
-            Tire::create($tire);
+            Tire::updateOrCreate(['nama' => $tire['nama']], $tire);
         }
     }
 }

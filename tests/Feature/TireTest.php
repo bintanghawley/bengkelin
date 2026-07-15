@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Models\Purchase;
 use App\Models\Tire;
 use App\Models\User;
-use App\Models\Purchase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
@@ -14,7 +14,9 @@ class TireTest extends TestCase
     use RefreshDatabase;
 
     private User $user;
+
     private User $admin;
+
     private Tire $tire;
 
     protected function setUp(): void
@@ -91,7 +93,7 @@ class TireTest extends TestCase
         $this->assertNotNull($purchase);
 
         $response->assertRedirect(route('toko.result', $purchase->id));
-        
+
         // Assert stock decrement
         $this->assertEquals(8, $this->tire->fresh()->stok);
 
@@ -102,7 +104,7 @@ class TireTest extends TestCase
             'jumlah' => 2,
             'total_harga' => 700000,
             'alamat' => 'Jl. Motor Raya No. 45, Jakarta',
-            'status' => 'pending',
+            'status' => 'diproses',
         ]);
     }
 
@@ -134,7 +136,7 @@ class TireTest extends TestCase
 
         // 2. Update a tire (update)
         $response = $this->actingAs($this->admin)
-            ->put('/admin/tires/' . $newTire->id, [
+            ->put('/admin/tires/'.$newTire->id, [
                 'nama' => 'Aspira Premio Sporty',
                 'harga' => 260000,
                 'stok' => 20,
@@ -157,7 +159,7 @@ class TireTest extends TestCase
 
         // 3. Delete a tire (destroy)
         $response = $this->actingAs($this->admin)
-            ->delete('/admin/tires/' . $newTire->id);
+            ->delete('/admin/tires/'.$newTire->id);
 
         $response->assertStatus(302);
         $this->assertDatabaseMissing('tires', [
@@ -178,6 +180,6 @@ class TireTest extends TestCase
             ->post('/admin/tires', [
                 'nama' => 'Pirelli Diablo Rosso',
             ]);
-        $response->assertStatus(302); // Redirects with error "Akses ditolak"
+        $response->assertForbidden();
     }
 }

@@ -168,11 +168,11 @@ class OilSeeder extends Seeder
                 'merek' => 'AHM',
                 'fitur' => 'Fully Synthetic pelumas sport kopling basah, Proteksi korosi maksimal, Efisiensi mesin tertinggi',
                 'deskripsi' => 'AHM Oil SPX 1 (Superior Protection Expert) diformulasikan khusus dengan teknologi full synthetic untuk motor bebek sport Honda.',
-            ]
+            ],
         ];
 
         foreach ($oils as $oil) {
-            Oil::create($oil);
+            Oil::updateOrCreate(['nama' => $oil['nama']], $oil);
         }
     }
 }

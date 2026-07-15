@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Models\Purchase;
 use App\Models\Sparepart;
 use App\Models\User;
-use App\Models\Purchase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
@@ -14,7 +14,9 @@ class SparepartTest extends TestCase
     use RefreshDatabase;
 
     private User $user;
+
     private User $admin;
+
     private Sparepart $sparepart;
 
     protected function setUp(): void
@@ -86,7 +88,7 @@ class SparepartTest extends TestCase
         $this->assertNotNull($purchase);
 
         $response->assertRedirect(route('toko.result', $purchase->id));
-        
+
         // Assert stock decrement
         $this->assertEquals(13, $this->sparepart->fresh()->stok);
 
@@ -97,7 +99,7 @@ class SparepartTest extends TestCase
             'jumlah' => 2,
             'total_harga' => 370000,
             'alamat' => 'Jl. Sparepart No. 45, Jakarta',
-            'status' => 'pending',
+            'status' => 'diproses',
         ]);
     }
 
@@ -126,7 +128,7 @@ class SparepartTest extends TestCase
 
         // 2. Update sparepart (update)
         $response = $this->actingAs($this->admin)
-            ->put('/admin/spareparts/' . $newSp->id, [
+            ->put('/admin/spareparts/'.$newSp->id, [
                 'nama' => 'Filter Udara Vario X-Ten Updated',
                 'harga' => 48000,
                 'stok' => 22,
@@ -146,7 +148,7 @@ class SparepartTest extends TestCase
 
         // 3. Delete sparepart (destroy)
         $response = $this->actingAs($this->admin)
-            ->delete('/admin/spareparts/' . $newSp->id);
+            ->delete('/admin/spareparts/'.$newSp->id);
 
         $response->assertStatus(302);
         $this->assertDatabaseMissing('spareparts', [
@@ -167,6 +169,6 @@ class SparepartTest extends TestCase
             ->post('/admin/spareparts', [
                 'nama' => 'Aki Motor Abal-abal',
             ]);
-        $response->assertStatus(302); // Akses ditolak
+        $response->assertForbidden();
     }
 }

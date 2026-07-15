@@ -14,8 +14,11 @@ class ServiceBookingTest extends TestCase
     use RefreshDatabase;
 
     private User $user;
+
     private User $admin;
+
     private User $mechanic;
+
     private Service $service;
 
     protected function setUp(): void
@@ -74,9 +77,8 @@ class ServiceBookingTest extends TestCase
         ]);
     }
 
-    public function test_admin_can_assign_mechanic(): void
+    public function test_admin_can_cancel_booking(): void
     {
-        // Setup a booking
         $booking = ServiceBooking::create([
             'user_id' => $this->user->id,
             'service_id' => $this->service->id,
@@ -87,25 +89,19 @@ class ServiceBookingTest extends TestCase
             'status' => 'pending',
         ]);
 
-        $response = $this->actingAs($this->admin)
-            ->put(route('admin.bookings.update', $booking->id), [
-                'action' => 'assign',
-                'mechanic_id' => $this->mechanic->id,
-                'catatan_admin' => 'Please do it quickly',
-            ]);
+        $this->actingAs($this->admin)
+            ->put(route('admin.bookings.update', $booking->id), ['action' => 'cancel'])
+            ->assertRedirect(route('admin.bookings.show', $booking));
 
-        $response->assertRedirect(route('admin.bookings.show', $booking->id));
         $this->assertDatabaseHas('service_bookings', [
             'id' => $booking->id,
-            'status' => 'ditugaskan',
-            'mechanic_id' => $this->mechanic->id,
-            'catatan_admin' => 'Please do it quickly',
+            'status' => 'dibatalkan',
         ]);
     }
 
     public function test_mechanic_can_process_and_complete_booking(): void
     {
-        // Setup booking as ditugaskan
+        // Setup booking as accepted
         $booking = ServiceBooking::create([
             'user_id' => $this->user->id,
             'service_id' => $this->service->id,
@@ -114,7 +110,7 @@ class ServiceBookingTest extends TestCase
             'tanggal_booking' => now()->addDay()->format('Y-m-d'),
             'jam_booking' => '10:00',
             'mechanic_id' => $this->mechanic->id,
-            'status' => 'ditugaskan',
+            'status' => 'diterima',
         ]);
 
         // 1. Start Job
@@ -123,7 +119,7 @@ class ServiceBookingTest extends TestCase
                 'action' => 'start',
             ]);
 
-        $response->assertRedirect(route('mekanik.bookings.show', $booking->id));
+        $response->assertRedirect(route('mekanik.bookings.index'));
         $this->assertDatabaseHas('service_bookings', [
             'id' => $booking->id,
             'status' => 'diproses',
@@ -136,7 +132,7 @@ class ServiceBookingTest extends TestCase
                 'catatan_mekanik' => 'Oli replaced, rear brakes adjusted',
             ]);
 
-        $response->assertRedirect(route('mekanik.bookings.show', $booking->id));
+        $response->assertRedirect(route('mekanik.bookings.index'));
         $this->assertDatabaseHas('service_bookings', [
             'id' => $booking->id,
             'status' => 'selesai',
