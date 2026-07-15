@@ -259,6 +259,7 @@
                                 </svg>
                                 <h3 class="text-lg font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200">Sparepart Tidak Ditemukan</h3>
                                 <p class="text-xs text-zinc-400 dark:text-zinc-500 mt-2 max-w-sm">Coba sesuaikan filter pencarian Anda untuk menemukan sparepart yang cocok.</p>
+                                <a href="{{ route('toko.sparepart') }}" class="mt-5 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold uppercase tracking-wider transition">Reset Filter</a>
                             </div>
                         @endif
                     </div>

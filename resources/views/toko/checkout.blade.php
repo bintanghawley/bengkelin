@@ -6,7 +6,7 @@
 
         {{-- Back Button --}}
         <div class="mb-8">
-            <a href="javascript:history.back()" class="inline-flex items-center gap-2 text-xs font-semibold text-zinc-400 hover:text-red-500 uppercase tracking-widest transition group">
+            <a href="{{ url()->previous() }}" class="inline-flex items-center gap-2 text-xs font-semibold text-zinc-400 hover:text-red-500 uppercase tracking-widest transition group">
                 <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                 </svg>

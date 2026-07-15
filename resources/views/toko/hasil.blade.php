@@ -112,7 +112,7 @@
             <a href="{{ route('pengguna.dashboard') }}?section=riwayat" class="flex-1 text-center px-6 py-4 bg-red-600 hover:bg-red-700 text-white rounded-2xl text-sm font-bold uppercase tracking-widest transition shadow-lg shadow-red-600/20">
                 Pantau Pesanan Anda
             </a>
-            <a href="{{ route('toko.index') }}" class="flex-1 text-center px-6 py-4 bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white rounded-2xl text-sm font-bold uppercase tracking-widest border border-zinc-300 dark:border-zinc-700 transition">
+            <a href="{{ route('toko.banmotor') }}" class="flex-1 text-center px-6 py-4 bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white rounded-2xl text-sm font-bold uppercase tracking-widest border border-zinc-300 dark:border-zinc-700 transition">
                 Belanja Lagi
             </a>
         </div>

@@ -68,9 +68,19 @@
 
                 {{-- Action buttons --}}
                 <div class="flex">
-                    <a href="{{ route('booking.create', $service->slug) }}" class="w-full text-center bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-8 rounded-full transition text-sm uppercase tracking-wider shadow-lg shadow-red-600/20">
-                        Booking Servis
-                    </a>
+                    @if(auth()->check() && auth()->user()->role === 'pengguna')
+                        <a href="{{ route('booking.create', $service->slug) }}" class="w-full text-center bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-8 rounded-full transition text-sm uppercase tracking-wider shadow-lg shadow-red-600/20">
+                            Booking Servis
+                        </a>
+                    @elseif(auth()->guest())
+                        <a href="{{ route('login', ['redirect' => route('booking.create', $service->slug)]) }}" class="w-full text-center bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-8 rounded-full transition text-sm uppercase tracking-wider shadow-lg shadow-red-600/20">
+                            Login untuk Booking
+                        </a>
+                    @else
+                        <div class="w-full text-center bg-zinc-800 text-zinc-400 font-bold py-4 px-8 rounded-full text-sm uppercase tracking-wider">
+                            Booking hanya untuk akun pengguna
+                        </div>
+                    @endif
                 </div>
 
                 {{-- Description --}}

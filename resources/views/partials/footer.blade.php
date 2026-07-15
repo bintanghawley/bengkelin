@@ -137,20 +137,35 @@
 <style>
     /* Independent footer scroll reveal animations */
     .footer-reveal {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .js .footer-reveal {
         opacity: 0;
         transform: translateY(30px);
         transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
         will-change: transform, opacity;
     }
-    .footer-reveal.revealed {
+    .js .footer-reveal.revealed {
         opacity: 1;
         transform: translateY(0);
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .js .footer-reveal {
+            opacity: 1;
+            transform: none;
+            transition: none;
+        }
     }
 </style>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const reveals = document.querySelectorAll('.footer-reveal');
+        if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            reveals.forEach(el => el.classList.add('revealed'));
+            return;
+        }
         const obs = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {

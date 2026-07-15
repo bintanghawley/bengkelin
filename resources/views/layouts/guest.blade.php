@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     {{-- Force dark mode permanently --}}
-    <script>document.documentElement.classList.add('dark');</script>
+    <script>document.documentElement.classList.add('dark', 'js');</script>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
@@ -183,9 +183,6 @@
 
                 window.showConfirm('KONFIRMASI', message).then(confirmed => {
                     if (confirmed) {
-                        if (onsubmitAttr.includes('localStorage.removeItem')) {
-                            localStorage.removeItem('bengkelin_cart');
-                        }
                         form.dataset.confirmed = 'true';
                         form.submit();
                     }

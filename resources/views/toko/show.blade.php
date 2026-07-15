@@ -6,9 +6,9 @@
 
         {{-- Breadcrumb --}}
         <div class="flex items-center gap-2 text-xs text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-8">
-            <a href="{{ route('toko.index') }}" class="hover:text-red-600 transition">Toko</a>
+            <a href="{{ route('toko.banmotor') }}" class="hover:text-red-600 transition">Toko</a>
             <span>/</span>
-            <a href="{{ route('toko.index', ['kategori' => $product->kategori]) }}" class="hover:text-red-600 transition">{{ $product->kategori }}</a>
+            <a href="{{ match($product->kategori) { 'ban' => route('toko.banmotor'), 'oli' => route('toko.oli'), default => route('toko.sparepart') } }}" class="hover:text-red-600 transition">{{ $product->kategori }}</a>
             <span>/</span>
             <span class="text-zinc-700 dark:text-zinc-300">{{ $product->nama }}</span>
         </div>
@@ -81,7 +81,7 @@
                     </button>
                     @endif
 
-                    <a href="{{ route('toko.index', ['kategori' => $product->kategori]) }}"
+                    <a href="{{ match($product->kategori) { 'ban' => route('toko.banmotor'), 'oli' => route('toko.oli'), default => route('toko.sparepart') } }}"
                        class="block w-full text-center px-6 py-3.5 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 rounded-2xl text-xs font-bold uppercase tracking-widest border border-zinc-200 dark:border-zinc-700 transition">
                         ← Kembali ke {{ ucfirst($product->kategori) }}
                     </a>

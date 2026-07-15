@@ -23,25 +23,32 @@
         }
         
         /* Scroll Reveal Animation Styles */
-        .scroll-reveal {
+        .scroll-reveal,
+        .scroll-reveal-left,
+        .scroll-reveal-right,
+        .scroll-reveal-scale {
+            opacity: 1;
+            transform: none;
+        }
+        .js .scroll-reveal {
             opacity: 0;
             transform: translateY(30px);
             transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
             will-change: transform, opacity;
         }
-        .scroll-reveal-left {
+        .js .scroll-reveal-left {
             opacity: 0;
             transform: translateX(-40px);
             transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
             will-change: transform, opacity;
         }
-        .scroll-reveal-right {
+        .js .scroll-reveal-right {
             opacity: 0;
             transform: translateX(40px);
             transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
             will-change: transform, opacity;
         }
-        .scroll-reveal-scale {
+        .js .scroll-reveal-scale {
             opacity: 0;
             transform: scale(0.95);
             transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -130,7 +137,7 @@
                                 @endif
                                 <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">{{ Auth::user()->nomor_telepon ? implode('-', str_split(Auth::user()->nomor_telepon, 4)) : '-' }}</p>
                             </div>
-                            <form action="{{ route('logout') }}" method="POST" onsubmit="localStorage.removeItem('bengkelin_cart'); return confirm('Yakin ingin logout?')">
+                            <form action="{{ route('logout') }}" method="POST" onsubmit="return confirm('Yakin ingin logout?')">
                                 @csrf
                                 <button type="submit" class="inline-flex items-center gap-1 text-sm font-semibold text-red-600 hover:text-red-700 transition">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
@@ -288,7 +295,7 @@
                                 <p class="text-red-500 text-sm mt-1">Minggu: Tutup (Booking Only)</p>
                             </div>
                             <div class="pt-4">
-                                <a href="https://maps.app.goo.gl/YourActualGoogleMapsLink" target="_blank" class="inline-flex items-center gap-3 text-red-600 hover:text-red-500 font-bold text-xs uppercase tracking-widest transition">
+                                <a href="https://maps.google.com/?q=Nggrekmas%20Pagerwojo%20Buduran%20Sidoarjo" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 text-red-600 hover:text-red-500 font-bold text-xs uppercase tracking-widest transition">
                                     Buka di Google Maps
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
                                 </a>
@@ -297,7 +304,8 @@
                     </div>
 
                     <div class="lg:col-span-2 h-[450px] opacity-80 hover:opacity-100 transition-all duration-700">
-                        <iframe 
+                        <iframe
+                            title="Peta lokasi Bengkelin Sidoarjo"
                             width="100%" 
                             height="100%" 
                             frameborder="0" 
@@ -365,9 +373,13 @@
 
         // IntersectionObserver for Scroll Reveal Animations
         document.addEventListener('DOMContentLoaded', () => {
-            const revealElements = document.querySelectorAll('.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right, .scroll-reveal-scale');
-            
-            const revealObserver = new IntersectionObserver((entries, observer) => {
+             const revealElements = document.querySelectorAll('.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right, .scroll-reveal-scale');
+             if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                 revealElements.forEach(el => el.classList.add('revealed'));
+                 return;
+             }
+
+             const revealObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('revealed');
