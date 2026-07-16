@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EmergencyReport;
 use App\Models\ServiceBooking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,6 +28,9 @@ class MekanikController extends Controller
         // Pending bookings - all mekaniks can see & accept
         $pendingCount = ServiceBooking::where('status', 'pending')->count();
 
+        // Pending emergency reports
+        $pendingEmergencyCount = EmergencyReport::where('status', 'pending')->count();
+
         // My active bookings (diterima/diproses)
         $activeBookings = ServiceBooking::with(['user', 'service'])
             ->where('mechanic_id', Auth::id())
@@ -48,6 +52,7 @@ class MekanikController extends Controller
         return view('mekanik.dashboard', compact(
             'bookings',
             'pendingCount',
+            'pendingEmergencyCount',
             'activeBookings',
             'completedCount'
         ));

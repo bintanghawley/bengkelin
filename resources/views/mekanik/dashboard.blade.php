@@ -28,11 +28,16 @@
         <!-- Dashboard Section -->
         <section id="mekanik-dashboard" class="mekanik-section space-y-6">
             <!-- Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
                 <div class="bg-zinc-900 p-6 rounded-3xl border border-zinc-800 shadow-xl">
                     <p class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest mb-2">Booking Menunggu</p>
                     <h3 class="text-4xl font-bengkel {{ $pendingCount > 0 ? 'text-red-500' : 'text-zinc-500' }}">{{ $pendingCount }}</h3>
                     <a href="{{ route('mekanik.bookings.index') }}" class="text-[10px] text-zinc-500 hover:text-red-400 transition uppercase tracking-wider mt-2 block">Lihat Semua →</a>
+                </div>
+                <div class="bg-zinc-900 p-6 rounded-3xl border border-zinc-800 shadow-xl">
+                    <p class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest mb-2">Darurat Masuk</p>
+                    <h3 class="text-4xl font-bengkel {{ $pendingEmergencyCount > 0 ? 'text-red-500' : 'text-zinc-500' }}">{{ $pendingEmergencyCount }}</h3>
+                    <a href="{{ route('mekanik.emergency.index') }}" class="text-[10px] text-zinc-500 hover:text-red-400 transition uppercase tracking-wider mt-2 block">Lihat Semua →</a>
                 </div>
                 <div class="bg-zinc-900 p-6 rounded-3xl border border-zinc-800 shadow-xl">
                     <p class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest mb-2">Tugas Aktif Saya</p>

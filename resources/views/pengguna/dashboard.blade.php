@@ -17,6 +17,15 @@
                 </svg>
                 BOOKING SERVIS
             </button>
+            <button onclick="showSection('emergency')" id="btn-emergency" class="nav-link w-full flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 rounded-xl font-bold transition text-left">
+                <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"/>
+                </svg>
+                <div class="text-left">
+                    <span class="block text-xs">DARURAT</span>
+                    <span class="block text-[9px] opacity-60">Mogok di jalan?</span>
+                </div>
+            </button>
             <button onclick="showSection('profil')" id="btn-profil" class="nav-link w-full flex items-center gap-3 px-4 py-3 text-zinc-500 dark:text-zinc-400 rounded-xl font-bold transition">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
@@ -174,6 +183,30 @@
                 <p class="italic tracking-widest">Belum ada layanan servis yang tersedia.</p>
             </div>
         @endif
+    </div>
+</section>
+
+<section id="section-emergency" class="dashboard-section hidden italic">
+    <div class="bg-gray-50 dark:bg-zinc-900 p-10 rounded-3xl border border-gray-200 dark:border-zinc-800 shadow-xl text-zinc-800 dark:text-white">
+        <h3 class="text-3xl font-bengkel text-red-600 mb-2 uppercase">Laporan Darurat</h3>
+        <p class="text-zinc-500 text-sm mb-8 uppercase tracking-widest">Kendaraan mogok di jalan? Kirim lokasi Anda sekarang.</p>
+
+        <div class="bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/40 rounded-2xl p-8 text-center">
+            <svg class="w-16 h-16 text-red-500 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"/>
+            </svg>
+            <h4 class="text-xl font-bengkel text-red-600 uppercase tracking-widest mb-2">Butuh Bantuan Darurat?</h4>
+            <p class="text-zinc-500 text-sm mb-6">Jika kendaraan Anda mogok atau mengalami kerusakan di jalan, kirim laporan darurat dan mekanik kami akan segera menuju lokasi Anda.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="{{ route('pengguna.emergency.create') }}" class="bg-red-600 hover:bg-red-700 text-white text-[10px] font-bold py-3 px-8 rounded-xl transition uppercase tracking-widest shadow-lg shadow-red-900/20 inline-flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"/></svg>
+                    Kirim Laporan Darurat
+                </a>
+                <a href="{{ route('pengguna.emergency.index') }}" class="bg-gray-200 dark:bg-zinc-800 hover:bg-gray-300 dark:hover:bg-zinc-700 text-zinc-800 dark:text-white text-[10px] font-bold py-3 px-8 rounded-xl transition uppercase tracking-widest border border-gray-300 dark:border-zinc-700 inline-flex items-center justify-center gap-2">
+                    Riwayat Darurat
+                </a>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -599,7 +632,7 @@
     document.addEventListener('DOMContentLoaded', () => {
         const urlParams = new URLSearchParams(window.location.search);
         const section = urlParams.get('section');
-        if (section && ['profil', 'booking', 'status', 'riwayat'].includes(section)) {
+        if (section && ['profil', 'booking', 'emergency', 'status', 'riwayat'].includes(section)) {
             showSection(section);
         } else {
             showSection('profil');

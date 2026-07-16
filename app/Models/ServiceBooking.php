@@ -19,12 +19,16 @@ class ServiceBooking extends Model
         'tanggal_booking',
         'jam_booking',
         'status',
+        'latitude',
+        'longitude',
         'catatan_admin',
         'catatan_mekanik',
     ];
 
     protected $casts = [
         'tanggal_booking' => 'date',
+        'latitude' => 'float',
+        'longitude' => 'float',
     ];
 
     /**

@@ -83,6 +83,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/bookings', [App\Http\Controllers\Mekanik\BookingController::class, 'index'])->name('bookings.index');
         Route::get('/bookings/{booking}', [App\Http\Controllers\Mekanik\BookingController::class, 'show'])->name('bookings.show');
         Route::put('/bookings/{booking}', [App\Http\Controllers\Mekanik\BookingController::class, 'update'])->name('bookings.update');
+        Route::get('/emergency', [App\Http\Controllers\Mekanik\EmergencyController::class, 'index'])->name('emergency.index');
+        Route::get('/emergency/{emergency}', [App\Http\Controllers\Mekanik\EmergencyController::class, 'show'])->name('emergency.show');
+        Route::put('/emergency/{emergency}', [App\Http\Controllers\Mekanik\EmergencyController::class, 'update'])->name('emergency.update');
         Route::get('/assistance-requests', [AssistanceRequestController::class, 'index'])->name('assistance-requests.index');
         Route::post('/bookings/{booking}/assistance-requests', [AssistanceRequestController::class, 'store'])->name('assistance-requests.store');
         Route::get('/assistance-requests/{assistanceRequest}', [AssistanceRequestController::class, 'show'])->name('assistance-requests.show');
@@ -96,6 +99,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [PenggunaController::class, 'dashboard'])->name('dashboard');
         Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
         Route::get('/bookings/{booking}', [BookingController::class, 'show'])->name('bookings.show');
+        Route::get('/emergency', [App\Http\Controllers\Pengguna\EmergencyController::class, 'index'])->name('emergency.index');
+        Route::get('/emergency/create', [App\Http\Controllers\Pengguna\EmergencyController::class, 'create'])->name('emergency.create');
+        Route::post('/emergency', [App\Http\Controllers\Pengguna\EmergencyController::class, 'store'])->name('emergency.store');
+        Route::get('/emergency/{emergency}', [App\Http\Controllers\Pengguna\EmergencyController::class, 'show'])->name('emergency.show');
     });
 
     Route::middleware('role:pengguna')->prefix('pengguna/payments')->name('pengguna.payments.')->group(function () {

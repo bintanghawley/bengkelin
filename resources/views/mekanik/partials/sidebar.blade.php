@@ -3,8 +3,10 @@
     $isProfile = request()->routeIs('mekanik.dashboard') && $currentSection === 'profil';
     $isHistory = request()->routeIs('mekanik.dashboard') && $currentSection !== 'profil';
     $isBookings = request()->routeIs('mekanik.bookings.*');
+    $isEmergency = request()->routeIs('mekanik.emergency.*');
     $isAssistance = request()->routeIs('mekanik.assistance-requests.*');
     $pendingBookingCount = \App\Models\ServiceBooking::where('status', 'pending')->count();
+    $pendingEmergencyCount = \App\Models\EmergencyReport::where('status', 'pending')->count();
     $pendingAssistanceCount = auth()->user()->receivedAssistanceRequests()->where('status', 'pending')->count();
     $activeClass = 'text-red-500 bg-red-900/20';
     $idleClass = 'text-zinc-400 hover:text-red-500 hover:bg-red-900/10';
@@ -33,6 +35,13 @@
             BOOKING MASUK
             @if($pendingBookingCount > 0)
                 <span class="absolute right-3 bg-red-600 text-white text-[9px] font-bold rounded-full min-w-5 h-5 px-1 flex items-center justify-center">{{ $pendingBookingCount }}</span>
+            @endif
+        </a>
+        <a href="{{ route('mekanik.emergency.index') }}" class="relative w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition {{ $isEmergency ? $activeClass : $idleClass }}">
+            <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"/></svg>
+            DARURAT
+            @if($pendingEmergencyCount > 0)
+                <span class="absolute right-3 bg-red-600 text-white text-[9px] font-bold rounded-full min-w-5 h-5 px-1 flex items-center justify-center">{{ $pendingEmergencyCount }}</span>
             @endif
         </a>
         <a href="{{ route('mekanik.assistance-requests.index') }}" class="relative w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition {{ $isAssistance ? $activeClass : $idleClass }}">
