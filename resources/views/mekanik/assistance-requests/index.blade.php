@@ -21,7 +21,7 @@
                             <div>
                                 <p class="text-xs text-zinc-500 uppercase">Dari {{ $item->requesterMechanic->name }}</p>
                                 <h3 class="font-bold mt-1">{{ $item->needed_item }}</h3>
-                                <p class="text-xs text-zinc-400 mt-2">{{ $item->booking->service->nama }} · {{ $item->location_detail }}</p>
+                                <p class="text-xs text-zinc-400 mt-2">Darurat #{{ $item->emergency_report_id }} · {{ $item->location_detail }}</p>
                             </div>
                             <div class="shrink-0 text-right">
                                 <span class="block text-[10px] font-bold uppercase text-{{ $item::statusColor($item->status) }}-400">{{ $item::statusLabel($item->status) }}</span>
@@ -32,7 +32,7 @@
                 @empty
                     <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 text-center space-y-4">
                         <p class="text-zinc-500 text-sm">Belum ada permintaan masuk. Permintaan akan muncul setelah teknisi utama memilih akunmu sebagai teknisi bantuan.</p>
-                        <a href="{{ route('mekanik.bookings.index') }}" class="inline-block bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-[10px] font-bold uppercase tracking-widest px-4 py-2.5 rounded-xl transition">Lihat Booking Masuk</a>
+                        <a href="{{ route('mekanik.emergency.index') }}" class="inline-block bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-[10px] font-bold uppercase tracking-widest px-4 py-2.5 rounded-xl transition">Lihat Darurat Masuk</a>
                     </div>
                 @endforelse
             </section>
@@ -45,7 +45,7 @@
                             <div>
                                 <p class="text-xs text-zinc-500 uppercase">Kepada {{ $item->targetMechanic->name }}</p>
                                 <h3 class="font-bold mt-1">{{ $item->needed_item }}</h3>
-                                <p class="text-xs text-zinc-400 mt-2">Booking #{{ $item->service_booking_id }} · {{ $item->location_detail }}</p>
+                                <p class="text-xs text-zinc-400 mt-2">Darurat #{{ $item->emergency_report_id }} · {{ $item->location_detail }}</p>
                             </div>
                             <div class="shrink-0 text-right">
                                 <span class="block text-[10px] font-bold uppercase text-{{ $item::statusColor($item->status) }}-400">{{ $item::statusLabel($item->status) }}</span>
@@ -54,7 +54,7 @@
                         </div>
                     </a>
                 @empty
-                    <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 text-center text-zinc-500 text-sm">Belum ada permintaan terkirim. Buat permintaan dari detail booking yang sudah diterima atau sedang diproses.</div>
+                    <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 text-center text-zinc-500 text-sm">Belum ada permintaan terkirim. Permintaan bantuan hanya dapat dibuat dari laporan darurat yang sedang ditangani.</div>
                 @endforelse
             </section>
         </div>

@@ -121,22 +121,6 @@
                     @endif
                 </div>
 
-                @if($booking->assistanceRequests()->exists())
-                <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-3xl p-6 shadow-sm dark:shadow-2xl">
-                    <h3 class="text-xs text-gray-500 dark:text-zinc-500 uppercase tracking-widest font-bold border-b border-gray-200 dark:border-zinc-800 pb-3 mb-4">Bantuan Teknisi</h3>
-                    <div class="space-y-3">
-                        @foreach($booking->assistanceRequests()->with(['requesterMechanic', 'targetMechanic'])->latest()->get() as $assistance)
-                            <div class="bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 rounded-xl p-4 flex items-center justify-between gap-4">
-                                <div>
-                                    <p class="text-sm font-bold text-gray-900 dark:text-white">{{ $assistance->needed_item }}</p>
-                                    <p class="text-xs text-zinc-500 mt-1">{{ $assistance->requesterMechanic->name }} → {{ $assistance->targetMechanic->name }}</p>
-                                </div>
-                                <span class="text-[10px] uppercase font-bold tracking-widest">{{ $assistance::statusLabel($assistance->status) }}</span>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
 
                 <!-- Detail Catatan Mekanik -->
                 <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-3xl p-6 shadow-sm dark:shadow-2xl">

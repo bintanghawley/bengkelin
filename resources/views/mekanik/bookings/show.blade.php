@@ -191,36 +191,6 @@
                     @endif
                 </div>
 
-                @if(in_array($booking->status, ['diterima', 'diproses']) && $booking->mechanic_id === auth()->id())
-                <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 shadow-2xl space-y-4">
-                    <h3 class="text-xs text-zinc-500 uppercase tracking-widest font-bold border-b border-zinc-800 pb-3">Bantuan Teknisi</h3>
-                    @php $activeAssistance = $booking->assistanceRequests()->whereIn('status', ['pending', 'accepted'])->latest()->first(); @endphp
-                    @if($activeAssistance)
-                        <div class="bg-zinc-950/60 border {{ $activeAssistance->status === 'accepted' ? 'border-emerald-900' : 'border-yellow-900' }} rounded-2xl p-5 space-y-3">
-                            <span class="text-[10px] font-bold uppercase tracking-widest {{ $activeAssistance->status === 'accepted' ? 'text-emerald-400' : 'text-yellow-400' }}">{{ $activeAssistance::statusLabel($activeAssistance->status) }}</span>
-                            <p class="text-sm font-bold">{{ $activeAssistance->targetMechanic->name }}</p>
-                            <p class="text-sm text-zinc-300">{{ $activeAssistance->needed_item }}</p>
-                            <p class="text-xs text-zinc-400">{{ $activeAssistance->location_detail }}</p>
-                            <a href="{{ route('mekanik.assistance-requests.show', $activeAssistance) }}" class="inline-block text-xs text-blue-400 hover:underline font-bold">Lihat Detail →</a>
-                        </div>
-                    @else
-                        <form action="{{ route('mekanik.assistance-requests.store', $booking) }}" method="POST" class="space-y-4" onsubmit="return confirm('Kirim permintaan bantuan?')">
-                            @csrf
-                            <select name="target_mechanic_id" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-500 outline-none">
-                                <option value="">Pilih Teknisi Tujuan</option>
-                                @foreach($mechanics as $m)
-                                    <option value="{{ $m->id }}">{{ $m->name }} — {{ $m->nomor_telepon }}</option>
-                                @endforeach
-                            </select>
-                            <input type="text" name="needed_item" required maxlength="255" placeholder="Barang/alat yang dibutuhkan" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-500 outline-none">
-                            <textarea name="reason" rows="2" maxlength="2000" placeholder="Alasan meminta bantuan (opsional)" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-500 outline-none resize-none"></textarea>
-                            <input type="text" name="location_detail" required maxlength="500" placeholder="Detail lokasi/patokan" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-500 outline-none">
-                            <input type="url" name="maps_url" maxlength="1000" placeholder="Link Google Maps (opsional)" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-500 outline-none">
-                            <button type="submit" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-4 rounded-xl uppercase text-[10px] tracking-widest transition">Minta Bantuan Teknisi</button>
-                        </form>
-                    @endif
-                </div>
-                @endif
             </div>
         </div>
     </main>

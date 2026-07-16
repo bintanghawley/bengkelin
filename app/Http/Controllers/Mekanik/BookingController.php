@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Mekanik;
 
 use App\Http\Controllers\Controller;
 use App\Models\ServiceBooking;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -40,19 +39,14 @@ class BookingController extends Controller
      */
     public function show($id)
     {
-        $booking = ServiceBooking::with(['user', 'service', 'mechanic', 'assistanceRequests.targetMechanic'])
+        $booking = ServiceBooking::with(['user', 'service', 'mechanic'])
             ->where(function ($q) {
                 $q->where('status', 'pending')
                     ->orWhere('mechanic_id', Auth::id());
             })
             ->findOrFail($id);
 
-        $mechanics = User::where('role', 'mekanik')
-            ->whereKeyNot(Auth::id())
-            ->orderBy('name')
-            ->get();
-
-        return view('mekanik.bookings.show', compact('booking', 'mechanics'));
+        return view('mekanik.bookings.show', compact('booking'));
     }
 
     /**

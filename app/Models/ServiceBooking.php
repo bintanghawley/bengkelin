@@ -4,8 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class ServiceBooking extends Model
 {
@@ -62,17 +60,5 @@ class ServiceBooking extends Model
     public function mechanic(): BelongsTo
     {
         return $this->belongsTo(User::class, 'mechanic_id');
-    }
-
-    public function assistanceRequests(): HasMany
-    {
-        return $this->hasMany(MechanicAssistanceRequest::class);
-    }
-
-    public function activeAssistanceRequest(): HasOne
-    {
-        return $this->hasOne(MechanicAssistanceRequest::class)
-            ->whereIn('status', ['pending', 'accepted'])
-            ->latestOfMany();
     }
 }

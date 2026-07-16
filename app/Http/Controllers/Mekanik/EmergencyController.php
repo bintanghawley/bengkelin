@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Mekanik;
 
 use App\Http\Controllers\Controller;
 use App\Models\EmergencyReport;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -28,14 +29,19 @@ class EmergencyController extends Controller
 
     public function show($id)
     {
-        $emergency = EmergencyReport::with('user')
+        $emergency = EmergencyReport::with(['user', 'mechanic', 'assistanceRequests.targetMechanic'])
             ->where(function ($q) {
                 $q->where('status', 'pending')
                     ->orWhere('mechanic_id', Auth::id());
             })
             ->findOrFail($id);
 
-        return view('mekanik.emergency.show', compact('emergency'));
+        $mechanics = User::where('role', 'mekanik')
+            ->whereKeyNot(Auth::id())
+            ->orderBy('name')
+            ->get();
+
+        return view('mekanik.emergency.show', compact('emergency', 'mechanics'));
     }
 
     public function update(Request $request, $id)
@@ -90,7 +96,7 @@ class EmergencyController extends Controller
                     break;
 
                 case 'complete':
-                    if (!in_array($emergency->status, ['dalam_perjalanan', 'sampai_lokasi']) || $emergency->mechanic_id !== Auth::id()) {
+                    if (! in_array($emergency->status, ['dalam_perjalanan', 'sampai_lokasi']) || $emergency->mechanic_id !== Auth::id()) {
                         abort(422, 'Aksi tidak diizinkan.');
                     }
                     $emergency->update([

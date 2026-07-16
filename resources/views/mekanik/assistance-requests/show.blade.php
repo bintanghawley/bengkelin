@@ -36,7 +36,7 @@
                             <p class="text-sm mt-1">{{ $assistanceRequest->location_detail }}</p>
                         </div>
                         @if($assistanceRequest->maps_url)
-                            <a href="{{ $assistanceRequest->maps_url }}" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:underline text-sm font-bold">Buka di Google Maps ↗</a>
+                            <a href="{{ $assistanceRequest->maps_url }}" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:underline text-sm font-bold">Buka di OpenStreetMap ↗</a>
                         @endif
                         @if($assistanceRequest->reason)
                             <div>
@@ -66,13 +66,13 @@
                         </div>
                         <div>
                             <p class="text-[10px] text-zinc-400 uppercase font-bold tracking-widest">Pelanggan</p>
-                            <p class="text-sm font-bold mt-1">{{ $assistanceRequest->booking->user->name ?? '-' }}</p>
-                            <a href="tel:{{ $assistanceRequest->booking->user->nomor_telepon ?? '' }}" class="text-xs text-red-400 font-mono hover:underline">{{ $assistanceRequest->booking->user->nomor_telepon ?? '-' }}</a>
+                            <p class="text-sm font-bold mt-1">{{ $assistanceRequest->emergencyReport->user->name ?? '-' }}</p>
+                            <a href="tel:{{ $assistanceRequest->emergencyReport->user->nomor_telepon ?? '' }}" class="text-xs text-red-400 font-mono hover:underline">{{ $assistanceRequest->emergencyReport->user->nomor_telepon ?? '-' }}</a>
                         </div>
                         <div>
                             <p class="text-[10px] text-zinc-400 uppercase font-bold tracking-widest">Kendaraan</p>
-                            <p class="text-sm font-bold mt-1">{{ $assistanceRequest->booking->nama_kendaraan }}</p>
-                            <p class="text-xs text-zinc-500 font-mono">{{ $assistanceRequest->booking->plat_nomor }}</p>
+                            <p class="text-sm font-bold mt-1">{{ $assistanceRequest->emergencyReport->nama_kendaraan }}</p>
+                            <p class="text-xs text-zinc-500 font-mono">{{ $assistanceRequest->emergencyReport->plat_nomor }}</p>
                         </div>
                     </div>
                 </div>

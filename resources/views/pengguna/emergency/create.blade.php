@@ -87,52 +87,73 @@
             <!-- Map -->
             <div class="bg-gray-50 dark:bg-zinc-900 p-8 rounded-3xl border border-gray-200 dark:border-zinc-800 shadow-xl">
                 <h3 class="text-xl font-bengkel text-red-600 uppercase tracking-widest mb-2">Pin Lokasi Anda</h3>
-                <p class="text-zinc-500 text-xs uppercase tracking-widest mb-4">Klik pada peta untuk menandai lokasi Anda.</p>
+                <p class="text-zinc-500 text-xs uppercase tracking-widest mb-4">Gunakan lokasi perangkat atau klik peta untuk memilih titik secara manual.</p>
+                <button type="button" id="locate-button" class="mb-4 w-full bg-blue-600 hover:bg-blue-700 disabled:bg-zinc-700 disabled:text-zinc-400 text-white text-[10px] font-bold py-3 px-5 rounded-xl transition uppercase tracking-widest">
+                    Gunakan Lokasi Saya
+                </button>
                 <div id="map" class="w-full h-96 rounded-2xl border border-gray-200 dark:border-zinc-800 bg-gray-200 dark:bg-zinc-950"></div>
-                <p id="coord-display" class="text-zinc-500 text-[10px] uppercase tracking-widest mt-3 text-center">Lokasi belum dipilih</p>
+                <p id="coord-display" role="status" class="text-zinc-500 text-[10px] uppercase tracking-widest mt-3 text-center">Lokasi belum dipilih</p>
             </div>
         </div>
     </main>
 </div>
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-    let map, marker;
+    const defaultLocation = [-7.4478, 112.7183];
+    const map = L.map('map').setView(defaultLocation, 14);
+    let marker;
 
-    function initMap() {
-        const defaultLoc = { lat: -7.4478, lng: 112.7183 }; // Sidoarjo
-        map = new google.maps.Map(document.getElementById("map"), {
-            center: defaultLoc,
-            zoom: 14,
-        });
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
 
-        map.addListener("click", function(e) {
-            placeMarker(e.latLng);
-        });
-
-        // Try geolocation
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(pos) {
-                const loc = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-                map.setCenter(loc);
-                placeMarker(loc);
+    function placeMarker(lat, lng) {
+        if (marker) {
+            marker.setLatLng([lat, lng]);
+        } else {
+            marker = L.marker([lat, lng], { draggable: true }).addTo(map);
+            marker.on('dragend', function () {
+                const position = marker.getLatLng();
+                setCoords(position.lat, position.lng);
             });
         }
-    }
-
-    function placeMarker(latLng) {
-        if (marker) marker.setMap(null);
-        marker = new google.maps.Marker({ position: latLng, map: map, draggable: true });
-        setCoords(latLng.lat(), latLng.lng());
-        marker.addListener("dragend", function(e) {
-            setCoords(e.latLng.lat(), e.latLng.lng());
-        });
+        setCoords(lat, lng);
     }
 
     function setCoords(lat, lng) {
-        document.getElementById("latitude").value = lat.toFixed(7);
-        document.getElementById("longitude").value = lng.toFixed(7);
-        document.getElementById("coord-display").textContent = "Koordinat: " + lat.toFixed(6) + ", " + lng.toFixed(6);
+        document.getElementById('latitude').value = lat.toFixed(7);
+        document.getElementById('longitude').value = lng.toFixed(7);
+        document.getElementById('coord-display').textContent = 'Koordinat: ' + lat.toFixed(6) + ', ' + lng.toFixed(6);
     }
+
+    map.on('click', function (event) {
+        placeMarker(event.latlng.lat, event.latlng.lng);
+    });
+
+    function locateUser() {
+        const button = document.getElementById('locate-button');
+        const display = document.getElementById('coord-display');
+        if (!window.isSecureContext || !navigator.geolocation) {
+            display.textContent = 'GPS browser tidak tersedia. Klik peta untuk memilih lokasi.';
+            return;
+        }
+        button.disabled = true;
+        display.textContent = 'Mencari lokasi perangkat...';
+        navigator.geolocation.getCurrentPosition(function (position) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            map.setView([lat, lng], 16);
+            placeMarker(lat, lng);
+            button.disabled = false;
+        }, function () {
+            display.textContent = 'Lokasi gagal dibaca. Pastikan GPS aktif atau klik peta secara manual.';
+            button.disabled = false;
+        }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
+    }
+
+    document.getElementById('locate-button').addEventListener('click', locateUser);
 </script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap"></script>
 @endsection

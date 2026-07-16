@@ -11,7 +11,7 @@ class MechanicAssistanceRequest extends Model
     use HasFactory;
 
     protected $fillable = [
-        'service_booking_id',
+        'emergency_report_id',
         'requester_mechanic_id',
         'target_mechanic_id',
         'needed_item',
@@ -29,9 +29,9 @@ class MechanicAssistanceRequest extends Model
         'completed_at' => 'datetime',
     ];
 
-    public function booking(): BelongsTo
+    public function emergencyReport(): BelongsTo
     {
-        return $this->belongsTo(ServiceBooking::class, 'service_booking_id');
+        return $this->belongsTo(EmergencyReport::class);
     }
 
     public function requesterMechanic(): BelongsTo

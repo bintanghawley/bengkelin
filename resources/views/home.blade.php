@@ -13,7 +13,7 @@
         .sidebar-scrollbar-hide::-webkit-scrollbar {
             display: none;
         }
-        /* Filter Google Maps Dinamis */
+        /* Filter peta dinamis */
         .map-iframe {
             filter: grayscale(10%) contrast(100%);
             transition: all 0.7s ease;
@@ -295,8 +295,8 @@
                                 <p class="text-red-500 text-sm mt-1">Minggu: Tutup (Booking Only)</p>
                             </div>
                             <div class="pt-4">
-                                <a href="https://maps.google.com/?q=Nggrekmas%20Pagerwojo%20Buduran%20Sidoarjo" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 text-red-600 hover:text-red-500 font-bold text-xs uppercase tracking-widest transition">
-                                    Buka di Google Maps
+                                <a href="https://www.openstreetmap.org/search?query=Nggrekmas%20Pagerwojo%20Buduran%20Sidoarjo" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 text-red-600 hover:text-red-500 font-bold text-xs uppercase tracking-widest transition">
+                                    Buka di OpenStreetMap
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
                                 </a>
                             </div>
@@ -304,17 +304,7 @@
                     </div>
 
                     <div class="lg:col-span-2 h-[450px] opacity-80 hover:opacity-100 transition-all duration-700">
-                        <iframe
-                            title="Peta lokasi Bengkelin Sidoarjo"
-                            width="100%" 
-                            height="100%" 
-                            frameborder="0" 
-                            scrolling="no" 
-                            marginheight="0" 
-                            marginwidth="0" 
-                            class="map-iframe w-full h-full"
-                            src="https://maps.google.com/maps?q=Nggrekmas%20Pagerwojo%20Buduran%20Sidoarjo&t=&z=15&ie=UTF8&iwloc=&output=embed">
-                        </iframe>
+                        <div id="workshop-map" class="map-iframe w-full h-full" aria-label="Peta lokasi Bengkelin Sidoarjo"></div>
                     </div>
                 </div>
             </div>
@@ -322,6 +312,18 @@
     </main>
     
     @include('partials.footer')
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        const workshopLocation = [-7.4478, 112.7183];
+        const workshopMap = L.map('workshop-map', { scrollWheelZoom: false }).setView(workshopLocation, 15);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(workshopMap);
+        L.marker(workshopLocation).addTo(workshopMap).bindPopup('Bengkelin').openPopup();
+    </script>
     
     <script>
         const sidebarOpen = document.getElementById('sidebar-open');

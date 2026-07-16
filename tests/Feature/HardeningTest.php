@@ -19,7 +19,7 @@ class HardeningTest extends TestCase
             ->assertHeader('X-Content-Type-Options', 'nosniff')
             ->assertHeader('X-Frame-Options', 'DENY')
             ->assertHeader('Referrer-Policy', 'strict-origin-when-cross-origin')
-            ->assertHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=(), usb=()')
+            ->assertHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=(self), payment=(), usb=()')
             ->assertHeaderMissing('X-Powered-By');
 
         $this->assertStringContainsString("frame-ancestors 'none'", $response->headers->get('Content-Security-Policy'));
@@ -69,7 +69,7 @@ class HardeningTest extends TestCase
             ->assertOk()
             ->assertSee('href="'.route('home').'#about"', false)
             ->assertSee('href="'.route('home').'#location"', false)
-            ->assertSee('title="Peta lokasi Bengkelin Sidoarjo"', false)
+            ->assertSee('aria-label="Peta lokasi Bengkelin Sidoarjo"', false)
             ->assertDontSee('/tentang-kami', false)
             ->assertDontSee('/lokasi', false);
     }

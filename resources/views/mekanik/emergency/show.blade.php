@@ -44,10 +44,10 @@
                     <p class="text-[10px] text-zinc-400 uppercase font-bold tracking-widest">Lokasi</p>
                     <p class="text-sm text-white mt-1">{{ $emergency->lokasi_detail ?: 'Tidak ada detail' }}</p>
                     <p class="text-[10px] text-zinc-500 font-mono mt-1">{{ number_format($emergency->latitude, 6) }}, {{ number_format($emergency->longitude, 6) }}</p>
-                    <a href="https://www.google.com/maps/dir/?api=1&destination={{ $emergency->latitude }},{{ $emergency->longitude }}" target="_blank"
+                    <a href="https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=;{{ $emergency->latitude }},{{ $emergency->longitude }}" target="_blank" rel="noopener noreferrer"
                        class="inline-flex items-center gap-1 mt-2 text-[10px] text-blue-400 hover:text-blue-300 font-bold uppercase tracking-widest">
                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
-                        Buka di Google Maps
+                        Buka Rute OpenStreetMap
                     </a>
                 </div>
                 <div>
@@ -151,17 +151,51 @@
                         <p class="text-zinc-500 text-xs italic">Tidak ada aksi yang tersedia.</p>
                     @endif
                 </div>
+
+                @if(in_array($emergency->status, ['diterima', 'dalam_perjalanan', 'sampai_lokasi']) && $emergency->mechanic_id === auth()->id())
+                    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 shadow-2xl space-y-4">
+                        <h3 class="text-xs text-zinc-500 uppercase tracking-widest font-bold border-b border-zinc-800 pb-3">Bantuan Teknisi Darurat</h3>
+                        @php $activeAssistance = $emergency->activeAssistanceRequest()->with('targetMechanic')->first(); @endphp
+                        @if($activeAssistance)
+                            <div class="bg-zinc-950/60 border {{ $activeAssistance->status === 'accepted' ? 'border-emerald-900' : 'border-yellow-900' }} rounded-2xl p-5 space-y-3">
+                                <span class="text-[10px] font-bold uppercase tracking-widest {{ $activeAssistance->status === 'accepted' ? 'text-emerald-400' : 'text-yellow-400' }}">{{ $activeAssistance::statusLabel($activeAssistance->status) }}</span>
+                                <p class="text-sm font-bold">{{ $activeAssistance->targetMechanic->name }}</p>
+                                <p class="text-sm text-zinc-300">{{ $activeAssistance->needed_item }}</p>
+                                <a href="{{ route('mekanik.assistance-requests.show', $activeAssistance) }}" class="inline-block text-xs text-blue-400 hover:underline font-bold">Lihat Detail →</a>
+                            </div>
+                        @else
+                            <p class="text-xs text-zinc-400">Gunakan fitur ini jika alat atau sparepart tertinggal saat menangani kendaraan di luar bengkel.</p>
+                            <form action="{{ route('mekanik.assistance-requests.store', $emergency) }}" method="POST" class="space-y-4" onsubmit="return confirm('Kirim permintaan bantuan darurat?')">
+                                @csrf
+                                <select name="target_mechanic_id" required class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-500 outline-none">
+                                    <option value="">Pilih Teknisi Tujuan</option>
+                                    @foreach($mechanics as $mechanic)
+                                        <option value="{{ $mechanic->id }}">{{ $mechanic->name }} — {{ $mechanic->nomor_telepon }}</option>
+                                    @endforeach
+                                </select>
+                                <input type="text" name="needed_item" required maxlength="255" placeholder="Barang/alat yang dibutuhkan" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-500 outline-none">
+                                <textarea name="reason" rows="2" maxlength="2000" placeholder="Alasan meminta bantuan (opsional)" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-500 outline-none resize-none"></textarea>
+                                <input type="text" name="location_detail" required maxlength="500" value="{{ old('location_detail', $emergency->lokasi_detail) }}" placeholder="Detail lokasi/patokan" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-500 outline-none">
+                                <input type="url" name="maps_url" maxlength="1000" value="{{ old('maps_url', 'https://www.openstreetmap.org/?mlat='.$emergency->latitude.'&mlon='.$emergency->longitude.'#map=17/'.$emergency->latitude.'/'.$emergency->longitude) }}" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-red-500 outline-none">
+                                <button type="submit" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-4 rounded-xl uppercase text-[10px] tracking-widest transition">Minta Bantuan Teknisi</button>
+                            </form>
+                        @endif
+                    </div>
+                @endif
             </div>
         </div>
     </main>
 </div>
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-    function initMap() {
-        const pos = { lat: {{ $emergency->latitude }}, lng: {{ $emergency->longitude }} };
-        const map = new google.maps.Map(document.getElementById("map"), { center: pos, zoom: 15 });
-        new google.maps.Marker({ position: pos, map: map, title: "Lokasi Pelanggan" });
-    }
+    const position = [{{ $emergency->latitude }}, {{ $emergency->longitude }}];
+    const map = L.map('map').setView(position, 15);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+    L.marker(position).addTo(map).bindPopup('Lokasi Pelanggan').openPopup();
 </script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap"></script>
 @endsection

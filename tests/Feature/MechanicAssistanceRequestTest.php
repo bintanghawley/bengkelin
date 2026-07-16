@@ -2,9 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\EmergencyReport;
 use App\Models\MechanicAssistanceRequest;
-use App\Models\Service;
-use App\Models\ServiceBooking;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -21,7 +20,7 @@ class MechanicAssistanceRequestTest extends TestCase
 
     private User $customer;
 
-    private ServiceBooking $booking;
+    private EmergencyReport $emergency;
 
     protected function setUp(): void
     {
@@ -32,35 +31,28 @@ class MechanicAssistanceRequestTest extends TestCase
         $this->otherMechanic = User::create(['name' => 'Teknisi Lain', 'nomor_telepon' => '083333333333', 'password' => bcrypt('password'), 'role' => 'mekanik']);
         $this->customer = User::create(['name' => 'Pelanggan', 'nomor_telepon' => '084444444444', 'password' => bcrypt('password'), 'role' => 'pengguna']);
 
-        $service = Service::create([
-            'nama' => 'Servis Darurat',
-            'slug' => 'servis-darurat',
-            'deskripsi' => 'Servis di lokasi',
-            'harga_mulai' => 100000,
-            'estimasi_waktu' => '60 Menit',
-        ]);
-
-        $this->booking = ServiceBooking::create([
+        $this->emergency = EmergencyReport::create([
             'user_id' => $this->customer->id,
-            'service_id' => $service->id,
             'mechanic_id' => $this->requester->id,
             'nama_kendaraan' => 'Honda Vario',
             'plat_nomor' => 'L 1234 AB',
-            'tanggal_booking' => now()->toDateString(),
-            'jam_booking' => '10:00',
-            'status' => 'diproses',
+            'keluhan' => 'Motor mogok di jalan',
+            'latitude' => -7.4478,
+            'longitude' => 112.7183,
+            'lokasi_detail' => 'Depan SPBU Pagerwojo',
+            'status' => 'dalam_perjalanan',
         ]);
     }
 
     public function test_complete_assistance_request_flow(): void
     {
         $this->actingAs($this->requester)
-            ->post(route('mekanik.assistance-requests.store', $this->booking), [
+            ->post(route('mekanik.assistance-requests.store', $this->emergency), [
                 'target_mechanic_id' => $this->target->id,
                 'needed_item' => 'Kunci shock 24 mm',
                 'reason' => 'Alat tertinggal di bengkel',
                 'location_detail' => 'Depan SPBU Pagerwojo',
-                'maps_url' => 'https://maps.google.com/?q=Pagerwojo',
+                'maps_url' => 'https://www.openstreetmap.org/search?query=Pagerwojo',
             ])->assertRedirect();
 
         $request = MechanicAssistanceRequest::firstOrFail();
@@ -82,7 +74,7 @@ class MechanicAssistanceRequestTest extends TestCase
     public function test_only_assigned_mechanic_can_create_request(): void
     {
         $this->actingAs($this->otherMechanic)
-            ->post(route('mekanik.assistance-requests.store', $this->booking), $this->validPayload())
+            ->post(route('mekanik.assistance-requests.store', $this->emergency), $this->validPayload())
             ->assertForbidden();
     }
 
@@ -102,12 +94,12 @@ class MechanicAssistanceRequestTest extends TestCase
             ->assertForbidden();
     }
 
-    public function test_booking_cannot_have_two_active_requests(): void
+    public function test_emergency_cannot_have_two_active_requests(): void
     {
         $this->createRequest();
 
         $this->actingAs($this->requester)
-            ->post(route('mekanik.assistance-requests.store', $this->booking), $this->validPayload())
+            ->post(route('mekanik.assistance-requests.store', $this->emergency), $this->validPayload())
             ->assertStatus(422);
 
         $this->assertSame(1, MechanicAssistanceRequest::count());
@@ -122,7 +114,7 @@ class MechanicAssistanceRequestTest extends TestCase
             ->assertRedirect();
 
         $this->actingAs($this->requester)
-            ->post(route('mekanik.assistance-requests.store', $this->booking), [
+            ->post(route('mekanik.assistance-requests.store', $this->emergency), [
                 ...$this->validPayload(),
                 'target_mechanic_id' => $this->otherMechanic->id,
             ])->assertRedirect();
@@ -134,7 +126,7 @@ class MechanicAssistanceRequestTest extends TestCase
     {
         return MechanicAssistanceRequest::create([
             ...$this->validPayload(),
-            'service_booking_id' => $this->booking->id,
+            'emergency_report_id' => $this->emergency->id,
             'requester_mechanic_id' => $this->requester->id,
             'status' => 'pending',
         ]);
@@ -147,7 +139,7 @@ class MechanicAssistanceRequestTest extends TestCase
             'needed_item' => 'Kunci shock 24 mm',
             'reason' => 'Alat tertinggal',
             'location_detail' => 'Depan SPBU Pagerwojo',
-            'maps_url' => 'https://maps.google.com/?q=Pagerwojo',
+            'maps_url' => 'https://www.openstreetmap.org/search?query=Pagerwojo',
         ];
     }
 }

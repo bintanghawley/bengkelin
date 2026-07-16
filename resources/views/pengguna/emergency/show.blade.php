@@ -130,12 +130,15 @@
     </main>
 </div>
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-    function initMap() {
-        const pos = { lat: {{ $emergency->latitude }}, lng: {{ $emergency->longitude }} };
-        const map = new google.maps.Map(document.getElementById("map"), { center: pos, zoom: 15 });
-        new google.maps.Marker({ position: pos, map: map, title: "{{ $emergency->nama_kendaraan }}" });
-    }
+    const position = [{{ $emergency->latitude }}, {{ $emergency->longitude }}];
+    const map = L.map('map').setView(position, 15);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+    L.marker(position).addTo(map).bindPopup(@json($emergency->nama_kendaraan)).openPopup();
 </script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap"></script>
 @endsection

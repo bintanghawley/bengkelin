@@ -16,7 +16,7 @@ class SecurityHeaders
         $response->headers->set('X-Content-Type-Options', 'nosniff');
         $response->headers->set('X-Frame-Options', 'DENY');
         $response->headers->set('Referrer-Policy', 'strict-origin-when-cross-origin');
-        $response->headers->set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=(), usb=()');
+        $response->headers->set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(self), payment=(), usb=()');
         $response->headers->set('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
         $response->headers->set('Content-Security-Policy', $this->contentSecurityPolicy($request));
 
@@ -50,11 +50,11 @@ class SecurityHeaders
             "frame-ancestors 'none'",
             "form-action 'self'",
             'script-src '.implode(' ', $scriptSources),
-            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com",
+            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net",
             "font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com",
             "img-src 'self' data: blob: https:",
             'connect-src '.implode(' ', $connectSources),
-            'frame-src https://maps.google.com https://www.google.com',
+            "frame-src 'none'",
             "manifest-src 'self'",
             "worker-src 'self' blob:",
         ];

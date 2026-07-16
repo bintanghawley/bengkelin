@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Mekanik;
 
 use App\Http\Controllers\Controller;
+use App\Models\EmergencyReport;
 use App\Models\MechanicAssistanceRequest;
-use App\Models\ServiceBooking;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,12 +15,12 @@ class AssistanceRequestController extends Controller
 {
     public function index(Request $request): View
     {
-        $incoming = MechanicAssistanceRequest::with(['booking.service', 'requesterMechanic'])
+        $incoming = MechanicAssistanceRequest::with(['emergencyReport.user', 'requesterMechanic'])
             ->where('target_mechanic_id', $request->user()->id)
             ->latest()
             ->get();
 
-        $outgoing = MechanicAssistanceRequest::with(['booking.service', 'targetMechanic'])
+        $outgoing = MechanicAssistanceRequest::with(['emergencyReport.user', 'targetMechanic'])
             ->where('requester_mechanic_id', $request->user()->id)
             ->latest()
             ->get();
@@ -28,11 +28,11 @@ class AssistanceRequestController extends Controller
         return view('mekanik.assistance-requests.index', compact('incoming', 'outgoing'));
     }
 
-    public function store(Request $request, ServiceBooking $booking): RedirectResponse
+    public function store(Request $request, EmergencyReport $emergency): RedirectResponse
     {
         abort_unless(
-            $booking->mechanic_id === $request->user()->id
-            && in_array($booking->status, ['diterima', 'diproses'], true),
+            $emergency->mechanic_id === $request->user()->id
+            && in_array($emergency->status, ['diterima', 'dalam_perjalanan', 'sampai_lokasi'], true),
             403,
         );
 
@@ -50,18 +50,22 @@ class AssistanceRequestController extends Controller
 
         abort_if($target->is($request->user()), 422, 'Anda tidak dapat meminta bantuan kepada diri sendiri.');
 
-        DB::transaction(function () use ($booking, $request, $validated, $target): void {
-            $lockedBooking = ServiceBooking::lockForUpdate()->findOrFail($booking->id);
-            abort_unless($lockedBooking->mechanic_id === $request->user()->id, 403);
+        DB::transaction(function () use ($emergency, $request, $validated, $target): void {
+            $lockedEmergency = EmergencyReport::lockForUpdate()->findOrFail($emergency->id);
+            abort_unless(
+                $lockedEmergency->mechanic_id === $request->user()->id
+                && in_array($lockedEmergency->status, ['diterima', 'dalam_perjalanan', 'sampai_lokasi'], true),
+                403,
+            );
 
-            $hasActiveRequest = MechanicAssistanceRequest::where('service_booking_id', $lockedBooking->id)
+            $hasActiveRequest = MechanicAssistanceRequest::where('emergency_report_id', $lockedEmergency->id)
                 ->whereIn('status', ['pending', 'accepted'])
                 ->exists();
-            abort_if($hasActiveRequest, 422, 'Booking ini masih memiliki permintaan bantuan aktif.');
+            abort_if($hasActiveRequest, 422, 'Laporan darurat ini masih memiliki permintaan bantuan aktif.');
 
             MechanicAssistanceRequest::create([
                 ...$validated,
-                'service_booking_id' => $lockedBooking->id,
+                'emergency_report_id' => $lockedEmergency->id,
                 'requester_mechanic_id' => $request->user()->id,
                 'target_mechanic_id' => $target->id,
                 'status' => 'pending',
@@ -74,7 +78,7 @@ class AssistanceRequestController extends Controller
     public function show(Request $request, MechanicAssistanceRequest $assistanceRequest): View
     {
         $this->authorizeParticipant($request, $assistanceRequest);
-        $assistanceRequest->load(['booking.user', 'booking.service', 'requesterMechanic', 'targetMechanic']);
+        $assistanceRequest->load(['emergencyReport.user', 'requesterMechanic', 'targetMechanic']);
 
         return view('mekanik.assistance-requests.show', compact('assistanceRequest'));
     }
