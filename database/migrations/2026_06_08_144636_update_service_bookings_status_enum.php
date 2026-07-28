@@ -11,9 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (DB::getDriverName() !== 'sqlite') {
+        $driver = DB::getDriverName();
+
+        if ($driver === 'mysql') {
             // For MySQL: modify the enum column
             DB::statement("ALTER TABLE service_bookings MODIFY COLUMN status ENUM('pending','diterima','ditolak','diproses','selesai','dibatalkan') NOT NULL DEFAULT 'pending'");
+        } elseif ($driver === 'pgsql') {
+            // For PostgreSQL: update column definition safely
+            DB::statement("ALTER TABLE service_bookings DROP CONSTRAINT IF EXISTS service_bookings_status_check");
+            DB::statement("ALTER TABLE service_bookings ADD CONSTRAINT service_bookings_status_check CHECK (status::text IN ('pending', 'diterima', 'ditolak', 'diproses', 'selesai', 'dibatalkan'))");
         }
 
         // Migrate old 'ditugaskan' values to 'diterima'
@@ -29,8 +35,13 @@ return new class extends Migration
         DB::statement("UPDATE service_bookings SET status = 'ditugaskan' WHERE status = 'diterima'");
         DB::statement("UPDATE service_bookings SET status = 'dibatalkan' WHERE status = 'ditolak'");
         
-        if (DB::getDriverName() !== 'sqlite') {
+        $driver = DB::getDriverName();
+
+        if ($driver === 'mysql') {
             DB::statement("ALTER TABLE service_bookings MODIFY COLUMN status ENUM('pending','ditugaskan','diproses','selesai','dibatalkan') NOT NULL DEFAULT 'pending'");
+        } elseif ($driver === 'pgsql') {
+            DB::statement("ALTER TABLE service_bookings DROP CONSTRAINT IF EXISTS service_bookings_status_check");
+            DB::statement("ALTER TABLE service_bookings ADD CONSTRAINT service_bookings_status_check CHECK (status::text IN ('pending', 'ditugaskan', 'diproses', 'selesai', 'dibatalkan'))");
         }
     }
 };
