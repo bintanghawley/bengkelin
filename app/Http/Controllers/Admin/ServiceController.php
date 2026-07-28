@@ -44,7 +44,8 @@ class ServiceController extends Controller
 
             $gambarPath = null;
             if ($request->hasFile('gambar')) {
-                $gambarPath = $request->file('gambar')->store('services', 'public');
+                $disk = config('filesystems.default', 'public');
+                $gambarPath = $request->file('gambar')->store('services', $disk);
             }
 
             $service = Service::create([
@@ -106,10 +107,11 @@ class ServiceController extends Controller
 
             $gambarPath = $service->gambar;
             if ($request->hasFile('gambar')) {
+                $disk = config('filesystems.default', 'public');
                 if ($gambarPath) {
-                    Storage::disk('public')->delete($gambarPath);
+                    Storage::disk($disk)->delete($gambarPath);
                 }
-                $gambarPath = $request->file('gambar')->store('services', 'public');
+                $gambarPath = $request->file('gambar')->store('services', $disk);
             }
 
             $service->update([
@@ -143,7 +145,8 @@ class ServiceController extends Controller
     public function destroy(Service $service)
     {
         if ($service->gambar) {
-            Storage::disk('public')->delete($service->gambar);
+            $disk = config('filesystems.default', 'public');
+            Storage::disk($disk)->delete($service->gambar);
         }
         $service->delete(); // cascade akan hapus service_items
 

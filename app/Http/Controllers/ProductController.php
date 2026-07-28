@@ -30,7 +30,8 @@ class ProductController extends Controller
         $data = $request->only(['nama', 'harga', 'stok', 'kategori', 'deskripsi']);
 
         if ($request->hasFile('gambar')) {
-            $data['gambar'] = $request->file('gambar')->store('products', 'public');
+            $disk = config('filesystems.default', 'public');
+            $data['gambar'] = $request->file('gambar')->store('products', $disk);
         }
 
         Product::create($data);
@@ -50,10 +51,11 @@ class ProductController extends Controller
         $data = $request->only(['nama', 'harga', 'stok', 'kategori', 'deskripsi']);
 
         if ($request->hasFile('gambar')) {
+            $disk = config('filesystems.default', 'public');
             if ($product->gambar) {
-                Storage::disk('public')->delete($product->gambar);
+                Storage::disk($disk)->delete($product->gambar);
             }
-            $data['gambar'] = $request->file('gambar')->store('products', 'public');
+            $data['gambar'] = $request->file('gambar')->store('products', $disk);
         }
 
         $product->update($data);
@@ -63,7 +65,8 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         if ($product->gambar) {
-            Storage::disk('public')->delete($product->gambar);
+            $disk = config('filesystems.default', 'public');
+            Storage::disk($disk)->delete($product->gambar);
         }
         
         $product->delete();

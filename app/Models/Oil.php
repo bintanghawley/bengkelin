@@ -30,9 +30,23 @@ class Oil extends Model
      */
     public function getImageUrlAttribute()
     {
-        if ($this->gambar) {
-            return asset('storage/' . $this->gambar);
+        if (!$this->gambar) {
+            return null;
         }
-        return null;
+
+        if (str_starts_with($this->gambar, 'http://') || str_starts_with($this->gambar, 'https://')) {
+            return $this->gambar;
+        }
+
+        if (str_starts_with($this->gambar, 'img/')) {
+            return asset($this->gambar);
+        }
+
+        $disk = config('filesystems.default', 'public');
+        if ($disk === 's3') {
+            return \Illuminate\Support\Facades\Storage::disk('s3')->url($this->gambar);
+        }
+
+        return asset('storage/' . $this->gambar);
     }
 }
